@@ -51,6 +51,7 @@ export default function Home() {
             tag="Public portfolio project"
             href="/project/ai-ops-assistant"
             subtitle="Workflow automation for enterprise teams with deterministic-first guardrails and explainable AI support."
+            subtitle="A neutral, enterprise-style workflow automation project showcasing applied AI + process design."
           />
         </div>
       </section>
