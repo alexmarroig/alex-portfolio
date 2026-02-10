@@ -7,6 +7,34 @@ export default function AIOpsAssistant() {
       </p>
 
       <p>
+        A neutral, portfolio-only project designed to demonstrate applied AI and process automation in an
+        enterprise-style workflow.
+      </p>
+
+      <h2 style={{ fontSize: 18, marginTop: 22 }}>Problem</h2>
+      <p>
+        Operational teams receive unstructured requests through multiple channels (forms, chat, email). This creates
+        delays, misrouting, and inconsistent handling.
+      </p>
+
+      <h2 style={{ fontSize: 18, marginTop: 22 }}>Solution</h2>
+      <ul>
+        <li>Normalizes requests into structured tickets</li>
+        <li>Applies deterministic rules (routing, priority, SLA)</li>
+        <li>Uses AI assistance for summarization, categorization, and clarity</li>
+        <li>Logs decisions for transparency and auditability</li>
+      </ul>
+
+      <h2 style={{ fontSize: 18, marginTop: 22 }}>What this demonstrates</h2>
+      <ul>
+        <li>Process design: intake → triage → routing → execution</li>
+        <li>Guardrails: deterministic-first, explainable AI assistance</li>
+        <li>Integration mindset: APIs/webhooks, low-code patterns</li>
+        <li>Delivery thinking: UX, reliability, and operational fit</li>
+      </ul>
+
+      <h2 style={{ fontSize: 18, marginTop: 22 }}>Status</h2>
+      <p style={{ opacity: 0.85 }}>In progress — built for demonstration and iteration.</p>
         A neutral, enterprise-style automation project that turns operational requests into structured workflows,
         using deterministic rules first and AI assistance where it improves clarity, routing, and prioritization.
       </p>
