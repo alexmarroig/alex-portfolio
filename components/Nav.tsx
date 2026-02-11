@@ -15,6 +15,9 @@ export default function Nav() {
           <Link href="/contact" className="navLink">
             Contact
           </Link>
+          <a href="mailto:alex.c.marroig@gmail.com" className="btn btnPrimary navCta">
+            Let&apos;s Talk
+          </a>
         </div>
       </div>
     </header>

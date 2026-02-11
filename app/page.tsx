@@ -1,4 +1,13 @@
 import ProjectCard from "@/components/ProjectCard";
+import RevealSection from "@/components/RevealSection";
+
+const stackGroups = {
+  Frontend: ["Next.js", "Product UX", "Design Systems", "Accessibility"],
+  "AI & Data": ["Applied AI", "Prompt Design", "Workflow Intelligence", "Data APIs"],
+  "Dev & Ops": ["Automation", "Power Automate", "Systems Integration", "B2B SaaS"]
+};
+
+const whatITakeOn = ["AI Product", "Technical PM", "Automation", "Systems Integration"];
 
 const coreStack = [
   "Product Leadership",
@@ -87,7 +96,59 @@ export default function Home() {
             subtitle="Workflow automation for enterprise teams with deterministic-first guardrails and explainable AI support."
           />
         </div>
-      </section>
+      </RevealSection>
+
+      <RevealSection className="section" ariaLabelledby="core-stack-title">
+        <h2 id="core-stack-title" className="sectionTitle">
+          Core Stack
+        </h2>
+        <p className="sectionLead">A cross-functional toolkit for shipping high-quality products with speed and rigor.</p>
+
+        {Object.entries(stackGroups).map(([groupName, items]) => (
+          <div key={groupName} className="stackGroup">
+            <h3 className="stackLabel">{groupName}</h3>
+            <div className="badgeGroup">
+              {items.map((item) => (
+                <span key={item} className="badge">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </RevealSection>
+
+      <RevealSection className="section">
+        <h2 className="sectionTitle">What I Take On</h2>
+        <div className="chipGroup" style={{ marginTop: 14 }}>
+          {whatITakeOn.map((item) => (
+            <span key={item} className="chip">
+              {item}
+            </span>
+          ))}
+        </div>
+      </RevealSection>
+
+      <RevealSection className="section glassPanel">
+        <h2 className="sectionTitle">About</h2>
+        <p className="sectionLead">
+          I lead product and delivery across technical domains where ambiguity is high and reliability matters.
+          My approach blends strategy, systems thinking, and execution discipline to help teams ship confidently.
+        </p>
+      </RevealSection>
+
+      <RevealSection className="section glassPanel">
+        <h2 className="sectionTitle">Contact</h2>
+        <p className="sectionLead">If you&apos;re building AI-powered products and need hands-on product leadership, let&apos;s connect.</p>
+        <div className="heroActions" style={{ marginTop: 18 }}>
+          <a href="mailto:alex.c.marroig@gmail.com" className="btn btnPrimary">
+            Let&apos;s Talk
+          </a>
+          <a href="https://www.linkedin.com/in/alexmarroig/" target="_blank" rel="noreferrer" className="btn btnGhost">
+            LinkedIn
+          </a>
+        </div>
+      </RevealSection>
     </>
   );
 }

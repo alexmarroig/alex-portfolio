@@ -12,6 +12,10 @@ export default function ProjectCard(props: {
     <Link href={href} className="card">
       <div className="cardHeader">
         <div className="cardTitle">{title}</div>
+        <span className="cardTag">{tag}</span>
+      </div>
+      <p className="cardSubtitle">{subtitle}</p>
+      <div className="cardAction">View case study →</div>
         <div className="cardTag">{tag}</div>
       </div>
       <div className="cardSubtitle">{subtitle}</div>
