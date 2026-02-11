@@ -1,41 +1,17 @@
-# Alex Portfolio (Next.js + TypeScript + Tailwind)
+# Alex Marroig — Portfolio
 
-A recruiter-friendly portfolio app with a dark, tech-inspired interface built using the Next.js App Router.
+AI Product Manager | Technical PM | AI-Driven SaaS
 
-## Run locally in Codespaces
+This portfolio includes:
+- Private product case studies (ETHOS, CryptoAlert Pro)
+- A public, neutral portfolio project (AI Ops Assistant)
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start the dev server:
-   ```bash
-   npm run dev
-   ```
-3. Open the forwarded port (usually `3000`) in Codespaces.
+## Routes
+- `/` Home (headline, summary, project cards)
+- `/case/ethos` Private case study
+- `/case/cryptoalert` Private case study
+- `/project/ai-ops-assistant` Public portfolio-only project
+- `/about` Mini bio + focus areas
+- `/contact` Contact links
 
-## Deploy on Vercel from GitHub
-
-1. Push this repository to GitHub.
-2. In Vercel, click **Add New Project** and import this GitHub repo.
-3. Keep default Next.js build settings.
-4. Deploy.
-5. Optional: add a custom domain in Vercel project settings.
-
-## Update app/case data
-
-- Edit `src/data/apps.ts` to update app cards shown on `/apps`.
-- Edit `src/data/cases.ts` to update case studies shown on `/cases`.
-
-## Included routes
-
-- `/` Home
-- `/apps`
-- `/lab`
-- `/lab/ecommerce`
-- `/lab/scheduler`
-- `/lab/inbox`
-- `/lab/metrics-dashboard`
-- `/cases`
-- `/resume`
-- `/contact`
+Built with Next.js and deployed on Vercel.
