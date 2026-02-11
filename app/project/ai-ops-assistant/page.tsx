@@ -36,6 +36,12 @@ export default function AIOpsAssistant() {
       <h2 style={{ fontSize: 18, marginTop: 22 }}>Status</h2>
       <p style={{ opacity: 0.85 }}>In progress — built for demonstration and iteration.</p>
 
+
+      <p style={{ opacity: 0.85 }}>
+        A neutral, enterprise-style automation project that turns operational requests into structured workflows,
+        using deterministic rules first and AI assistance where it improves clarity, routing, and prioritization.
+      </p>
+
       <h2 style={{ fontSize: 18, marginTop: 22 }}>Repo</h2>
       <p style={{ opacity: 0.85 }}>
         Add a GitHub repository link here once created (recommended: a separate repo named <code>ai-ops-assistant</code>).
