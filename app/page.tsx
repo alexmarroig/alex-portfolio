@@ -1,37 +1,71 @@
 import ProjectCard from "@/components/ProjectCard";
 
+const coreStack = [
+  "Product Leadership",
+  "AI",
+  "Automation",
+  "B2B SaaS",
+  "APIs",
+  "Low-code",
+  "Power Automate",
+  "Enterprise Delivery",
+  "Cross-functional Execution",
+  "Regulated Environments"
+];
+
 export default function Home() {
   return (
     <>
-      <section style={{ paddingTop: 10 }}>
-        <h1 style={{ fontSize: 34, lineHeight: 1.15, margin: "10px 0 6px" }}>
-          AI Product Manager | Technical PM | AI-Driven SaaS
-        </h1>
+      <section className="section">
+        <h1 className="heroTitle">AI Product Manager | Technical PM | AI-Driven SaaS</h1>
 
-        <p style={{ maxWidth: 760, fontSize: 16, opacity: 0.9, marginTop: 10 }}>
+        <p className="heroSummary">
           Product and delivery leader with extensive experience building and scaling highly complex,
-          cross-functional initiatives across B2B SaaS, enterprise, and regulated environments.
-          Strong technical foundation in automation, low-code/no-code, APIs, and AI-driven systems.
-          Fluent in English and Portuguese.
+          cross-functional initiatives across B2B SaaS, enterprise, and regulated environments. Strong
+          technical foundation in automation, low-code/no-code, APIs, and AI-driven systems.
         </p>
 
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14, fontSize: 13, opacity: 0.9 }}>
-          <span>São Paulo, Brazil</span>
-          <span>•</span>
-          <a href="https://www.linkedin.com/in/alexmarroig/" target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
+        <div className="heroActions">
+          <a href="#selected-work" className="btn btnPrimary">
+            View Work
+          </a>
+          <a
+            href="https://www.linkedin.com/in/alexmarroig/"
+            target="_blank"
+            rel="noreferrer"
+            className="btn btnGhost"
+          >
             LinkedIn
           </a>
-          <span>•</span>
-          <a href="mailto:alex.c.marroig@gmail.com" style={{ color: "inherit" }}>
+          <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost">
             Email
           </a>
         </div>
+
+        <div className="metaRow">
+          <span>São Paulo, Brazil</span>
+          <span aria-hidden="true">•</span>
+          <span>Fluent in English and Portuguese</span>
+        </div>
       </section>
 
-      <section style={{ marginTop: 28 }}>
-        <h2 style={{ fontSize: 18, marginBottom: 12 }}>Selected work</h2>
+      <section className="section" aria-labelledby="core-stack-title">
+        <h2 id="core-stack-title" className="sectionTitle">
+          Core Stack
+        </h2>
+        <div className="badgeGroup">
+          {coreStack.map((item) => (
+            <span key={item} className="badge">
+              {item}
+            </span>
+          ))}
+        </div>
+      </section>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
+      <section className="section" id="selected-work">
+        <h2 className="sectionTitle">Selected work</h2>
+
+        <div className="projectGrid">
           <ProjectCard
             title="ETHOS"
             tag="Private product case"
