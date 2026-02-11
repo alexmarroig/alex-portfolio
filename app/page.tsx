@@ -9,12 +9,23 @@ const stackGroups = {
 
 const whatITakeOn = ["AI Product", "Technical PM", "Automation", "Systems Integration"];
 
+const coreStack = [
+  "Product Leadership",
+  "AI",
+  "Automation",
+  "B2B SaaS",
+  "APIs",
+  "Low-code",
+  "Power Automate",
+  "Enterprise Delivery",
+  "Cross-functional Execution",
+  "Regulated Environments"
+];
+
 export default function Home() {
   return (
     <>
-      <RevealSection className="section">
-        <span className="heroBadge">Open to AI product leadership and technical PM roles</span>
-
+      <section className="section">
         <h1 className="heroTitle">AI Product Manager | Technical PM | AI-Driven SaaS</h1>
 
         <p className="heroSummary">
@@ -24,14 +35,19 @@ export default function Home() {
         </p>
 
         <div className="heroActions">
-          <a href="#featured-builds" className="btn btnPrimary">
+          <a href="#selected-work" className="btn btnPrimary">
             View Work
           </a>
-          <a href="#" className="btn btnGhost" aria-disabled="true">
-            Download Resume
+          <a
+            href="https://www.linkedin.com/in/alexmarroig/"
+            target="_blank"
+            rel="noreferrer"
+            className="btn btnGhost"
+          >
+            LinkedIn
           </a>
           <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost">
-            Let&apos;s Talk
+            Email
           </a>
         </div>
 
@@ -40,11 +56,23 @@ export default function Home() {
           <span aria-hidden="true">•</span>
           <span>Fluent in English and Portuguese</span>
         </div>
-      </RevealSection>
+      </section>
 
-      <RevealSection className="section" id="featured-builds">
-        <h2 className="sectionTitle">Featured Builds</h2>
-        <p className="sectionLead">Selected initiatives where product strategy and technical delivery shipped measurable outcomes.</p>
+      <section className="section" aria-labelledby="core-stack-title">
+        <h2 id="core-stack-title" className="sectionTitle">
+          Core Stack
+        </h2>
+        <div className="badgeGroup">
+          {coreStack.map((item) => (
+            <span key={item} className="badge">
+              {item}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="section" id="selected-work">
+        <h2 className="sectionTitle">Selected work</h2>
 
         <div className="projectGrid">
           <ProjectCard
