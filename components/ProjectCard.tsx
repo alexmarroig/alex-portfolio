@@ -16,6 +16,10 @@ export default function ProjectCard(props: {
       </div>
       <p className="cardSubtitle">{subtitle}</p>
       <div className="cardAction">View case study →</div>
+        <div className="cardTag">{tag}</div>
+      </div>
+      <div className="cardSubtitle">{subtitle}</div>
+      <div className="cardAction">View →</div>
     </Link>
   );
 }

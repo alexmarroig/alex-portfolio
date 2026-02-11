@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import Container from "@/components/Container";
 import FloatingTalk from "@/components/FloatingTalk";
-import LoadingOverlay from "@/components/LoadingOverlay";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap"
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap"
+});
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,9 +26,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
     <html lang="en">
       <body className="siteBody">
-        <LoadingOverlay />
         <Nav />
         <Container>{children}</Container>
         <FloatingTalk />
