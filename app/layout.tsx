@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Container from "@/components/Container";
 import FloatingTalk from "@/components/FloatingTalk";
 import Footer from "@/components/Footer";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="siteBody">
+        <LoadingOverlay />
         <Nav />
         <Container>{children}</Container>
         <Footer />

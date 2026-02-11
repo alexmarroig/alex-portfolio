@@ -498,6 +498,156 @@ a {
   font-size: 0.9rem;
 }
 
+
+.loadingOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 100% at 50% 18%, rgba(76, 49, 168, 0.28), transparent 52%),
+    radial-gradient(95% 85% at 50% 50%, rgba(7, 12, 26, 0.74), rgba(2, 4, 12, 0.95));
+  backdrop-filter: blur(5px);
+}
+
+.loadingNoise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.11;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.42) 0.5px, transparent 0.5px);
+  background-size: 3px 3px;
+}
+
+.loadingGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(140, 162, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 162, 255, 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.72), transparent 85%);
+}
+
+.loadingScanline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 36%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(66, 229, 223, 0.08),
+    rgba(250, 68, 176, 0.12),
+    transparent
+  );
+  mix-blend-mode: screen;
+}
+
+.loadingPanel {
+  width: min(92vw, 540px);
+  border: 1px solid rgba(165, 186, 255, 0.25);
+  border-radius: 18px;
+  padding: 30px 24px 24px;
+  background: linear-gradient(155deg, rgba(8, 15, 33, 0.9), rgba(7, 11, 26, 0.88));
+  box-shadow: 0 20px 56px rgba(2, 5, 19, 0.7);
+  text-align: center;
+  position: relative;
+}
+
+.loadingArcWrap {
+  position: relative;
+  width: 124px;
+  height: 124px;
+  margin: 0 auto 16px;
+}
+
+.loadingArc {
+  display: block;
+  width: 124px;
+  height: 124px;
+  transform: rotate(-90deg);
+}
+
+.loadingArcTrack,
+.loadingArcProgress {
+  fill: none;
+  stroke-width: 4;
+}
+
+.loadingArcTrack {
+  stroke: rgba(126, 141, 188, 0.28);
+}
+
+.loadingArcProgress {
+  stroke-linecap: round;
+  stroke: #59e7e2;
+  filter: drop-shadow(0 0 8px rgba(89, 231, 226, 0.45));
+}
+
+.loadingGlyph {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #d6fefd;
+  border: 1px solid rgba(89, 231, 226, 0.52);
+  background: radial-gradient(circle, rgba(27, 118, 132, 0.4), rgba(14, 25, 41, 0.6));
+  box-shadow: 0 0 18px rgba(89, 231, 226, 0.28);
+}
+
+.loadingLabel,
+.loadingTitle,
+.loadingSub {
+  margin: 0;
+}
+
+.loadingLabel {
+  font-size: 0.9rem;
+  color: #9fb3ff;
+  letter-spacing: 0.02em;
+}
+
+.loadingTitle {
+  margin-top: 6px;
+  font-size: clamp(1rem, 2.6vw, 1.25rem);
+  font-weight: 700;
+}
+
+.loadingSub {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.loadingBarTrack {
+  margin-top: 18px;
+  width: 100%;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(124, 136, 176, 0.32);
+  overflow: hidden;
+}
+
+.loadingBarFill {
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #44e9d8, #fb48b7);
+  box-shadow: 0 0 14px rgba(251, 72, 183, 0.55);
+}
+
 @media (max-width: 768px) {
   .heroCard {
     padding: 24px;
