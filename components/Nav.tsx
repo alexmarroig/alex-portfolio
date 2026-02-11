@@ -8,17 +8,17 @@ export default function Nav() {
           Alex Marroig
         </Link>
 
-        <div className="navGroup">
+        <nav className="navGroup" aria-label="Primary">
+          <Link href="/" className="navLink">
+            Home
+          </Link>
           <Link href="/about" className="navLink">
             About
           </Link>
           <Link href="/contact" className="navLink">
             Contact
           </Link>
-          <a href="mailto:alex.c.marroig@gmail.com" className="btn btnPrimary navCta">
-            Let&apos;s Talk
-          </a>
-        </div>
+        </nav>
       </div>
     </header>
   );
