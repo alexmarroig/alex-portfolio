@@ -1,4 +1,17 @@
 :root {
+  --bg: #06070d;
+  --bg2: #0c1120;
+  --surface: rgba(20, 26, 43, 0.62);
+  --border: rgba(255, 255, 255, 0.14);
+  --text: #eef2ff;
+  --muted: #abb3cb;
+  --accent: #ff2fb3;
+  --accent2: #1de6d4;
+  --ring: rgba(255, 47, 179, 0.55);
+  --radius: 16px;
+  --radius-lg: 22px;
+  --font-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bg: #070b14;
   --bg-elevated: rgba(16, 24, 42, 0.72);
   --surface: rgba(15, 23, 42, 0.78);
@@ -63,6 +76,50 @@ a {
 }
 
 .mainContainer {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 44px 20px 110px;
+}
+
+.section {
+  margin-top: 56px;
+}
+
+.section:first-of-type {
+  margin-top: 16px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.sectionLead {
+  margin: 10px 0 0;
+  color: var(--muted);
+  max-width: 72ch;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 230, 212, 0.4);
+  background: rgba(29, 230, 212, 0.1);
+  color: #b6fff8;
+  font-size: 0.85rem;
+}
+
+.heroTitle {
+  margin: 16px 0 0;
+  max-width: 15ch;
+  font-size: clamp(2.3rem, 8.6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
   max-width: 1024px;
   margin: 0 auto;
   padding: 40px 20px 72px;
@@ -176,6 +233,12 @@ a {
   color: var(--muted);
 }
 
+.microText {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .glassPanel {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -188,6 +251,14 @@ a {
 .navShell {
   position: sticky;
   top: 10px;
+  z-index: 50;
+  width: min(1080px, calc(100% - 16px));
+  margin: 10px auto 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(14, 18, 30, 0.7);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 16px 34px rgba(2, 7, 24, 0.42);
   z-index: 20;
   margin: 10px auto 0;
   width: min(1024px, calc(100% - 18px));
@@ -202,6 +273,7 @@ a {
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 10px 14px;
   padding: 10px 16px;
 }
 
@@ -215,6 +287,30 @@ a {
   margin-left: auto;
   display: flex;
   align-items: center;
+  gap: 6px;
+}
+
+.navLink {
+  position: relative;
+  text-decoration: none;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-radius: 999px;
+  transition: color 170ms ease, background-color 170ms ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 7px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transform: scaleX(0.75);
+  transition: opacity 170ms ease, transform 170ms ease;
   gap: 8px;
 }
 
@@ -229,6 +325,60 @@ a {
 
 .navLink:hover {
   color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navLink:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.navCta {
+  margin-left: 8px;
+}
+
+.projectGrid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  background: linear-gradient(150deg, rgba(31, 40, 66, 0.66) 0%, rgba(20, 26, 43, 0.5) 100%);
+  box-shadow: 0 8px 24px rgba(3, 8, 24, 0.3);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg, rgba(255, 47, 179, 0.4), rgba(29, 230, 212, 0.4));
+  opacity: 0;
+  transition: opacity 180ms ease;
+  z-index: -1;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.27);
+  box-shadow: 0 22px 44px rgba(4, 10, 28, 0.5);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:active {
+  transform: translateY(-1px) scale(0.995);
   background: rgba(148, 163, 184, 0.12);
 }
 
@@ -315,11 +465,28 @@ a {
 }
 
 .cardTitle {
+  font-size: 1.08rem;
   font-size: 1.05rem;
   font-weight: 700;
 }
 
 .cardTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 230, 212, 0.34);
+  background: rgba(29, 230, 212, 0.08);
+  color: #affff8;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cardSubtitle {
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.6;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -333,6 +500,22 @@ a {
 
 .cardAction {
   margin-top: 14px;
+  color: #ffd4f2;
+  font-size: 0.88rem;
+}
+
+.stackGroup {
+  margin-top: 16px;
+}
+
+.stackLabel {
+  margin: 0 0 9px;
+  color: #d8def2;
+  font-size: 0.9rem;
+}
+
+.badgeGroup,
+.chipGroup {
   font-size: 0.88rem;
   color: #c6daff;
 }
@@ -344,6 +527,66 @@ a {
   gap: 10px;
 }
 
+.badge,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(18, 24, 41, 0.68);
+  color: #d8e2ff;
+  padding: 6px 11px;
+  font-size: 0.84rem;
+}
+
+.chip {
+  border-color: rgba(255, 47, 179, 0.34);
+  background: rgba(255, 47, 179, 0.1);
+  color: #ffd7f0;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 550ms ease, transform 550ms ease;
+}
+
+.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.floatingTalk {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+}
+
+.floatingTalk .btn {
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 0 18px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--ring);
+}
+
+@media (max-width: 780px) {
+  .navGroup {
+    gap: 2px;
+  }
+
+  .navCta {
+    margin-left: 3px;
+  }
+
+  .heroTitle {
+    max-width: 100%;
+  }
 .badge {
   display: inline-flex;
   align-items: center;
@@ -365,6 +608,15 @@ a {
   *,
   *::before,
   *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
