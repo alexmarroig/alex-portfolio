@@ -22,36 +22,11 @@ const stackGroups: Record<string, { icon: string; skills: string[] }> = {
   }
 };
 
-const whatITakeOn = ["Systems Architecture", "Full-Stack Development", "AI Integration", "Technical Consulting"];
-
 export default function Home() {
   return (
     <>
       <RevealSection className="section">
         <HeroCard />
-      </RevealSection>
-
-      <RevealSection className="section contractSection" id="contract">
-        <span className="contractBadge">● Open to Contract Work</span>
-        <h2 className="contractTitle">Let&apos;s Build Something</h2>
-        <p className="contractLead">
-          Looking for fully remote, high-value projects. Complex problems, technical architecture, systems
-          integration—that&apos;s where I thrive.
-        </p>
-        <a href="mailto:alex.c.marroig@gmail.com" className="btn btnPrimary contractCta">
-          Start a Conversation
-        </a>
-        <p className="contractMeta">I respond within 48 hours</p>
-
-        <div className="contractDivider" />
-        <h3 className="contractSubTitle">What I Take On</h3>
-        <div className="chipGroup contractChipGroup">
-          {whatITakeOn.map((item) => (
-            <span key={item} className="chip contractChip">
-              {item}
-            </span>
-          ))}
-        </div>
       </RevealSection>
 
       <RevealSection className="section" id="core-stack">
