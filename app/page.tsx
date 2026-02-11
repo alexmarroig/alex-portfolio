@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import ProjectCard from "@/components/ProjectCard";
 import InteractiveProjectCard from "@/components/InteractiveProjectCard";
 import RevealSection from "@/components/RevealSection";
 
@@ -80,6 +81,28 @@ export default function Home() {
             I respond within 48 hours.
           </motion.p>
         </motion.div>
+  return (
+    <>
+      <RevealSection className="section">
+        <span className="heroBadge">Open to: Remote roles • Contract • Advisory</span>
+
+        <h1 className="heroTitle">AI Product Manager. Technical PM. Systems that ship.</h1>
+
+        <p className="heroSummary">
+          I lead complex, cross-functional delivery across B2B SaaS and enterprise—where product strategy,
+          automation, and AI meet real-world constraints.
+        </p>
+
+        <div className="heroActions">
+          <a href={letsTalkHref} className="btn btnPrimary">
+            Let&apos;s Talk
+          </a>
+          <a href="#featured" className="btn btnGhost">
+            View Featured Builds
+          </a>
+        </div>
+
+        <p className="microText">I respond within 48 hours.</p>
       </RevealSection>
 
       <RevealSection className="section">
@@ -90,12 +113,6 @@ export default function Home() {
               {item}
             </span>
           ))}
-        </div>
-
-        <div className="metaRow">
-          <span>São Paulo, Brazil</span>
-          <span aria-hidden="true">•</span>
-          <span>Fluent in English and Portuguese</span>
         </div>
       </RevealSection>
 
