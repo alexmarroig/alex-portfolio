@@ -12,6 +12,7 @@ type InteractiveProjectCardProps = {
   problem: string;
   solution: string;
   focus: string;
+  stackTags: string[];
   outcomes: string[];
 };
 
@@ -23,6 +24,7 @@ export default function InteractiveProjectCard({
   problem,
   solution,
   focus,
+  stackTags,
   outcomes
 }: InteractiveProjectCardProps) {
   const reducedMotion = useReducedMotion();
@@ -43,9 +45,11 @@ export default function InteractiveProjectCard({
   }, []);
 
   const cardTransform = useMemo(() => {
-    if (reducedMotion) return "none";
-    if (isOpen) return "rotateY(180deg) scale(1.01)";
-    return `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isPressed ? 0.985 : 1.01})`;
+    if (reducedMotion) {
+      return isPressed ? "scale(0.99)" : "scale(1)";
+    }
+    if (isOpen) return "rotateY(180deg) scale(1.008)";
+    return `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isPressed ? 0.988 : 1.018})`;
   }, [isOpen, isPressed, reducedMotion, tilt.x, tilt.y]);
 
   const onMove = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +60,7 @@ export default function InteractiveProjectCard({
     const py = (event.clientY - rect.top) / rect.height;
 
     setGlow({ x: px * 100, y: py * 100 });
-    setTilt({ x: (0.5 - py) * 8, y: (px - 0.5) * 10 });
+    setTilt({ x: (0.5 - py) * 7.5, y: (px - 0.5) * 10 });
   };
 
   const onLeave = () => {
@@ -88,7 +92,7 @@ export default function InteractiveProjectCard({
           <div
             className="cardSpecular"
             style={{
-              background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(255,255,255,0.26), transparent 42%)`
+              background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(255,255,255,0.24), rgba(255,255,255,0.01) 40%, transparent 62%)`
             }}
           />
 
@@ -115,6 +119,13 @@ export default function InteractiveProjectCard({
                 <strong>Focus:</strong> {focus}
               </li>
             </ul>
+            <div className="badgeGroup">
+              {stackTags.map((item) => (
+                <span key={item} className="badge">
+                  {item}
+                </span>
+              ))}
+            </div>
             <ul className="backOutcomeList">
               {outcomes.map((item) => (
                 <li key={item}>{item}</li>
@@ -124,7 +135,24 @@ export default function InteractiveProjectCard({
               <Link href={href} className="btn btnPrimary">
                 Open Case Study
               </Link>
-              <span className="btn btnGhost">Back</span>
+              <span
+                role="button"
+                tabIndex={0}
+                className="btn btnGhost"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setIsOpen(false);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setIsOpen(false);
+                  }
+                }}
+              >
+                Back
+              </span>
             </div>
           </div>
         </motion.div>
