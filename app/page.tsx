@@ -49,6 +49,15 @@ const coreStack = [
 ];
 
 export default function Home() {
+  const reducedMotion = useReducedMotion();
+  const itemAnimation = reducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 20, filter: "blur(8px)" },
+        animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+        transition: { duration: 0.5, ease: "easeOut" }
+      };
+
   return (
     <>
       <RevealSection className="section">
@@ -134,7 +143,7 @@ export default function Home() {
             </span>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
       <section className="section" id="selected-work">
         <h2 className="sectionTitle">Selected work</h2>
@@ -145,20 +154,32 @@ export default function Home() {
             tag="Private product case"
             href="/case/ethos"
             subtitle="Offline-first clinical platform. Human-centered workflows, privacy by design, applied AI with guardrails."
+            problem="fragmented tools + privacy"
+            solution="offline-first + assistive AI"
+            focus="trust, ethics, workflow"
+            outcomes={["Human-centered clinical operations", "Privacy-first architecture", "Deterministic workflows with AI assist"]}
           />
 
-          <ProjectCard
+          <InteractiveProjectCard
             title="CryptoAlert Pro"
             tag="Private product case"
             href="/case/cryptoalert"
             subtitle="Real-time data and decision automation. Signal over noise, rule-first logic with pragmatic AI assistance."
+            problem="noise/latency"
+            solution="rule-first alerts + AI assist"
+            focus="explainability/guardrails"
+            outcomes={["Faster alert triage", "Transparent decision paths", "Reliable automation under market volatility"]}
           />
 
-          <ProjectCard
+          <InteractiveProjectCard
             title="AI Ops Assistant"
             tag="Public portfolio project"
             href="/project/ai-ops-assistant"
             subtitle="Workflow automation for enterprise teams with deterministic-first guardrails and explainable AI support."
+            problem="unstructured ops intake"
+            solution="triage/routing + AI assist"
+            focus="enterprise workflow"
+            outcomes={["Structured request intake", "Priority-aware routing", "Explainable support with guardrails"]}
           />
         </div>
       </RevealSection>
