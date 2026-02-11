@@ -49,6 +49,22 @@ export default function Home() {
           <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost">
             Email
           </a>
+          <a href="#" className="btn btnGhost" aria-disabled="true">
+            Download Resume
+          </a>
+        </div>
+
+        <p className="microText">I respond within 48 hours.</p>
+      </RevealSection>
+
+      <RevealSection className="section">
+        <h2 className="sectionTitle">What I Take On</h2>
+        <div className="chipGroup" style={{ marginTop: 14 }}>
+          {whatITakeOn.map((item) => (
+            <span key={item} className="chip">
+              {item}
+            </span>
+          ))}
         </div>
 
         <div className="metaRow">
