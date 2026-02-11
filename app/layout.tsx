@@ -16,7 +16,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   display: "swap"
 });
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Alex Marroig — AI Product Manager | Technical PM | AI-Driven SaaS",
@@ -27,7 +26,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-    <html lang="en">
       <body className="siteBody">
         <Nav />
         <Container>{children}</Container>

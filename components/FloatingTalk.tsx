@@ -13,7 +13,7 @@ export default function FloatingTalk() {
     >
       <motion.a
         className="btn btnPrimary"
-        href="mailto:alex.c.marroig@gmail.com?subject=Let’s%20Talk%20-%20Portfolio"
+        href="mailto:alex.c.marroig@gmail.com?subject=Let%E2%80%99s%20Talk%20-%20Portfolio"
         aria-label="Let's Talk via email"
         whileHover={reducedMotion ? undefined : { scale: 1.03 }}
         whileTap={reducedMotion ? undefined : { scale: 0.98 }}
@@ -21,12 +21,5 @@ export default function FloatingTalk() {
         Let&apos;s Talk
       </motion.a>
     </motion.div>
-export default function FloatingTalk() {
-  return (
-    <div className="floatingTalk">
-      <a className="btn btnPrimary" href="mailto:alex.c.marroig@gmail.com" aria-label="Let's Talk via email">
-        Chat / Let&apos;s Talk
-      </a>
-    </div>
   );
 }
