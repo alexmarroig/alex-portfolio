@@ -1,4 +1,6 @@
 :root {
+  --font-sans: "Inter", "Segoe UI", Roboto, Helvetica, Arial, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bg: #060815;
   --bg2: #0e1224;
   --text: #eff3ff;
