@@ -5,24 +5,55 @@ import RevealSection from "@/components/RevealSection";
 import ScrollRevealText from "@/components/ScrollRevealText";
 
 const stackGroups: Record<string, { icon: string; skills: string[] }> = {
-  "Product & Delivery": {
-    icon: "🎯",
+  "Product Engineering": {
+    icon: "🧠",
     skills: [
-      "AI Product Leadership",
-      "Technical Program Management",
-      "Cross-functional Delivery",
-      "B2B SaaS in Regulated Environments"
+      "AI-first Product Design",
+      "Specs → Systems → Shipping",
+      "Metrics-driven Delivery",
+      "B2B SaaS (Regulated / High-stakes)"
     ]
   },
-  "Automation & AI": {
+  "Automation & AI Systems": {
     icon: "⚡",
-    skills: ["Workflow Automation", "AI Platform Delivery (NLP / RAG)", "APIs", "Low-code / No-code"]
+    skills: [
+      "Workflow Orchestration",
+      "RAG / Retrieval Systems",
+      "LLM Guardrails (Determinism + Escalation)",
+      "Event-driven Pipelines",
+      "API-first Integrations"
+    ]
   },
-  "Dev & Ops": {
+  "Platforms & Ops": {
     icon: "🛠",
-    skills: ["Systems Integration", "Power Automate", "Enterprise Operations", "Zero-to-One + Scale"]
+    skills: [
+      "Systems Integration",
+      "Operational Tooling",
+      "Reliability & Auditability",
+      "Zero-to-One → Scale"
+    ]
   }
 };
+
+const thoughtLines = [
+  { text: "I build products that matter.", highlightWords: ["matter"] },
+  {
+    text: "I’m driven by innovation, obsessed with structure, and energized by solving complex problems.",
+    highlightWords: ["innovation", "structure", "complex"]
+  },
+  {
+    text: "Technology is how I transform dreams into real, usable solutions.",
+    highlightWords: ["Technology", "transform", "real", "usable"]
+  }
+];
+
+const rolesExploring = [
+  "Technical Project Manager",
+  "Technical Program Manager",
+  "Technical Product Manager",
+  "AI Product Manager",
+  "AI / Automation Product Lead"
+];
 
 export default function Home() {
   return (
@@ -33,12 +64,17 @@ export default function Home() {
 
       <RevealSection className="section" id="core-stack" staggerChildren>
         <h2 className="sectionTitle">Core Stack</h2>
+        <p className="sectionLead">
+          I build ambitious systems with disciplined execution: clear architecture, automation leverage, and delivery
+          that holds up in the real world.
+        </p>
+
         <div className="stackGrid">
           {Object.entries(stackGroups).map(([group, data], index) => (
             <RevealItem order={index} key={group}>
               <article className="glassPanel stackCard">
                 <h3 className="stackTitle">
-                  <span>{data.icon}</span>
+                  <span aria-hidden="true">{data.icon}</span>
                   {group}
                 </h3>
                 <div className="chipGroup">
@@ -56,7 +92,8 @@ export default function Home() {
 
       <RevealSection className="section" id="selected-work" staggerChildren>
         <h2 className="sectionTitle">Selected Work</h2>
-        <p className="sectionLead">Flip each card for problem / architecture context and outcomes.</p>
+        <p className="sectionLead">Flip each card for problem framing, architecture decisions, and outcomes.</p>
+
         <div className="projectGrid">
           <ProjectCard
             title="ETHOS"
@@ -64,88 +101,109 @@ export default function Home() {
             href="/case/ethos"
             subtitle="Offline-first clinical platform with privacy-first workflows and assistive AI guardrails."
             problem="Clinical teams were blocked by disconnected workflows, slow approvals, and strict compliance constraints."
-            architecture="Offline-first sync engine + role-based policy layer + explainable AI assistant for clinical flow orchestration."
-            role="Led product strategy, aligned compliance/security stakeholders, and shipped cross-functional roadmap increments."
-            impact="Reduced workflow friction and improved confidence for high-stakes decisions in privacy-sensitive settings."
-            stackTags={["Offline-first", "Privacy by design", "Assistive AI"]}
+            architecture="Offline-first sync engine + role-based policy layer + AI assistant with deterministic guardrails and explainability."
+            role="Led product strategy and system framing; translated constraints into architecture choices and shipped iterative releases."
+            impact="Reduced workflow friction and increased confidence in high-stakes decisions under strict privacy requirements."
+            stackTags={["Offline-first", "Privacy by design", "Guardrails"]}
             revealOrder={0}
           />
+
           <ProjectCard
             title="CryptoAlert Pro"
             tag="Private product case"
             href="/case/cryptoalert"
             subtitle="Real-time alerting architecture focused on signal quality, explainability, and automation."
-            problem="High noise alerting caused delayed response and weak trust in market decision workflows."
-            architecture="Rule and scoring pipeline with streaming ingestion, event enrichment, and explainable AI-assisted triage."
-            role="Defined product requirements, prioritized execution loops, and translated analyst needs into automated workflows."
-            impact="Faster and more consistent signal-to-action decisions with lower alert fatigue in volatile conditions."
-            stackTags={["Rule engine", "Streaming APIs", "Explainable AI"]}
+            problem="High-noise alerting caused delayed response and low trust in market decision workflows."
+            architecture="Streaming ingestion + enrichment + scoring pipeline + explainable triage to reduce false positives."
+            role="Defined requirements, designed decision loops, and converted analyst heuristics into reliable automation."
+            impact="Faster signal-to-action with lower alert fatigue in volatile conditions."
+            stackTags={["Streaming", "Rule + Scoring", "Explainability"]}
             revealOrder={1}
           />
+
           <ProjectCard
             title="AI Ops Assistant"
             tag="Public portfolio project"
             href="/project/ai-ops-assistant"
             subtitle="Enterprise intake-to-resolution automation with deterministic guardrails and RAG support."
-            problem="Support and ops teams lost time routing repetitive requests and handling fragmented internal context."
-            architecture="Workflow orchestrator + retrieval layer + API integration fabric with deterministic escalation guardrails."
-            role="Designed end-to-end product narrative and execution model from intake patterns to measurable resolution SLAs."
-            impact="Improved throughput and reliability while preserving governance and auditability for enterprise operations."
-            stackTags={["Workflow orchestration", "LLM triage", "API-first integration"]}
+            problem="Ops teams lost time routing repetitive requests and searching fragmented internal context."
+            architecture="Workflow orchestrator + retrieval layer + integration fabric + escalation guardrails for auditability."
+            role="Designed the end-to-end system: intake patterns → routing logic → resolution SLAs."
+            impact="Improved throughput and reliability while preserving governance and traceability."
+            stackTags={["Orchestration", "RAG", "API Integration"]}
             revealOrder={2}
           />
         </div>
       </RevealSection>
 
-      <RevealSection className="section aboutSection" id="about" staggerChildren>
-        <h2 className="sectionTitle aboutTitle">How I Think</h2>
-        <ScrollRevealText
-          className="thoughtLine"
-          text="I build products that are ambitious in vision and disciplined in execution."
-          highlightWords={["ambitious", "disciplined"]}
-        />
-        <p className="aboutQuote">“I build products where AI has to survive real-world complexity, not slide demos.”</p>
+      <RevealSection className="section" staggerChildren>
+        <h2 className="sectionTitle">How I Think</h2>
+
+        {thoughtLines.map((line, index) => (
+          <RevealItem key={line.text} order={index}>
+            <ScrollRevealText className="thoughtLine" text={line.text} highlightWords={line.highlightWords} />
+          </RevealItem>
+        ))}
+
+        <p className="aboutQuote">“I build products where AI has to survive real-world complexity — not slide decks.”</p>
+
         <p className="aboutBody">
-          My approach blends <strong>product strategy</strong>, operational rigor, and human-centered systems
-          design—especially in regulated or high-stakes domains where reliability is non-negotiable.
-        </p>
-        <p className="aboutBody">
-          I focus on turning uncertainty into delivery: clear architecture choices, measurable outcomes, and teams
-          aligned around what ships and what scales.
+          I love turning ambiguity into systems: clear interfaces, robust flows, measurable outcomes. My default mode is
+          engineering-minded product work — define sharply, build cleanly, automate ruthlessly, ship relentlessly.
         </p>
       </RevealSection>
 
       <RevealSection className="section contractSection" id="contract" staggerChildren>
-        <div className="contractStatus" role="status" aria-label="Open to contract work">
-          <span className="contractDot" aria-hidden="true" />
-          Open to Contract Work
+        <div className="contractStatus" role="status" aria-label="Availability status">
+          <span
+            className="contractDot"
+            aria-hidden="true"
+            style={{
+              backgroundColor: "#22c55e",
+              boxShadow: "0 0 0 3px rgba(34,197,94,0.18), 0 0 18px rgba(34,197,94,0.55)"
+            }}
+          />
+          Available for High-Impact Work
         </div>
-        <h2 className="sectionTitle contractTitle">Let’s Build Something</h2>
+
+        <h2 className="sectionTitle contractTitle">Let’s Build Something That Ships</h2>
+
         <p className="contractLead">
-          Looking for fully remote, high-value projects. Complex problems, technical architecture, systems
-          integration—that&apos;s where I thrive.
+          I’m looking for roles where technical depth meets product outcomes — complex systems, real constraints,
+          measurable delivery, and AI that behaves in production.
         </p>
-        <a href="mailto:alex.c.marroig@gmail.com" className="contractCta">
-          Start a Conversation
-        </a>
-        <p className="contractNote">I respond within 48 hours</p>
+
+        <div className="contractChipRow">
+          {rolesExploring.map((item, index) => (
+            <RevealItem order={index} key={item}>
+              <span className="contractChip">{item}</span>
+            </RevealItem>
+          ))}
+        </div>
 
         <div className="contractDivider" aria-hidden="true" />
 
-        <h3 className="contractSubTitle">What I Take On</h3>
+        <h3 className="contractSubTitle">Work I’m Great At</h3>
+
         <div className="contractChipRow">
           {[
-            "Systems Architecture",
-            "AI Integration",
-            "Product Strategy",
-            "Technical Consulting",
-            "Workflow Automation"
+            "AI Product Strategy (Pragmatic)",
+            "Workflow Automation",
+            "Systems Integration",
+            "RAG + Guardrails",
+            "Delivery Under Constraints"
           ].map((item, index) => (
             <RevealItem order={index} key={item}>
               <span className="contractChip">{item}</span>
             </RevealItem>
           ))}
         </div>
+
+        <a href="mailto:alex.c.marroig@gmail.com" className="contractCta">
+          Start a Conversation
+        </a>
+
+        <p className="contractNote">Clear scope. Clean execution. No theatre.</p>
       </RevealSection>
     </>
   );
