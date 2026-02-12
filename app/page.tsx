@@ -1,3 +1,9 @@
+import AboutSection from "@/components/sections/AboutSection";
+import ContractSection from "@/components/sections/ContractSection";
+import CoreStackSection from "@/components/sections/CoreStackSection";
+import CurrentFocusSection from "@/components/sections/CurrentFocusSection";
+import HeroSection from "@/components/sections/HeroSection";
+import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
 import HeroCard from "@/components/HeroCard";
 import ProjectCard from "@/components/ProjectCard";
 import RevealItem from "@/components/RevealItem";
@@ -58,6 +64,12 @@ const rolesExploring = [
 export default function Home() {
   return (
     <>
+      <HeroSection />
+      <CurrentFocusSection />
+      <CoreStackSection />
+      <SelectedWorkSection />
+      <AboutSection />
+      <ContractSection />
       <RevealSection className="section">
         <HeroCard />
       </RevealSection>

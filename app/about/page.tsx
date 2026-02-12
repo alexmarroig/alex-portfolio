@@ -1,20 +1,18 @@
 export default function About() {
   return (
-    <>
-      <h1 style={{ fontSize: 26, marginBottom: 6 }}>About</h1>
-      <p style={{ maxWidth: 760 }}>
-        I build and scale complex products across B2B SaaS, enterprise, and regulated environments —
-        bridging product strategy, technical execution, and delivery at scale. I work especially well in ambiguous,
-        cross-functional contexts where systems, processes, and people intersect.
+    <section className="simplePage glassPanel">
+      <h1>About Alex de Freitas Marroig</h1>
+      <p>
+        Technical Project Manager (PMP, PSM-I) focused on AI delivery, systems integration, and QA-minded execution.
+        I work at the intersection of product outcomes and technical reliability.
       </p>
 
-      <h2 style={{ fontSize: 18, marginTop: 22 }}>Focus</h2>
+      <h2>Highlights</h2>
       <ul>
-        <li>AI-enabled products (pragmatic, explainable, user-controlled)</li>
-        <li>Workflow automation (low-code/no-code + APIs)</li>
-        <li>Zero-to-one initiatives and hypothesis-driven MVPs</li>
-        <li>Complex delivery across multi-department programs</li>
+        <li>10+ years across pharma, tech, oil &amp; gas, and manufacturing.</li>
+        <li>30+ projects delivered and 10+ digital transformation initiatives supported.</li>
+        <li>Post-M&amp;A integration in pharma: 200+ people transition and 30+ regulated systems rollout.</li>
       </ul>
-    </>
+    </section>
   );
 }
