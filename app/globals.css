@@ -336,8 +336,13 @@ a {
 
 
 .thoughtWord {
-  display: inline-block;
+  display: inline-flex;
+  margin-right: 0.24em;
   will-change: transform, opacity, filter;
+}
+
+.thoughtWord:last-child {
+  margin-right: 0;
 }
 
 .thoughtWordHighlight {
@@ -395,6 +400,108 @@ a {
   transform: translateY(-4px);
   border-color: rgba(244, 62, 180, 0.7);
 }
+
+.contractSection {
+  text-align: center;
+  border: 1px solid rgba(131, 153, 248, 0.16);
+  border-radius: 20px;
+  padding: clamp(28px, 4vw, 42px);
+  background: linear-gradient(180deg, rgba(7, 11, 25, 0.9), rgba(6, 9, 20, 0.84));
+}
+
+.contractStatus {
+  margin: 0 auto;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #2df2be;
+  border: 1px solid rgba(45, 242, 190, 0.3);
+  background: rgba(5, 47, 45, 0.35);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+.contractDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #23f3bd;
+  box-shadow: 0 0 12px rgba(35, 243, 189, 0.65);
+}
+
+.contractTitle {
+  margin-top: 22px;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  letter-spacing: -0.03em;
+}
+
+.contractLead {
+  margin: 16px auto 0;
+  max-width: 42ch;
+  color: #adb5cb;
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.62;
+}
+
+.contractCta {
+  margin: 24px auto 0;
+  min-height: 58px;
+  border-radius: 14px;
+  max-width: 320px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  text-decoration: none;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, #ff4d73, #eb3d7f 52%, #121429 100%);
+  box-shadow: 0 0 36px rgba(237, 62, 132, 0.33);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.contractCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 42px rgba(237, 62, 132, 0.48);
+}
+
+.contractNote {
+  margin-top: 14px;
+  color: #919bb6;
+}
+
+.contractDivider {
+  margin: 36px auto 28px;
+  width: min(860px, 100%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148, 161, 204, 0.45), transparent);
+}
+
+.contractSubTitle {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.contractChipRow {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contractChip {
+  border: 1px solid rgba(162, 174, 216, 0.2);
+  background: rgba(34, 39, 58, 0.45);
+  color: #d4ddf7;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 1.05rem;
+}
+
 
 .talkDock {
   position: fixed;

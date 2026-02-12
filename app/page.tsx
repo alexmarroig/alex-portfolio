@@ -115,21 +115,36 @@ export default function Home() {
         </p>
       </RevealSection>
 
-      <RevealSection className="section" staggerChildren>
-        <h2 className="sectionTitle">Open to Work / Services</h2>
-        <div className="serviceGrid">
-          <RevealItem order={0}>
-            <article className="serviceCard">
-              <h3>Product Management Roles</h3>
-              <p>Senior IC or lead PM roles where AI, data, and enterprise workflows converge.</p>
-            </article>
-          </RevealItem>
-          <RevealItem order={1}>
-            <article className="serviceCard">
-              <h3>AI-driven SaaS Advisory</h3>
-              <p>Fractional support on product strategy, automation roadmaps, and delivery systems.</p>
-            </article>
-          </RevealItem>
+      <RevealSection className="section contractSection" id="contract" staggerChildren>
+        <div className="contractStatus" role="status" aria-label="Open to contract work">
+          <span className="contractDot" aria-hidden="true" />
+          Open to Contract Work
+        </div>
+        <h2 className="sectionTitle contractTitle">Let’s Build Something</h2>
+        <p className="contractLead">
+          Looking for fully remote, high-value projects. Complex problems, technical architecture, systems
+          integration—that&apos;s where I thrive.
+        </p>
+        <a href="mailto:alex.c.marroig@gmail.com" className="contractCta">
+          Start a Conversation
+        </a>
+        <p className="contractNote">I respond within 48 hours</p>
+
+        <div className="contractDivider" aria-hidden="true" />
+
+        <h3 className="contractSubTitle">What I Take On</h3>
+        <div className="contractChipRow">
+          {[
+            "Systems Architecture",
+            "AI Integration",
+            "Product Strategy",
+            "Technical Consulting",
+            "Workflow Automation"
+          ].map((item, index) => (
+            <RevealItem order={index} key={item}>
+              <span className="contractChip">{item}</span>
+            </RevealItem>
+          ))}
         </div>
       </RevealSection>
     </>

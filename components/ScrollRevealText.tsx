@@ -48,7 +48,6 @@ export default function ScrollRevealText({ text, className, highlightWords = [] 
             }}
           >
             {word}
-            {index < words.length - 1 ? " " : ""}
           </motion.span>
         );
       })}
