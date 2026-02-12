@@ -1,10 +1,27 @@
 @import "../styles/tokens.css";
+/* ================================
+   Cinematic upgrade (drop-in patch)
+   Paste at the END of the file
 
-* {
-  box-sizing: border-box;
+:root {
+  /* “Film grade” tweaks */
+  --bg: #050615;
+  --bg2: #0b1023;
+  --text: #eef2ff;
+  --muted: rgba(239, 243, 255, 0.72);
+
+  /* Accents tuned to feel less candy, more premium neon */
+  --accent: #ff3ea6;
+  --accent2: #49f1ff;
+
+  /* New: status green + glow */
+  --status: #22c55e;
+  --statusGlow: rgba(34, 197, 94, 0.55);
+
+  --border: rgba(166, 180, 255, 0.22);
 }
 
-html,
+/* Background: add subtle grid & vignetting (very soft) */
 body {
   margin: 0;
   padding: 0;
@@ -30,6 +47,12 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: -1;
+  opacity: 0.15;
+  background-image:
+    linear-gradient(rgba(120, 150, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 150, 255, 0.12) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(circle at 50% 35%, black 15%, transparent 70%);
 }
 
 .siteBody::before {
@@ -63,6 +86,9 @@ a {
   margin: 0;
   letter-spacing: -0.02em;
   font-size: clamp(1.5rem, 3vw, 1.95rem);
+/* Typography polish */
+.sectionTitle {
+  letter-spacing: -0.02em;
   text-shadow: 0 0 22px rgba(90, 160, 255, 0.12);
 }
 
@@ -72,6 +98,7 @@ a {
   line-height: 1.65;
 }
 
+/* Glass surfaces slightly richer */
 .glassPanel {
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) + 2px);
@@ -615,12 +642,44 @@ a {
 .talkDialog {
   margin-bottom: 10px;
   border: 1px solid var(--border);
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.035));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 55px rgba(3, 6, 18, 0.45);
+}
+
+/* Chips: slightly tighter + more “tech” hover */
+.chip {
+  border: 1px solid rgba(164, 177, 255, 0.22);
+  background: rgba(15, 20, 36, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(73, 241, 255, 0.62);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.25),
+    0 0 18px rgba(73, 241, 255, 0.12);
+}
+
+/* How I Think: feel like a manifesto */
+.thoughtLine {
+  max-width: 34ch;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 26px rgba(80, 180, 255, 0.10);
+}
+
+.thoughtWordHighlight {
+  color: #9af6ff;
+  text-shadow: 0 0 22px rgba(73, 241, 255, 0.18);
+}
+
+/* Quote: more cinematic, less “blocky” */
+.aboutQuote {
+  border-left: 4px solid rgba(154, 246, 255, 0.55);
+  background: linear-gradient(90deg, rgba(73, 241, 255, 0.06), transparent 70%);
+  padding: 14px 18px;
   border-radius: 12px;
-  background: rgba(10, 15, 30, 0.96);
-  backdrop-filter: blur(8px);
-  padding: 14px;
-  display: grid;
-  gap: 8px;
 }
 
 .talkTitle { margin: 0; font-weight: 700; }
@@ -720,4 +779,93 @@ a {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .siteBody::after { display: none; }
+}
+/* Project cards: reduce neon saturation, increase depth */
+.projectCardWrap::before {
+  opacity: 0.32;
+  filter: blur(0.2px);
+}
+
+.projectCardWrap:hover::before {
+  opacity: 0.70;
+}
+
+.projectCardWrap:hover .projectCardInner,
+.projectCardWrap.isFlipped .projectCardInner {
+  box-shadow: 0 36px 56px rgba(8, 18, 46, 0.60);
+}
+
+/* Buttons: tighter sheen, less bubblegum */
+.btnPrimary {
+  background: linear-gradient(135deg, rgba(255, 62, 166, 0.98), rgba(171, 51, 255, 0.92) 55%, rgba(73, 241, 255, 0.9));
+  box-shadow: 0 14px 40px rgba(255, 62, 166, 0.22);
+}
+
+.btnPrimary:hover {
+  box-shadow:
+    0 18px 48px rgba(255, 62, 166, 0.28),
+    0 0 28px rgba(73, 241, 255, 0.18),
+    inset 0 0 18px rgba(255, 255, 255, 0.12);
+}
+
+/* Contract / Availability badge: green dot + breathing glow */
+.contractStatus {
+  color: rgba(225, 255, 239, 0.92);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  background: rgba(7, 45, 22, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.contractDot {
+  background: var(--status);
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.18),
+    0 0 18px var(--statusGlow);
+  animation: statusPulse 1.9s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+    box-shadow:
+      0 0 0 3px rgba(34, 197, 94, 0.16),
+      0 0 16px rgba(34, 197, 94, 0.45);
+  }
+  50% {
+    transform: scale(1.12);
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 0 4px rgba(34, 197, 94, 0.20),
+      0 0 22px rgba(34, 197, 94, 0.65);
+  }
+}
+
+/* Contract CTA: more “signal flare” */
+.contractCta {
+  background: linear-gradient(120deg, rgba(255, 62, 166, 0.95), rgba(171, 51, 255, 0.86) 55%, rgba(9, 12, 27, 1) 100%);
+  box-shadow:
+    0 0 38px rgba(255, 62, 166, 0.20),
+    0 0 22px rgba(73, 241, 255, 0.10);
+}
+
+.contractCta:hover {
+  box-shadow:
+    0 0 48px rgba(255, 62, 166, 0.28),
+    0 0 30px rgba(73, 241, 255, 0.16);
+}
+
+/* Optional: slightly tighter footer contrast */
+.siteFooter {
+  background: rgba(6, 9, 20, 0.78);
+}
+
+/* Reduced-motion safety still respected */
+@media (prefers-reduced-motion: reduce) {
+  .contractDot {
+    animation: none !important;
+  }
+  .siteBody::after {
+    display: none;
+  }
 }
