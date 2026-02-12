@@ -6,12 +6,10 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 const SPLASH_KEY = "ax-portfolio-splash-seen";
 const SPLASH_DURATION_MS = 1200;
 const BOOT_LINES = [
-  "BOOTING SYSTEM...",
+  "Initializing systems",
   "Loading interface modules",
-  "Initializing runtime",
-  "Authenticating identity",
-  "SYSTEM ONLINE",
-  "Alex de Freitas Marroig"
+  "Hydrating runtime",
+  "Ready"
 ];
 
 export default function LoadingOverlay() {
@@ -38,8 +36,8 @@ export default function LoadingOverlay() {
         ? { opacity: 0 }
         : {
             opacity: 0,
-            filter: ["blur(0px)", "blur(1.5px)", "blur(0px)", "blur(3px)"],
-            x: [0, -3, 2, 0]
+            scale: 1.01,
+            filter: ["blur(0px)", "blur(1px)", "blur(2px)"]
           },
     [prefersReducedMotion]
   );
@@ -56,7 +54,7 @@ export default function LoadingOverlay() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={containerExit}
-          transition={{ duration: prefersReducedMotion ? 0.18 : 0.28, ease: "easeOut" }}
+          transition={{ duration: prefersReducedMotion ? 0.18 : 0.34, ease: "easeOut" }}
         >
           <div className="loadingNoise" aria-hidden="true" />
           <div className="loadingGrid" aria-hidden="true" />
@@ -87,20 +85,21 @@ export default function LoadingOverlay() {
                     prefersReducedMotion
                       ? { pathLength: 1 }
                       : {
-                          pathLength: [0, 0.65, 0.85],
-                          rotate: [-90, -30, 20]
+                          pathLength: [0, 0.65, 0.92],
+                          rotate: [-90, -34, 16]
                         }
                   }
                   transition={{ duration: prefersReducedMotion ? 0.24 : 1.05, ease: "easeInOut" }}
                 />
               </motion.svg>
+              <div className="loadingGlyph">AFM</div>
             </div>
 
             <div className="bootText" role="status" aria-live="polite">
-              {BOOT_LINES.map((line, index) => (
+              {BOOT_LINES.map((line) => (
                 <motion.p
                   key={line}
-                  className={`bootLine ${index === BOOT_LINES.length - 1 ? "isIdentity" : ""}`}
+                  className="bootLine"
                   variants={{
                     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 4 },
                     show: { opacity: 1, y: 0 }
@@ -110,9 +109,14 @@ export default function LoadingOverlay() {
                   {line}
                 </motion.p>
               ))}
-              <span className="bootCursor" aria-hidden="true">
-                ▋
-              </span>
+              <div className="loadingBarTrack" aria-hidden="true">
+                <motion.div
+                  className="loadingBarFill"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: prefersReducedMotion ? 0.3 : 1.1, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
             </div>
           </motion.div>
         </motion.div>

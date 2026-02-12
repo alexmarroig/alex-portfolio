@@ -1,7 +1,8 @@
 export default function Contact() {
   return (
-    <>
-      <h1 style={{ fontSize: 26, marginBottom: 6 }}>Contact</h1>
+    <section className="simplePage glassPanel">
+      <h1>Contact</h1>
+      <p>Open to full-time roles, contract projects, and advisory partnerships.</p>
       <ul>
         <li>
           Email: <a href="mailto:alex.c.marroig@gmail.com">alex.c.marroig@gmail.com</a>
@@ -13,6 +14,6 @@ export default function Contact() {
           </a>
         </li>
       </ul>
-    </>
+    </section>
   );
 }

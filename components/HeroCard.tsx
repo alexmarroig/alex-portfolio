@@ -3,7 +3,7 @@
 import { CSSProperties, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-const MAX_TILT = 10;
+const MAX_TILT = 8;
 
 export default function HeroCard() {
   const reducedMotion = useReducedMotion();
@@ -18,7 +18,6 @@ export default function HeroCard() {
     const py = (event.clientY - rect.top) / rect.height;
 
     setCursor({ x: px * 100, y: py * 100 });
-
     if (reducedMotion) return;
 
     setTilt({
@@ -46,35 +45,38 @@ export default function HeroCard() {
         onMouseLeave={resetTilt}
         style={heroStyle}
         animate={{
-          transform: reducedMotion
-            ? "none"
-            : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+          transform: reducedMotion ? "none" : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
         }}
         transition={{ type: "spring", stiffness: 120, damping: 12, mass: 0.7 }}
       >
         <div className="heroNoise" aria-hidden="true" />
-        <p className="heroKicker">AI Product Manager • Technical PM • Systems Integrator</p>
-        <h1 className="heroTitle">Building intelligent products that ship with trust.</h1>
+        <p className="heroKicker">Technical Project Manager | Technical PM | Systems Integrator | QA-minded Builder</p>
+        <h1 className="heroTitle">Shipping intelligent systems with clarity, control, and trust.</h1>
         <p className="heroSummary">
-          I help teams turn ambiguity into product momentum across B2B SaaS, AI automation, and enterprise delivery.
+          PMP + PSM-I with 10+ years across pharma, tech, oil & gas, and manufacturing. I lead discovery →
+          delivery for AI customer service platforms, while staying close to integration, QA validation, and
+          production reliability.
         </p>
 
         <div className="heroActions">
           <a href="#selected-work" className="btn btnPrimary">
-            View Work
+            View Work ↗
           </a>
           <a href="https://www.linkedin.com/in/alexmarroig/" className="btn btnGhost" target="_blank" rel="noreferrer">
-            LinkedIn
+            LinkedIn ↗
           </a>
           <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost">
-            Email
+            Email ↗
+          </a>
+          <a href="/contact" className="btn btnGhost">
+            Download Resume ↗
           </a>
         </div>
 
         <div className="metaRow">
-          <span>10+ years experience</span>
+          <span>30+ projects delivered • 10+ digital transformation initiatives</span>
           <span>•</span>
-          <span>B2B SaaS • AI & Automation • Product Leadership</span>
+          <span>Post-M&A migration: 200+ people transition, 30+ regulated systems</span>
         </div>
       </motion.div>
 
