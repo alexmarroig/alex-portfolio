@@ -7,9 +7,9 @@ import LoadingOverlay from "@/components/LoadingOverlay";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Alex de Freitas Marroig — Technical PM | Systems Integrator | QA-minded Builder",
+  title: "Alex Marroig — Technical PM | Systems Integrator | QA-minded Builder",
   description:
-    "Technical Project Manager (PMP, PSM-I) with 10+ years delivering AI onboarding, systems integration, QA-led execution, and enterprise digital transformation across regulated industries."
+    "Technical Project Manager with 10+ years delivering systems integration, QA-led product delivery, and automation programs across regulated and industrial environments."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

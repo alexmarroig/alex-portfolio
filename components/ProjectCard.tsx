@@ -6,17 +6,13 @@ import type { Project } from "@/src/data/projects";
 
 type ProjectCardProps = Project;
 
-export default function ProjectCard({
-  title,
-  subtitle,
-  description,
-  status,
-  icon,
-  tech,
-  caseStudy,
-  links,
-  isPrivate
-}: ProjectCardProps) {
+const sections = [
+  { key: "problem", label: "Problem", icon: "P" },
+  { key: "solution", label: "Solution / Architecture", icon: "S" },
+  { key: "impact", label: "Impact", icon: "I" }
+] as const;
+
+export default function ProjectCard({ title, subtitle, description, status, icon, tech, caseStudy, links, isPrivate }: ProjectCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const statusClass = useMemo(() => {
@@ -34,7 +30,7 @@ export default function ProjectCard({
 
   return (
     <article
-      className={`group relative h-[400px] projectCardRoot ${isFlipped ? "isFlipped" : ""}`}
+      className={`group relative projectCardRoot ${isFlipped ? "isFlipped" : ""}`}
       tabIndex={0}
       onClick={() => setIsFlipped((value) => !value)}
       onKeyDown={onKeyToggle}
@@ -42,16 +38,17 @@ export default function ProjectCard({
       role="button"
       aria-pressed={isFlipped}
     >
-      <span className="sr-only">Flip card</span>
-      <div className="relative h-full w-full transition-transform duration-700 projectCardInner group-hover:[transform:rotateY(180deg)]">
-        <div className="absolute inset-0 rounded-2xl border projectCardFace projectFront">
+      <div className="projectCardInner">
+        <div className="projectCardFace projectFront">
           <div className="projectTopRow">
             <span className="projectIcon">{icon}</span>
-            <h3 className="projectTitle">{title}</h3>
+            <div>
+              <p className="projectCaseType">{subtitle}</p>
+              <h3 className="projectTitle">{title}</h3>
+            </div>
           </div>
 
           <span className={`projectStatus ${statusClass}`}>{status}</span>
-          <p className="projectCategory">{subtitle}</p>
           <p className="projectDescription">{description}</p>
 
           <div className="projectPills">
@@ -62,63 +59,34 @@ export default function ProjectCard({
             ))}
           </div>
 
-          <div className="projectHintRow">
-            <p className="projectHintDesktop">Hover for case study</p>
-            <p className="projectHintMobile">Tap to flip</p>
-            <button
-              type="button"
-              className="flipControl"
-              aria-label={`Flip card for ${title}`}
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsFlipped((value) => !value);
-              }}
-            >
-              Flip card
-            </button>
-          </div>
+          <p className="projectFlipCta">Flip for architecture ➔</p>
         </div>
 
-        <div className="absolute inset-0 rounded-2xl border projectCardFace projectBack">
+        <div className="projectCardFace projectBack">
           <h3 className="projectTitle">{title}</h3>
           <div className="caseStudyBlocks">
-            <div>
-              <p className="caseLabel">Problem</p>
-              <p>{caseStudy.problem}</p>
-            </div>
-            <div>
-              <p className="caseLabel">Solution</p>
-              <p>{caseStudy.solution}</p>
-            </div>
-            <div>
-              <p className="caseLabel">Impact</p>
-              <p>{caseStudy.impact}</p>
-            </div>
+            {sections.map((section) => (
+              <div className="caseRow" key={section.key}>
+                <span className="caseIcon" aria-hidden="true">{section.icon}</span>
+                <div>
+                  <p className="caseLabel">{section.label}</p>
+                  <p>{caseStudy[section.key]}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="projectLinks">
             {links.github ? (
-              <Link
-                href={links.github}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-                className="projectLink"
-              >
+              <Link href={links.github} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()} className="projectLink">
                 GitHub ↗
               </Link>
             ) : (
               <span className="projectPrivateNote">{isPrivate ? "Private repository" : "Repository unavailable"}</span>
             )}
             {links.live ? (
-              <Link
-                href={links.live}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-                className="projectLink"
-              >
-                Live ↗
+              <Link href={links.live} onClick={(event) => event.stopPropagation()} className="projectLink">
+                Case study ↗
               </Link>
             ) : null}
           </div>

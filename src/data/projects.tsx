@@ -1,4 +1,4 @@
-import { FaBrain, FaChartLine, FaShieldAlt } from "react-icons/fa";
+import { FaBrain, FaChartLine, FaIndustry, FaShieldAlt } from "react-icons/fa";
 import { type ReactNode } from "react";
 
 export type ProjectStatus = "LIVE" | "POC" | "PRIVATE";
@@ -25,8 +25,8 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "ETHOS",
-    subtitle: "Private product case",
-    description: "Offline-first clinical platform with privacy-first workflows and assistive AI guardrails.",
+    subtitle: "Healthcare AI Platform",
+    description: "Offline-first clinical workflows with compliance-ready AI guardrails.",
     status: "PRIVATE",
     icon: <FaShieldAlt aria-hidden="true" />,
     tech: ["Node.js", "React", "TypeScript", "Azure", "RBAC", "QA Validation"],
@@ -42,8 +42,8 @@ export const projects: Project[] = [
   },
   {
     title: "CryptoAlert Pro",
-    subtitle: "Private product case",
-    description: "Real-time alerting architecture focused on signal quality, explainability, and automation.",
+    subtitle: "Signal Intelligence Engine",
+    description: "Real-time alerting focused on explainability and operator trust.",
     status: "POC",
     icon: <FaChartLine aria-hidden="true" />,
     tech: ["Node.js", "Discord.js", "SQLite", "Streaming APIs", "Alert Scoring", "Automation"],
@@ -58,8 +58,8 @@ export const projects: Project[] = [
   },
   {
     title: "AI Ops Assistant",
-    subtitle: "Public portfolio project",
-    description: "Enterprise intake-to-resolution automation with deterministic guardrails and retrieval workflows.",
+    subtitle: "Ops Automation Suite",
+    description: "Enterprise intake-to-resolution automation with deterministic routing.",
     status: "LIVE",
     icon: <FaBrain aria-hidden="true" />,
     tech: ["Python", "FastAPI", "React", "OpenAI", "Vector DB", "Node.js"],
@@ -73,5 +73,25 @@ export const projects: Project[] = [
       github: "https://github.com/alexmarroig",
       live: "/project/ai-ops-assistant"
     }
+  },
+  {
+    title: "Complex Industrial Engineering Projects (SANDECH)",
+    subtitle: "Industrial Engineering Delivery",
+    description: "Cross-industry program delivery integrating engineering, QA, and automation.",
+    status: "PRIVATE",
+    icon: <FaIndustry aria-hidden="true" />,
+    tech: ["Industrial IoT", "M&A Integration", "QA Systems", "Automation", "Program Leadership"],
+    caseStudy: {
+      problem:
+        "Multi-domain engineering programs and post-M&A environments created fragmented execution, uneven quality controls, and high coordination overhead.",
+      solution:
+        "Led integration playbooks across cross-industry teams, standardized QA gates, and introduced automation patterns to connect planning, delivery, and reporting.",
+      impact:
+        "Improved delivery consistency across complex engineering projects while accelerating integration readiness and decision velocity."
+    },
+    links: {
+      github: "https://github.com/alexmarroig"
+    },
+    isPrivate: true
   }
 ];
