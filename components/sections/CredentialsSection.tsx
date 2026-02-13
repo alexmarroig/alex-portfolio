@@ -1,17 +1,18 @@
 import RevealSection from "@/components/RevealSection";
-import SectionHeader from "@/components/ui/SectionHeader";
+import Card from "@/components/ui/Card";
+import SectionTitle from "@/components/ui/SectionTitle";
 import { siteContent } from "@/src/data/content";
 
 export default function CredentialsSection() {
   return (
     <RevealSection className="section" id="credentials" staggerChildren>
-      <SectionHeader title="Certifications & Recognition" lead="Credentials reflecting structured execution, agile discipline, and high-impact delivery." />
+      <SectionTitle title="Certifications & Awards" lead="Verified credentials with delivery recognition from enterprise and industrial environments." />
 
       <div className="credentialsGrid">
         {siteContent.certifications.map((item) => {
           const Icon = item.icon;
           return (
-            <article key={item.title} className="glassPanel credentialCard credentialShine">
+            <Card key={item.title} className="credentialCard">
               <div className="credentialTop">
                 <span className="credentialIcon">
                   <Icon aria-hidden="true" />
@@ -21,10 +22,18 @@ export default function CredentialsSection() {
                   <p className="credentialIssuer">{item.issuer}</p>
                 </div>
               </div>
-              <span className="credentialYear">{item.date}</span>
-            </article>
+              <span className="credentialYear">{item.year}</span>
+            </Card>
           );
         })}
+      </div>
+
+      <div className="awardsTicker" role="list" aria-label="Awards history">
+        {siteContent.awards.map((award) => (
+          <span key={award} role="listitem" className="tag">
+            {award}
+          </span>
+        ))}
       </div>
     </RevealSection>
   );
