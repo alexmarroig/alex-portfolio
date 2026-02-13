@@ -35,7 +35,6 @@ export default function ProjectCard({
   return (
     <article
       className={`group relative h-[400px] projectCardRoot ${isFlipped ? "isFlipped" : ""}`}
-      style={{ perspective: "1000px" }}
       tabIndex={0}
       onClick={() => setIsFlipped((value) => !value)}
       onKeyDown={onKeyToggle}
@@ -64,7 +63,8 @@ export default function ProjectCard({
           </div>
 
           <div className="projectHintRow">
-            <p className="projectHint">Hover for case study</p>
+            <p className="projectHintDesktop">Hover for case study</p>
+            <p className="projectHintMobile">Tap to flip</p>
             <button
               type="button"
               className="flipControl"

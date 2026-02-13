@@ -207,11 +207,49 @@ a {
   overflow: hidden;
   isolation: isolate;
   padding: 34px;
-  transform-style: preserve-3d;
   border: 1px solid transparent;
-  background:
-    radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(126, 194, 255, 0.16), transparent 45%),
-    linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.heroFlipRoot {
+  position: relative;
+  perspective: 1000px;
+  border-radius: calc(var(--radius) + 2px);
+  outline: none;
+}
+
+.heroFlipRoot:focus-visible {
+  box-shadow: 0 0 0 2px rgba(105, 235, 255, 0.45);
+}
+
+.heroFlipInner {
+  position: relative;
+  min-height: 470px;
+  transform-style: preserve-3d;
+  transition: transform 700ms ease;
+}
+
+.heroFlipFace {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.heroFlipBack {
+  transform: rotateY(180deg);
+}
+
+.heroFlipRoot.isFlipped .heroFlipInner {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroFlipRoot:hover .heroFlipInner {
+    transform: rotateY(180deg);
+  }
 }
 
 .heroCard::before {
@@ -256,6 +294,21 @@ a {
   margin-top: 14px;
   color: var(--muted);
   max-width: 72ch;
+}
+
+.heroBackList {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: #dbe5ff;
+  display: grid;
+  gap: 8px;
+}
+
+.heroFlipHint {
+  display: none;
+  margin: auto 0 0;
+  color: #9fc8ff;
+  font-size: 0.82rem;
 }
 
 .heroActions,
@@ -348,9 +401,18 @@ a {
   margin-top: 16px;
 }
 
-.stackGrid,
+.stackGrid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .stackGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .focusGrid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .projectGrid {
@@ -367,6 +429,41 @@ a {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.focusGridStacked {
+  max-width: 860px;
+  margin: 18px auto 0;
+  gap: 24px;
+}
+
+.currentFocusHeader {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.techPillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.techPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(166, 180, 255, 0.25);
+  background: rgba(15, 20, 36, 0.7);
+  padding: 7px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.79rem;
+}
+
+.techPillIcon {
+  width: 16px;
+  height: 16px;
+  color: #91eeff;
 }
 
 /* ================================
@@ -429,6 +526,7 @@ a {
   cursor: pointer;
   outline: none;
   height: 400px;
+  perspective: 1000px;
 }
 
 .projectCardRoot:focus-visible {
@@ -484,6 +582,7 @@ a {
 
 .projectBack {
   transform: rotateY(180deg);
+  overflow-y: auto;
 }
 
 .projectTopRow {
@@ -574,10 +673,15 @@ a {
   gap: 12px;
 }
 
-.projectHint {
+.projectHintDesktop,
+.projectHintMobile {
   margin: 0;
   color: #9fc8ff;
   font-size: 0.85rem;
+}
+
+.projectHintMobile {
+  display: none;
 }
 
 .flipControl {
@@ -1127,6 +1231,22 @@ a {
 @media (max-width: 768px) {
   .heroCard {
     padding: 24px;
+  }
+
+  .heroFlipInner {
+    min-height: 520px;
+  }
+
+  .heroFlipHint {
+    display: block;
+  }
+
+  .projectHintDesktop {
+    display: none;
+  }
+
+  .projectHintMobile {
+    display: block;
   }
   .loadingPanel {
     grid-template-columns: 1fr;
