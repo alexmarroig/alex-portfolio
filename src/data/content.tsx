@@ -93,9 +93,9 @@ export const siteContent: SiteContent = {
   ],
   certifications: [
     { title: "PMP", issuer: "PMI", date: "Dec/2023", icon: FaTrophy },
-    { title: "PSM I", issuer: "Scrum.org", date: "Sep/2023", icon: FaCertificate },
-    { title: "Six Sigma Green Belt", issuer: "Master Método", date: "Oct/2023", icon: FaShieldAlt },
-    { title: "Product Management", issuer: "PM3", date: "Oct/2023", icon: FaProjectDiagram }
+    { title: "PSM-1", issuer: "Scrum.org", date: "Sep/2023", icon: FaCertificate },
+    { title: "PM3 Product Management", issuer: "PM3", date: "Oct/2023", icon: FaProjectDiagram },
+    { title: "Top Performer Award – SANDECH", issuer: "SANDECH", date: "Multiple Years", icon: FaAward }
   ],
   awards: [
     {

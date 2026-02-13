@@ -1,45 +1,54 @@
-import SectionHeader from "@/components/ui/SectionHeader";
-import StatusPill from "@/components/ui/StatusPill";
-import TechBadge from "@/components/ui/TechBadge";
 import RevealSection from "@/components/RevealSection";
-import { siteContent } from "@/src/data/content";
-import { techCatalog } from "@/src/data/techCatalog";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { FaCogs, FaProjectDiagram } from "react-icons/fa";
+import { MdPrecisionManufacturing } from "react-icons/md";
+import { RiAiGenerate } from "react-icons/ri";
+
+const featureBlocks = [
+  {
+    title: "Complex Systems & Industrial Engineering",
+    description:
+      "Large-scale industrial engineering projects, mission-critical environments, integration across multi-disciplinary teams.",
+    icon: MdPrecisionManufacturing
+  },
+  {
+    title: "Enterprise Delivery & M&A Integration",
+    description:
+      "Post-acquisition integration, cross-business orchestration, stakeholder alignment across C-levels.",
+    icon: FaProjectDiagram
+  },
+  {
+    title: "Automation & AI Systems",
+    description: "AI platforms, workflow automation, APIs, QA-driven validation, technical orchestration.",
+    icon: RiAiGenerate
+  },
+  {
+    title: "Full-Stack Technical Depth",
+    description: "Node.js, Python, SQL, Power Platform, system integration, production debugging, QA testing.",
+    icon: FaCogs
+  }
+];
 
 export default function CurrentFocusSection() {
-  const main = siteContent.currentFocus.main;
-
   return (
     <RevealSection className="section" id="current-focus">
-      <SectionHeader title="Current Focus" lead="A curated view of what I’m actively building, shipping, and targeting next." />
+      <SectionHeader title="Capability Highlights" lead="Core areas where strategy, architecture, and execution converge." />
 
-      <div className="focusCuratedGrid">
-        <article className="glassPanel focusCuratedCard mainCard">
-          <div className="focusHead">
-            <h3>{main.title}</h3>
-            <StatusPill status={main.status} />
-          </div>
-          <p>{main.summary}</p>
-          <div className="badgeRow">
-            {main.tags.map((tag) => (
-              <TechBadge key={tag} {...techCatalog[tag]} />
-            ))}
-          </div>
-        </article>
-
-        {siteContent.currentFocus.supporting.map((item) => (
-          <article key={item.title} className="glassPanel focusCuratedCard">
-            <div className="focusHead">
-              <h3>{item.title}</h3>
-              <StatusPill status={item.status} />
-            </div>
-            <p>{item.summary}</p>
-            <div className="badgeRow">
-              {item.tags.map((tag) => (
-                <TechBadge key={tag} {...techCatalog[tag]} compact />
-              ))}
-            </div>
-          </article>
-        ))}
+      <div className="featureGrid" role="list" aria-label="Capability feature blocks">
+        {featureBlocks.map((block) => {
+          const Icon = block.icon;
+          return (
+            <article key={block.title} className="glassPanel featureCard" role="listitem">
+              <div className="featureHead">
+                <span className="featureIcon">
+                  <Icon aria-hidden="true" />
+                </span>
+                <h3>{block.title}</h3>
+              </div>
+              <p>{block.description}</p>
+            </article>
+          );
+        })}
       </div>
     </RevealSection>
   );

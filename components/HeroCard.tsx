@@ -1,34 +1,36 @@
-import { siteContent } from "@/src/data/content";
-
 export default function HeroCard() {
   return (
-    <article className="glassPanel heroMasterCard">
-      <p className="heroName">{siteContent.hero.name}</p>
-      <h1 className="heroRole">
-        Technical Project Manager who <span className="heroHighlight">builds</span>, not just <span className="heroUnderline">manages</span>.
+    <article className="heroOpenLayout" aria-label="Intro hero section">
+      <p className="heroIntroLine">Hey, I’m Alex de Freitas Marroig.</p>
+
+      <h1 className="heroOpenTitle">
+        <span>Technical Project</span>
+        <span>Manager who</span>
+        <span>
+          <span className="heroBuildsGradient">builds</span>.
+        </span>
       </h1>
 
-      <div className="heroNarrative">
-        {siteContent.hero.narrative.map((line) => (
-          <p key={line}>{line}</p>
-        ))}
-      </div>
-      <p className="heroHuman">{siteContent.hero.humanLayer}</p>
+      <p className="heroSubHeadline">Engineering rigor. Business acumen. Systems that scale.</p>
+
+      <p className="heroPositioning">
+        I operate at the intersection of business strategy and hands-on engineering. From industrial-scale project delivery to
+        AI-driven automation, I structure complexity, solve deeply technical problems, and lead execution across regulated and
+        high-stakes environments.
+      </p>
 
       <div className="heroActions" aria-label="Primary calls to action">
-        {siteContent.hero.ctas.map((cta) => (
-          <a key={cta.label} href={cta.href} className="btn btnPrimary" target={cta.external ? "_blank" : undefined} rel={cta.external ? "noreferrer" : undefined}>
-            {cta.label}
-          </a>
-        ))}
+        <a href="/alex-de-freitas-marroig-resume.pdf" className="btn btnPrimary">
+          Download Resume (PDF)
+        </a>
+        <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost">
+          Start a Conversation
+        </a>
       </div>
 
-      <div className="credibilityBar" aria-label="Credibility highlights">
-        {siteContent.hero.proofPoints.map((item) => (
-          <span key={item} className="credibilityItem">
-            {item}
-          </span>
-        ))}
+      <div className="heroScrollIndicator" aria-hidden="true">
+        <span>Scroll</span>
+        <i />
       </div>
     </article>
   );
