@@ -3,18 +3,20 @@ import Nav from "@/components/Nav";
 import Container from "@/components/Container";
 import FloatingTalk from "@/components/FloatingTalk";
 import Footer from "@/components/Footer";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Alex Marroig — AI Product Manager | Technical PM | AI-Driven SaaS",
+  title: "Alex de Freitas Marroig — Technical PM | Systems Integrator | QA-minded Builder",
   description:
-    "AI Product Manager | Technical PM | AI-Driven SaaS — building and scaling complex products across B2B SaaS and enterprise environments."
+    "Technical Project Manager (PMP, PSM-I) with 10+ years delivering AI onboarding, systems integration, QA-led execution, and enterprise digital transformation across regulated industries."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="siteBody">
+        <LoadingOverlay />
         <Nav />
         <Container>{children}</Container>
         <Footer />
