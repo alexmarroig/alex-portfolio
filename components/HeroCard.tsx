@@ -18,6 +18,7 @@ export default function HeroCard() {
     const py = (event.clientY - rect.top) / rect.height;
 
     setCursor({ x: px * 100, y: py * 100 });
+
     if (reducedMotion) return;
 
     setTilt({
@@ -46,6 +47,9 @@ export default function HeroCard() {
         style={heroStyle}
         animate={{
           transform: reducedMotion ? "none" : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+          transform: reducedMotion
+            ? "none"
+            : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
         }}
         transition={{ type: "spring", stiffness: 120, damping: 12, mass: 0.7 }}
       >
@@ -56,6 +60,10 @@ export default function HeroCard() {
           PMP + PSM-I with 10+ years across pharma, tech, oil & gas, and manufacturing. I lead discovery →
           delivery for AI customer service platforms, while staying close to integration, QA validation, and
           production reliability.
+        <p className="heroKicker">AI Product Manager • Technical PM • Systems Integrator</p>
+        <h1 className="heroTitle">Building intelligent products that ship with trust.</h1>
+        <p className="heroSummary">
+          I help teams turn ambiguity into product momentum across B2B SaaS, AI automation, and enterprise delivery.
         </p>
 
         <div className="heroActions">

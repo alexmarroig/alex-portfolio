@@ -3,13 +3,16 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "ci": "npm run typecheck && npm run build"
+    "ci": "npm run lint && npm run typecheck && npm run build"
   },
   "dependencies": {
     "next": "15.1.9",
@@ -19,8 +22,8 @@
   },
   "devDependencies": {
     "@types/node": "20.11.30",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.14",
     "eslint": "8.57.0",
     "eslint-config-next": "15.1.9",
     "typescript": "5.4.5"
