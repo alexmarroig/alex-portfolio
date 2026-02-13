@@ -81,6 +81,19 @@ body {
   mask-image: radial-gradient(circle at 50% 35%, black 15%, transparent 70%);
 }
 
+.siteBody::before {
+  background: radial-gradient(120% 90% at 50% 40%, transparent 50%, rgba(1, 2, 8, 0.68) 100%);
+}
+
+.siteBody::after {
+  opacity: 0.15;
+  background-image:
+    linear-gradient(rgba(120, 150, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 150, 255, 0.12) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(circle at 50% 35%, black 15%, transparent 70%);
+}
+
 a {
   color: inherit;
 }
