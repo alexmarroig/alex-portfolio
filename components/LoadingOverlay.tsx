@@ -10,6 +10,12 @@ const BOOT_LINES = [
   "Loading interface modules",
   "Hydrating runtime",
   "Ready"
+  "BOOTING SYSTEM...",
+  "Loading interface modules",
+  "Initializing runtime",
+  "Authenticating identity",
+  "SYSTEM ONLINE",
+  "Alex de Freitas Marroig"
 ];
 
 export default function LoadingOverlay() {
@@ -38,6 +44,8 @@ export default function LoadingOverlay() {
             opacity: 0,
             scale: 1.01,
             filter: ["blur(0px)", "blur(1px)", "blur(2px)"]
+            filter: ["blur(0px)", "blur(1.5px)", "blur(0px)", "blur(3px)"],
+            x: [0, -3, 2, 0]
           },
     [prefersReducedMotion]
   );
@@ -55,6 +63,7 @@ export default function LoadingOverlay() {
           animate={{ opacity: 1 }}
           exit={containerExit}
           transition={{ duration: prefersReducedMotion ? 0.18 : 0.34, ease: "easeOut" }}
+          transition={{ duration: prefersReducedMotion ? 0.18 : 0.28, ease: "easeOut" }}
         >
           <div className="loadingNoise" aria-hidden="true" />
           <div className="loadingGrid" aria-hidden="true" />
@@ -87,6 +96,8 @@ export default function LoadingOverlay() {
                       : {
                           pathLength: [0, 0.65, 0.92],
                           rotate: [-90, -34, 16]
+                          pathLength: [0, 0.65, 0.85],
+                          rotate: [-90, -30, 20]
                         }
                   }
                   transition={{ duration: prefersReducedMotion ? 0.24 : 1.05, ease: "easeInOut" }}
@@ -100,6 +111,13 @@ export default function LoadingOverlay() {
                 <motion.p
                   key={line}
                   className="bootLine"
+            </div>
+
+            <div className="bootText" role="status" aria-live="polite">
+              {BOOT_LINES.map((line, index) => (
+                <motion.p
+                  key={line}
+                  className={`bootLine ${index === BOOT_LINES.length - 1 ? "isIdentity" : ""}`}
                   variants={{
                     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 4 },
                     show: { opacity: 1, y: 0 }
@@ -117,6 +135,9 @@ export default function LoadingOverlay() {
                   transition={{ duration: prefersReducedMotion ? 0.3 : 1.1, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
+              <span className="bootCursor" aria-hidden="true">
+                ▋
+              </span>
             </div>
           </motion.div>
         </motion.div>
