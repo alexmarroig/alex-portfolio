@@ -2,6 +2,7 @@
 /* ================================
    Cinematic upgrade (drop-in patch)
    Paste at the END of the file
+*/
 
 :root {
   /* “Film grade” tweaks */
@@ -112,6 +113,8 @@ a {
   margin: 0;
   letter-spacing: -0.02em;
   font-size: clamp(1.5rem, 3vw, 1.95rem);
+}
+
 /* Typography polish */
 .sectionTitle {
   letter-spacing: -0.02em;
