@@ -5,15 +5,17 @@ import { siteContent } from "@/src/data/content";
 export default function CredentialsSection() {
   return (
     <RevealSection className="section" id="credentials" staggerChildren>
-      <SectionHeader title="Certifications & Awards" lead="Credentials that reflect disciplined execution and sustained delivery impact." />
+      <SectionHeader title="Certifications & Recognition" lead="Credentials reflecting structured execution, agile discipline, and high-impact delivery." />
 
       <div className="credentialsGrid">
         {siteContent.certifications.map((item) => {
           const Icon = item.icon;
           return (
-            <article key={item.title} className="glassPanel credentialCard">
+            <article key={item.title} className="glassPanel credentialCard credentialShine">
               <div className="credentialTop">
-                <span className="credentialIcon"><Icon aria-hidden="true" /></span>
+                <span className="credentialIcon">
+                  <Icon aria-hidden="true" />
+                </span>
                 <div>
                   <h3>{item.title}</h3>
                   <p className="credentialIssuer">{item.issuer}</p>
@@ -21,16 +23,6 @@ export default function CredentialsSection() {
               </div>
               <span className="credentialYear">{item.date}</span>
             </article>
-          );
-        })}
-      </div>
-
-      <div className="awardsPanel glassPanel">
-        <h3>Awards</h3>
-        {siteContent.awards.map((award) => {
-          const Icon = award.icon;
-          return (
-            <p key={award.title} className="awardLine"><Icon aria-hidden="true" /> <strong>{award.title}</strong> — {award.detail}</p>
           );
         })}
       </div>
