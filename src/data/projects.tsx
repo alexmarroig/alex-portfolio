@@ -29,7 +29,7 @@ export const projects: Project[] = [
     description: "Offline-first clinical platform with privacy-first workflows and assistive AI guardrails.",
     status: "PRIVATE",
     icon: <FaShieldAlt aria-hidden="true" />,
-    tech: ["Node.js", "React", "TypeScript", "Offline-first", "Privacy by design", "Guardrails"],
+    tech: ["Node.js", "React", "TypeScript", "Azure", "RBAC", "QA Validation"],
     caseStudy: {
       problem: "Clinical teams were blocked by disconnected workflows, slow approvals, and strict compliance constraints.",
       solution:
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     description: "Real-time alerting architecture focused on signal quality, explainability, and automation.",
     status: "POC",
     icon: <FaChartLine aria-hidden="true" />,
-    tech: ["Node.js", "TypeScript", "Streaming APIs", "Scoring", "Explainability", "Automation"],
+    tech: ["Node.js", "Discord.js", "SQLite", "Streaming APIs", "Alert Scoring", "Automation"],
     caseStudy: {
       problem: "High-noise alerting caused delayed response and weak trust in market decision workflows.",
       solution:
@@ -59,10 +59,10 @@ export const projects: Project[] = [
   {
     title: "AI Ops Assistant",
     subtitle: "Public portfolio project",
-    description: "Enterprise intake-to-resolution automation with deterministic guardrails and RAG support.",
+    description: "Enterprise intake-to-resolution automation with deterministic guardrails and retrieval workflows.",
     status: "LIVE",
     icon: <FaBrain aria-hidden="true" />,
-    tech: ["React", "TypeScript", "RAG", "OpenAI", "Workflow Orchestration", "API Integration"],
+    tech: ["Python", "FastAPI", "React", "OpenAI", "Vector DB", "Node.js"],
     caseStudy: {
       problem: "Ops teams lost time routing repetitive requests and searching fragmented internal context.",
       solution:
@@ -70,7 +70,8 @@ export const projects: Project[] = [
       impact: "Increased throughput and reliability while keeping governance and auditability in production flows."
     },
     links: {
-      github: "https://github.com/alexmarroig"
+      github: "https://github.com/alexmarroig",
+      live: "/project/ai-ops-assistant"
     }
   }
 ];

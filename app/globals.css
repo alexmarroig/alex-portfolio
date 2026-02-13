@@ -207,12 +207,13 @@ a {
   overflow: hidden;
   isolation: isolate;
   padding: 34px;
-  transform-style: preserve-3d;
   border: 1px solid transparent;
+  transform-style: preserve-3d;
   background:
     radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(126, 194, 255, 0.16), transparent 45%),
     linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
 }
+
 
 .heroCard::before {
   content: "";
@@ -257,6 +258,10 @@ a {
   color: var(--muted);
   max-width: 72ch;
 }
+
+
+
+
 
 .heroActions,
 .metaRow {
@@ -348,9 +353,28 @@ a {
   margin-top: 16px;
 }
 
-.stackGrid,
+.stackGrid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .stackGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .focusGrid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .focusGridRefined {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .focusGridRefined article:last-child {
+    grid-column: span 2;
+  }
 }
 
 .projectGrid {
@@ -367,6 +391,68 @@ a {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.focusGridRefined {
+  max-width: 920px;
+  margin: 18px auto 0;
+  gap: 20px;
+}
+
+.currentFocusHeader {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.focusCardRefined {
+  min-height: 220px;
+}
+
+.focusTitle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.focusListVertical {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+  color: #c8d5f5;
+}
+
+.techPillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.techPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(166, 180, 255, 0.25);
+  background: rgba(29, 37, 61, 0.72);
+  padding: 7px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.79rem;
+}
+
+.bg-steel {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.techPillLabel {
+  letter-spacing: 0.01em;
+}
+
+.techPillIcon {
+  width: 16px;
+  height: 16px;
+  color: #91eeff;
 }
 
 /* ================================
@@ -429,6 +515,7 @@ a {
   cursor: pointer;
   outline: none;
   height: 400px;
+  perspective: 1000px;
 }
 
 .projectCardRoot:focus-visible {
@@ -484,6 +571,7 @@ a {
 
 .projectBack {
   transform: rotateY(180deg);
+  overflow-y: auto;
 }
 
 .projectTopRow {
@@ -574,10 +662,15 @@ a {
   gap: 12px;
 }
 
-.projectHint {
+.projectHintDesktop,
+.projectHintMobile {
   margin: 0;
   color: #9fc8ff;
   font-size: 0.85rem;
+}
+
+.projectHintMobile {
+  display: none;
 }
 
 .flipControl {
@@ -880,6 +973,12 @@ a {
   font-size: 0.9rem;
 }
 
+.footerVersion {
+  margin: 6px 0 0;
+  color: #8fa2d2;
+  font-size: 0.8rem;
+}
+
 /* ================================
    Talk dock
 ================================ */
@@ -1127,6 +1226,16 @@ a {
 @media (max-width: 768px) {
   .heroCard {
     padding: 24px;
+  }
+
+  
+
+  .projectHintDesktop {
+    display: none;
+  }
+
+  .projectHintMobile {
+    display: block;
   }
   .loadingPanel {
     grid-template-columns: 1fr;
