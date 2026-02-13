@@ -1,91 +1,46 @@
 "use client";
 
-import { type KeyboardEvent, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useState, type MouseEvent } from "react";
 
 export default function HeroCard() {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
-  const toggleFlip = () => setIsFlipped((value) => !value);
-
-  const onKeyToggle = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      toggleFlip();
-    }
+  const onMouseMove = (event: MouseEvent<HTMLElement>) => {
+    if (reduceMotion) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+    setTilt({ x: (0.5 - py) * 8, y: (px - 0.5) * 10 });
   };
 
   return (
     <div className="heroCardWrap">
-      <div className="heroGlowRing" aria-hidden="true" />
-
-      <article
-        className={`group heroFlipRoot ${isFlipped ? "isFlipped" : ""}`}
-        tabIndex={0}
-        role="button"
-        aria-label="Flip hero card"
-        aria-pressed={isFlipped}
-        onClick={toggleFlip}
-        onKeyDown={onKeyToggle}
+      <motion.article
+        className="heroCard glassPanel"
+        onMouseMove={onMouseMove}
+        onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+        animate={reduceMotion ? undefined : { rotateX: tilt.x, rotateY: tilt.y, scale: 1.002 }}
+        transition={{ type: "spring", stiffness: 140, damping: 16, mass: 0.7 }}
       >
-        <div className="heroFlipInner">
-          <div className="heroFlipFace heroFlipFront heroCard glassPanel">
-            <div className="heroNoise" aria-hidden="true" />
-            <p className="heroKicker">AI Product Manager • Technical PM • Systems Integrator</p>
-            <h1 className="heroTitle">Building intelligent products that ship with trust.</h1>
-            <p className="heroSummary">
-              I help teams turn ambiguity into product momentum across B2B SaaS, AI automation, and enterprise delivery.
-            </p>
+        <div className="heroGradient" aria-hidden="true" />
+        <p className="heroKicker">Technical Project Manager • Systems Integrator • QA-minded Builder</p>
+        <h1 className="heroTitle">Building ambitious systems with disciplined execution.</h1>
+        <p className="heroSummary">
+          I lead product and delivery execution as a Technical Project Manager, Systems Integrator, and QA-minded builder who
+          translates strategy into stable, shippable systems.
+        </p>
 
-            <div className="heroActions">
-              <a href="#selected-work" className="btn btnPrimary" onClick={(event) => event.stopPropagation()}>
-                View Work ↗
-              </a>
-              <a
-                href="https://www.linkedin.com/in/alexmarroig/"
-                className="btn btnGhost"
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-              >
-                LinkedIn ↗
-              </a>
-              <a href="mailto:alex.c.marroig@gmail.com" className="btn btnGhost" onClick={(event) => event.stopPropagation()}>
-                Email ↗
-              </a>
-              <a href="/contact" className="btn btnGhost" onClick={(event) => event.stopPropagation()}>
-                Download Resume ↗
-              </a>
-            </div>
-
-            <div className="metaRow">
-              <span>30+ projects delivered • 10+ digital transformation initiatives</span>
-              <span>•</span>
-              <span>Post-M&A migration: 200+ people transition, 30+ regulated systems</span>
-            </div>
-            <p className="heroFlipHint">Tap to flip</p>
-          </div>
-
-          <div className="heroFlipFace heroFlipBack heroCard glassPanel">
-            <div className="heroNoise" aria-hidden="true" />
-            <p className="heroKicker">How I execute</p>
-            <h2 className="heroTitle">I align product strategy with implementation reality.</h2>
-            <p className="heroSummary">
-              From discovery and stakeholder alignment to QA validation and launch, I focus on outcomes teams can trust in
-              production.
-            </p>
-            <ul className="heroBackList">
-              <li>Bridge business objectives, engineering constraints, and delivery timelines.</li>
-              <li>Design implementation plans that reduce risk without slowing momentum.</li>
-              <li>Drive AI-enabled systems toward measurable adoption and operational value.</li>
-            </ul>
-            <p className="heroFlipHint">Tap to flip back</p>
-          </div>
+        <div className="heroActions" aria-label="Primary actions">
+          <a href="#selected-work" className="btn btnPrimary">View Work</a>
+          <a href="https://www.linkedin.com/in/alexmarroig/" className="btn btnPrimary" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="mailto:alex.c.marroig@gmail.com" className="btn btnPrimary">Email</a>
         </div>
-      </article>
+      </motion.article>
 
       <a className="scrollCue" href="#current-focus" aria-label="Scroll to current focus section">
-        Scroll
-        <span aria-hidden="true">↓</span>
+        Scroll <span aria-hidden="true">↓</span>
       </a>
     </div>
   );

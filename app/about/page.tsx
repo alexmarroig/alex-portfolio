@@ -1,31 +1,25 @@
-const HIGHLIGHTS = [
-  "10+ years across pharma, tech, oil & gas, and manufacturing.",
-  "30+ projects delivered and 10+ digital transformation initiatives supported.",
-  "Post-M&A integration in pharma: 200+ people transition and 30+ regulated systems rollout.",
-] as const;
-
 export default function AboutPage() {
   return (
-    <section className="simplePage glassPanel about">
+    <section className="simplePage glassPanel about" aria-labelledby="about-title">
       <header className="aboutHeader">
-        <h1>About Alex de Freitas Marroig</h1>
-
-        <p className="aboutLead">
-          Technical Project Manager (PMP, PSM-I) focused on AI delivery, systems
-          integration, and QA-minded execution. I work at the intersection of
-          product outcomes and technical reliability.
+        <h1 id="about-title">How I Think</h1>
+        <p className="aboutQuote">
+          “I build ambitious systems that scale and ship—engineering, testing and business.”
         </p>
       </header>
 
-      <section className="aboutSection" aria-labelledby="highlights">
-        <h2 id="highlights">Highlights</h2>
-
-        <ul className="aboutList">
-          {HIGHLIGHTS.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
+      <p className="aboutBody">
+        For 10+ years, I&apos;ve led projects across aerospace, finance, healthcare, manufacturing, and SaaS with a practical,
+        delivery-first approach to systems and product execution.
+      </p>
+      <p className="aboutBody">
+        I write code when needed, run QA with rigor, and manage teams through ambiguity. I&apos;m comfortable inside architecture
+        reviews, sprint ceremonies, and executive planning sessions.
+      </p>
+      <p className="aboutBody">
+        My edge is speaking both technical and business languages—aligning stakeholders, engineering teams, and operations so
+        ambitious products are shipped with reliability.
+      </p>
     </section>
   );
 }
