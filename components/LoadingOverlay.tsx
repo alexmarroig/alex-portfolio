@@ -11,7 +11,7 @@ const BOOT_LINES = [
   "Initializing runtime",
   "Authenticating identity",
   "SYSTEM ONLINE",
-  "Alex de Freitas Marroig",
+  "Identity confirmed",
 ];
 
 export default function LoadingOverlay() {

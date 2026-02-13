@@ -1,108 +1,129 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useMemo, useState, type KeyboardEvent } from "react";
+import type { Project } from "@/src/data/projects";
 
-type ProjectCardProps = {
-  title: string;
-  subtitle: string;
-  href: string;
-  tag: string;
-  problem: string;
-  architecture: string;
-  role: string;
-  impact: string;
-  stackTags: string[];
-  revealOrder?: number;
-};
+type ProjectCardProps = Project;
 
 export default function ProjectCard({
   title,
   subtitle,
-  href,
-  tag,
-  problem,
-  architecture,
-  role,
-  impact,
-  stackTags,
-  revealOrder = 0,
+  description,
+  status,
+  icon,
+  tech,
+  caseStudy,
+  links,
+  isPrivate
 }: ProjectCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const reducedMotion = useReducedMotion();
 
-  const toggleFlip = () => setIsFlipped((value) => !value);
+  const statusClass = useMemo(() => {
+    if (status === "LIVE") return "statusLive";
+    if (status === "POC") return "statusPoc";
+    return "statusPrivate";
+  }, [status]);
+
+  const onKeyToggle = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setIsFlipped((value) => !value);
+    }
+  };
 
   return (
-    <motion.article
-      className={`projectCardWrap ${isFlipped ? "isFlipped" : ""}`}
-      onMouseLeave={() => setIsFlipped(false)}
-      initial={reducedMotion ? false : { opacity: 0, y: 20, filter: "blur(8px)" }}
-      whileInView={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-5% 0px" }}
-      transition={{ duration: reducedMotion ? 0.01 : 0.55, delay: reducedMotion ? 0 : revealOrder * 0.12 }}
+    <article
+      className={`group relative h-[400px] projectCardRoot ${isFlipped ? "isFlipped" : ""}`}
+      style={{ perspective: "1000px" }}
+      tabIndex={0}
+      onClick={() => setIsFlipped((value) => !value)}
+      onKeyDown={onKeyToggle}
+      aria-label={`Flip card for ${title} case study`}
+      role="button"
+      aria-pressed={isFlipped}
     >
-      <button
-        type="button"
-        className="projectCardButton"
-        aria-expanded={isFlipped}
-        aria-label={`${title} project details`}
-        onClick={toggleFlip}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            toggleFlip();
-          }
-        }}
-      >
-        <div className="projectCardInner">
-          <div className="projectCardFace cardFront">
-            <p className="cardTag">{tag}</p>
-            <h3 className="cardTitle">{title}</h3>
-            <p className="cardSubtitle">{subtitle}</p>
-            <span className="flipHint">Flip for details →</span>
+      <span className="sr-only">Flip card</span>
+      <div className="relative h-full w-full transition-transform duration-700 projectCardInner group-hover:[transform:rotateY(180deg)]">
+        <div className="absolute inset-0 rounded-2xl border projectCardFace projectFront">
+          <div className="projectTopRow">
+            <span className="projectIcon">{icon}</span>
+            <h3 className="projectTitle">{title}</h3>
           </div>
 
-          <div className="projectCardFace cardBack">
-            <h3 className="cardTitle">{title}</h3>
-            <ul className="projectMetaList">
-              <li>
-                <strong>Problem</strong>
-                <span>{problem}</span>
-              </li>
-              <li>
-                <strong>Architecture</strong>
-                <span>{architecture}</span>
-              </li>
-              <li>
-                <strong>My Role</strong>
-                <span>{role}</span>
-              </li>
-              <li>
-                <strong>Impact</strong>
-                <span>{impact}</span>
-              </li>
-            </ul>
-            <div className="chipGroup">
-              {stackTags.map((tagName) => (
-                <span className="chip" key={tagName}>
-                  {tagName}
-                </span>
-              ))}
-            </div>
-            <Link
-              href={href}
-              className="cardAction"
+          <span className={`projectStatus ${statusClass}`}>{status}</span>
+          <p className="projectCategory">{subtitle}</p>
+          <p className="projectDescription">{description}</p>
+
+          <div className="projectPills">
+            {tech.map((item) => (
+              <span key={item} className="projectPill">
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <div className="projectHintRow">
+            <p className="projectHint">Hover for case study</p>
+            <button
+              type="button"
+              className="flipControl"
+              aria-label={`Flip card for ${title}`}
               onClick={(event) => {
                 event.stopPropagation();
+                setIsFlipped((value) => !value);
               }}
             >
-              View case study →
-            </Link>
+              Flip card
+            </button>
           </div>
         </div>
-      </button>
-    </motion.article>
+
+        <div className="absolute inset-0 rounded-2xl border projectCardFace projectBack">
+          <h3 className="projectTitle">{title}</h3>
+          <div className="caseStudyBlocks">
+            <div>
+              <p className="caseLabel">Problem</p>
+              <p>{caseStudy.problem}</p>
+            </div>
+            <div>
+              <p className="caseLabel">Solution</p>
+              <p>{caseStudy.solution}</p>
+            </div>
+            <div>
+              <p className="caseLabel">Impact</p>
+              <p>{caseStudy.impact}</p>
+            </div>
+          </div>
+
+          <div className="projectLinks">
+            {links.github ? (
+              <Link
+                href={links.github}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(event) => event.stopPropagation()}
+                className="projectLink"
+              >
+                GitHub ↗
+              </Link>
+            ) : (
+              <span className="projectPrivateNote">{isPrivate ? "Private repository" : "Repository unavailable"}</span>
+            )}
+            {links.live ? (
+              <Link
+                href={links.live}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(event) => event.stopPropagation()}
+                className="projectLink"
+              >
+                Live ↗
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
