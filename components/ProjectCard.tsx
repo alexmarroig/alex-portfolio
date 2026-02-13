@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useMemo, useState, type KeyboardEvent } from "react";
-import type { Project } from "@/src/data/projects";
+import type { SiteContent } from "@/src/data/content";
 
-type ProjectCardProps = Project;
+type ProjectCardProps = SiteContent["projects"][number];
 
 const sections = [
   { key: "problem", label: "Problem", icon: "P" },
@@ -16,8 +16,8 @@ export default function ProjectCard({ title, subtitle, description, status, icon
   const [isFlipped, setIsFlipped] = useState(false);
 
   const statusClass = useMemo(() => {
-    if (status === "LIVE") return "statusLive";
-    if (status === "POC") return "statusPoc";
+    if (status === "ACTIVE") return "statusLive";
+    if (status === "FOUNDATIONAL") return "statusPoc";
     return "statusPrivate";
   }, [status]);
 
