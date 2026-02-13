@@ -208,10 +208,48 @@ a {
   isolation: isolate;
   padding: 34px;
   border: 1px solid transparent;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.heroFlipRoot {
+  position: relative;
+  perspective: 1000px;
+  border-radius: calc(var(--radius) + 2px);
+  outline: none;
+}
+
+.heroFlipRoot:focus-visible {
+  box-shadow: 0 0 0 2px rgba(105, 235, 255, 0.45);
+}
+
+.heroFlipInner {
+  position: relative;
+  min-height: 470px;
   transform-style: preserve-3d;
-  background:
-    radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(126, 194, 255, 0.16), transparent 45%),
-    linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  transition: transform 700ms ease;
+}
+
+.heroFlipFace {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.heroFlipBack {
+  transform: rotateY(180deg);
+}
+
+.heroFlipRoot.isFlipped .heroFlipInner {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroFlipRoot:hover .heroFlipInner {
+    transform: rotateY(180deg);
+  }
 }
 
 
@@ -259,9 +297,20 @@ a {
   max-width: 72ch;
 }
 
+.heroBackList {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: #dbe5ff;
+  display: grid;
+  gap: 8px;
+}
 
-
-
+.heroFlipHint {
+  display: none;
+  margin: auto 0 0;
+  color: #9fc8ff;
+  font-size: 0.82rem;
+}
 
 .heroActions,
 .metaRow {
@@ -367,16 +416,6 @@ a {
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 900px) {
-  .focusGridRefined {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .focusGridRefined article:last-child {
-    grid-column: span 2;
-  }
-}
-
 .projectGrid {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
@@ -393,34 +432,15 @@ a {
   align-items: center;
 }
 
-.focusGridRefined {
-  max-width: 920px;
+.focusGridStacked {
+  max-width: 860px;
   margin: 18px auto 0;
-  gap: 20px;
+  gap: 24px;
 }
 
 .currentFocusHeader {
-  max-width: 920px;
+  max-width: 860px;
   margin: 0 auto;
-}
-
-.focusCardRefined {
-  min-height: 220px;
-}
-
-.focusTitle {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.focusListVertical {
-  margin: 14px 0 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 10px;
-  color: #c8d5f5;
 }
 
 .techPillGroup {
@@ -435,18 +455,10 @@ a {
   gap: 8px;
   border-radius: 999px;
   border: 1px solid rgba(166, 180, 255, 0.25);
-  background: rgba(29, 37, 61, 0.72);
+  background: rgba(15, 20, 36, 0.7);
   padding: 7px 12px;
   font-family: var(--font-mono);
   font-size: 0.79rem;
-}
-
-.bg-steel {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-.techPillLabel {
-  letter-spacing: 0.01em;
 }
 
 .techPillIcon {
@@ -1228,7 +1240,13 @@ a {
     padding: 24px;
   }
 
-  
+  .heroFlipInner {
+    min-height: 520px;
+  }
+
+  .heroFlipHint {
+    display: block;
+  }
 
   .projectHintDesktop {
     display: none;

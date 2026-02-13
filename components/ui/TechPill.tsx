@@ -7,9 +7,9 @@ type TechPillProps = {
 
 export default function TechPill({ icon: Icon, label }: TechPillProps) {
   return (
-    <span className="techPill bg-steel">
+    <span className="techPill">
       <Icon className="techPillIcon" aria-hidden="true" />
-      <span className="techPillLabel">{label}</span>
+      <span>{label}</span>
     </span>
   );
 }

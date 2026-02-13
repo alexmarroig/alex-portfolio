@@ -40,6 +40,31 @@ export default function CurrentFocusSection() {
         <p className="sectionLead">Where I create the most value right now.</p>
       </div>
 
+      <div className="focusGrid focusGridStacked">
+        <RevealItem order={0}>
+          <article className="glassPanel focusCard">
+            <h3>Open To</h3>
+            <ul className="focusList">
+              <li className="focusBullet">Full-time roles</li>
+              <li className="focusBullet">Contract projects</li>
+              <li className="focusBullet">Advisory partnerships</li>
+              <li className="focusBullet">Technical PM / TPM / AI delivery</li>
+            </ul>
+          </article>
+        </RevealItem>
+
+        <RevealItem order={1}>
+          <article className="glassPanel focusCard">
+            <h3>Specialties</h3>
+            <ul className="focusList">
+              <li className="focusBullet">Delivery under enterprise constraints</li>
+              <li className="focusBullet">Onboarding & implementation</li>
+              <li className="focusBullet">QA strategy and release validation</li>
+              <li className="focusBullet">Systems integration + AI-enabled automation</li>
+            </ul>
+          </article>
+        </RevealItem>
+
       <div className="focusGrid focusGridRefined">
         {focusCards.map((card, index) => (
           <RevealItem order={index} key={card.title}>

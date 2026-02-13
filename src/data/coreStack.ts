@@ -1,49 +1,40 @@
 import type { IconType } from "react-icons";
-import { BiLogoAws, BiLogoPostgresql, BiLogoVisualStudio } from "react-icons/bi";
-import { FaDatabase, FaFlask } from "react-icons/fa";
-import { RiNextjsFill, RiNodejsLine, RiReactjsLine, RiTailwindCssFill } from "react-icons/ri";
-import { SiDotnet, SiFastapi, SiGithub, SiPython, SiTypescript } from "react-icons/si";
-import { TbBrandAzure } from "react-icons/tb";
-
-type StackItem = {
-  label: string;
-  icon: IconType;
-};
+import { BiLogoPostgresql, BiLogoVisualStudio } from "react-icons/bi";
+import { RiNextjsFill, RiNodejsLine, RiOpenaiFill, RiReactjsLine, RiTailwindCssFill, RiVercelFill } from "react-icons/ri";
+import { SiGithub, SiPython, SiTypescript } from "react-icons/si";
 
 export type CoreStackCategory = {
   category: string;
-  items: StackItem[];
+  items: {
+    label: string;
+    icon: IconType;
+  }[];
 };
 
 export const coreStack: CoreStackCategory[] = [
   {
-    category: "Languages & Frameworks",
+    category: "Frontend",
     items: [
-      { label: "Python", icon: SiPython },
-      { label: "Node.js", icon: RiNodejsLine },
-      { label: "FastAPI", icon: SiFastapi },
-      { label: "Flask", icon: FaFlask },
-      { label: "React", icon: RiReactjsLine },
       { label: "Next.js", icon: RiNextjsFill },
+      { label: "React", icon: RiReactjsLine },
       { label: "TypeScript", icon: SiTypescript },
-      { label: "C#", icon: SiDotnet },
-      { label: ".NET", icon: SiDotnet },
-      { label: "TailwindCSS", icon: RiTailwindCssFill }
+      { label: "TailwindCSS", icon: RiTailwindCssFill },
+      { label: "Node.js", icon: RiNodejsLine }
     ]
   },
   {
-    category: "Data & Platforms",
+    category: "AI & Data",
     items: [
-      { label: "PostgreSQL", icon: BiLogoPostgresql },
-      { label: "Databases", icon: FaDatabase },
-      { label: "AWS", icon: BiLogoAws },
-      { label: "Azure", icon: TbBrandAzure }
+      { label: "OpenAI", icon: RiOpenaiFill },
+      { label: "Python", icon: SiPython },
+      { label: "PostgreSQL", icon: BiLogoPostgresql }
     ]
   },
   {
-    category: "Dev Workflow",
+    category: "Dev & Ops",
     items: [
       { label: "GitHub", icon: SiGithub },
+      { label: "Vercel", icon: RiVercelFill },
       { label: "VS Code", icon: BiLogoVisualStudio }
     ]
   }
