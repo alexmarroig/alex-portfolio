@@ -1,156 +1,205 @@
 import type { IconType } from "react-icons";
-import { FaAward, FaCertificate, FaPeopleCarry, FaProjectDiagram, FaShieldAlt, FaTrophy } from "react-icons/fa";
-import { MdPrecisionManufacturing } from "react-icons/md";
-import type { TechKey } from "@/src/data/techCatalog";
+import {
+  FaAward,
+  FaAws,
+  FaCogs,
+  FaCross,
+  FaDocker,
+  FaHeart,
+  FaHome,
+  FaJenkins,
+  FaMedal,
+  FaNetworkWired,
+  FaProjectDiagram,
+  FaRegClock,
+  FaShieldAlt
+} from "react-icons/fa";
+import { HiOutlineSparkles } from "react-icons/hi2";
+import { MdIntegrationInstructions, MdOutlinePrecisionManufacturing, MdOutlinePublishedWithChanges } from "react-icons/md";
+import { RiNextjsFill, RiRobot2Line } from "react-icons/ri";
+import { SiNodedotjs, SiPython, SiReact, SiTypescript, SiVercel, SiPostgresql, SiTestinglibrary } from "react-icons/si";
+import { VscAzure } from "react-icons/vsc";
 
-export type ProjectStatus = "BUILDING" | "SHIPPING" | "OPEN TO WORK";
+export type ProjectStatus = "BUILDING" | "SHIPPING" | "IMPROVING";
 
 export type SiteContent = {
   hero: {
-    name: string;
-    roleLine: string;
-    narrative: string[];
-    humanLayer: string;
-    ctas: { label: string; href: string; external?: boolean }[];
-    proofPoints: string[];
+    intro: string;
+    headline: string;
+    subheadline: string;
+    paragraph: string;
+    humanLine: { icon: IconType; label: string }[];
+    ctas: { label: string; href: string; variant: "primary" | "secondary" | "text" }[];
   };
   currentFocus: {
-    main: { title: string; summary: string; tags: TechKey[]; status: ProjectStatus };
-    supporting: { title: string; summary: string; tags: TechKey[]; status: ProjectStatus }[];
+    lead: string;
+    main: { title: string; summary: string; tags: string[]; status: ProjectStatus };
+    supporting: { title: string; summary: string; tags: string[]; status: ProjectStatus }[];
   };
-  stackCategories: { category: string; items: TechKey[] }[];
-  certifications: { title: string; issuer: string; date: string; icon: IconType }[];
-  awards: { title: string; detail: string; icon: IconType }[];
+  stackCategories: {
+    category: string;
+    items: { name: string; note: string; icon: IconType }[];
+  }[];
+  certifications: { title: string; issuer: string; year: string; icon: IconType }[];
+  awards: string[];
   about: { heading: string; paragraphs: string[] };
   projects: {
     title: string;
     subtitle: string;
     description: string;
     status: ProjectStatus;
-    tech: TechKey[];
+    stack: string[];
     caseStudy: { problem: string; solution: string; impact: string };
-    links: { github?: string; live?: string };
   }[];
 };
 
 export const siteContent: SiteContent = {
   hero: {
-    name: "I’m Alex de Freitas Marroig",
-    roleLine: "Technical Project Manager who builds, not just manages.",
-    narrative: [
-      "I lead cross-functional delivery where business outcomes, technical architecture, and execution discipline all have to align.",
-      "My edge is systems thinking: translating ambiguity into clear plans, then building the workflows, automations, and integrations that make those plans real.",
-      "From industrial engineering to enterprise AI, I operate end-to-end—from strategy and stakeholder alignment to shipping implementation."
+    intro: "Hey, I’m Alex de Freitas Marroig",
+    headline: "Technical Project Manager who builds, not just manages.",
+    subheadline: "Systems Integrator | QA-minded Builder | Delivery & Architecture",
+    paragraph:
+      "I bridge business strategy with deep technical execution—structuring complexity, solving hard systems problems, and shipping outcomes. Across 10+ years and multiple industries, I’ve led programs spanning QA, automation, integrations, support, and coding, including M&A assessment and integration work with C-level stakeholders.",
+    humanLine: [
+      { icon: FaHeart, label: "Husband" },
+      { icon: FaCross, label: "Faith-driven" },
+      { icon: FaHome, label: "Family-first" }
     ],
-    humanLayer: "Married, faith-driven, and family-first — values that keep my leadership grounded and steady.",
     ctas: [
-      { label: "Download Resume (PDF)", href: "/alex-de-freitas-marroig-resume.pdf" },
-      { label: "LinkedIn", href: "https://www.linkedin.com", external: true },
-      { label: "GitHub", href: "https://github.com/alexmarroig", external: true },
-      { label: "Start a Conversation", href: "mailto:alex.c.marroig@gmail.com" }
-    ],
-    proofPoints: ["10+ years delivery leadership", "PMP Certified", "Multi-industry execution", "Automation + AI systems", "Enterprise program delivery"]
+      { label: "View Featured Work", href: "#work", variant: "primary" },
+      { label: "Download Resume", href: "/alex-de-freitas-marroig-resume.pdf", variant: "secondary" },
+      { label: "Get in Touch", href: "/contact", variant: "text" }
+    ]
   },
   currentFocus: {
+    lead: "Focused on what I’m building, shipping, and improving now.",
     main: {
-      title: "Enterprise AI Delivery Systems",
-      summary: "Designing onboarding + QA + integration layers so AI products ship reliably in regulated environments.",
-      tags: ["RAG", "NLP", "API", "Power Automate"],
+      title: "Enterprise Integration & Delivery Architecture",
+      summary: "Building integration-first delivery systems that connect business goals, implementation teams, and release quality.",
+      tags: ["Integrations", "Architecture", "QA", "Automation"],
       status: "BUILDING"
     },
     supporting: [
       {
-        title: "Cross-Platform PM Tooling",
-        summary: "Unifying Jira, Confluence, ClickUp, and ServiceNow workflows for tighter delivery visibility.",
-        tags: ["Jira", "Confluence", "ClickUp", "ServiceNow"],
+        title: "M&A Due Diligence + Integration Planning",
+        summary: "Shipping practical operating plans for billion-scale initiatives with executive and cross-functional alignment.",
+        tags: ["M&A", "C-Level", "Governance"],
         status: "SHIPPING"
       },
       {
-        title: "High-Impact PM Leadership Roles",
-        summary: "Open to TPM / Program roles where strategy and implementation ownership are equally valued.",
-        tags: ["MS Project", "Primavera P6", "SAP"],
-        status: "OPEN TO WORK"
+        title: "QA & Reliability Delivery",
+        summary: "Improving test strategy, triage flows, and release confidence across high-stakes products.",
+        tags: ["Testing", "Release", "Reliability"],
+        status: "IMPROVING"
+      },
+      {
+        title: "Automation for Operational Support",
+        summary: "Improving support handoffs with workflow automation and monitoring-driven feedback loops.",
+        tags: ["Support", "Workflows", "Observability"],
+        status: "IMPROVING"
       }
     ]
   },
   stackCategories: [
     {
-      category: "Delivery + Systems",
-      items: ["API", "MySQL/SQL", "HTML/CSS", "Power Apps", "Power Automate", "Google Analytics"]
+      category: "Delivery & Systems",
+      items: [
+        { name: "APIs", note: "integration backbone", icon: MdIntegrationInstructions },
+        { name: "Integrations", note: "business + technical alignment", icon: FaNetworkWired },
+        { name: "Observability", note: "monitor + respond", icon: FaRegClock },
+        { name: "QA / Testing", note: "quality by design", icon: SiTestinglibrary },
+        { name: "Automation", note: "build + streamline", icon: RiRobot2Line }
+      ]
     },
     {
-      category: "AI + Analytics",
-      items: ["NLP", "RAG", "Power BI", "Tableau", "VBA"]
+      category: "Platforms",
+      items: [
+        { name: "Azure", note: "enterprise cloud delivery", icon: VscAzure },
+        { name: "AWS", note: "scalable infrastructure", icon: FaAws },
+        { name: "Power Platform", note: "workflow acceleration", icon: HiOutlineSparkles },
+        { name: "CI/CD", note: "repeatable shipping", icon: FaJenkins },
+        { name: "Vercel", note: "front-end deployment", icon: SiVercel }
+      ]
     },
     {
-      category: "Execution Platforms",
-      items: ["Jira", "Confluence", "ClickUp", "MS Project", "Primavera P6", "ServiceNow", "SAP"]
-    },
-    {
-      category: "Modern Web",
-      items: ["Next.js", "React", "TypeScript", "Node"]
+      category: "Development",
+      items: [
+        { name: "Node.js", note: "services + APIs", icon: SiNodedotjs },
+        { name: "TypeScript", note: "safe iteration", icon: SiTypescript },
+        { name: "Python", note: "automation + scripting", icon: SiPython },
+        { name: "SQL", note: "data reliability", icon: SiPostgresql },
+        { name: "React", note: "interface systems", icon: SiReact },
+        { name: "Next.js", note: "production web", icon: RiNextjsFill }
+      ]
     }
   ],
   certifications: [
-    { title: "PMP", issuer: "PMI", date: "Dec/2023", icon: FaTrophy },
-    { title: "PSM-1", issuer: "Scrum.org", date: "Sep/2023", icon: FaCertificate },
-    { title: "PM3 Product Management", issuer: "PM3", date: "Oct/2023", icon: FaProjectDiagram },
-    { title: "Top Performer Award – SANDECH", issuer: "SANDECH", date: "Multiple Years", icon: FaAward }
+    { title: "Project Management Professional (PMP)", issuer: "PMI", year: "2023", icon: FaMedal },
+    { title: "Professional Scrum Master I (PSM I)", issuer: "Scrum.org", year: "2023", icon: FaShieldAlt },
+    { title: "PM3 Product Management Course", issuer: "PM3", year: "2023", icon: FaProjectDiagram },
+    { title: "Top Performer Recognition", issuer: "SANDECH", year: "Multiple Years", icon: FaAward }
   ],
   awards: [
-    {
-      title: "Top Performer / Employee Recognition",
-      detail: "SANDECH — recognized for multiple consecutive years of delivery excellence and ownership.",
-      icon: FaAward
-    }
+    "SANDECH Top Performer Recognition — multiple years",
+    "Employee excellence recognition for industrial engineering portfolio delivery",
+    "Cross-functional leadership recognition for complex integration initiatives"
   ],
   about: {
-    heading: "I convert complexity into systems teams can execute with confidence.",
+    heading: "I translate complexity into systems teams can actually ship.",
     paragraphs: [
-      "I lead in environments where compliance, schedule pressure, and executive expectations are all real at once.",
-      "My work style combines planning rigor with technical hands-on depth, so decisions stay grounded in implementation reality.",
-      "The outcome I optimize for is reliable delivery: launched programs, stable operations, and stakeholder trust earned over time."
+      "I’m most effective where business pressure and technical depth collide: regulated environments, integration-heavy programs, and fast-moving product delivery.",
+      "My operating model is simple—clarify outcomes, architect the system, then execute with QA discipline and close stakeholder alignment.",
+      "The result is practical, end-to-end delivery: clearer decisions, healthier releases, and stronger trust from teams to C-level leadership."
     ]
   },
   projects: [
     {
-      title: "SANDECH — Industrial Engineering Portfolios",
-      subtitle: "Case Study",
-      description: "Complex industrial project portfolios with strict governance across scope, risk, and execution cadence.",
+      title: "Industrial Engineering Portfolio Delivery (SANDECH)",
+      subtitle: "Industrial Program Delivery",
+      description: "Complex multi-discipline engineering program delivery with governance, sequencing, and executive reporting.",
       status: "SHIPPING",
-      tech: ["Primavera P6", "MS Project", "SAP", "Power BI"],
+      stack: ["Delivery", "Governance", "Risk"],
       caseStudy: {
-        problem: "Engineering portfolios were fragmented across planning tracks, making coordination and visibility difficult.",
-        solution: "Implemented unified delivery governance, standardized reporting, and risk controls across workstreams.",
-        impact: "Improved predictability and executive confidence while sustaining throughput on complex programs."
-      },
-      links: {}
+        problem: "Program complexity across disciplines created coordination friction and uneven delivery visibility.",
+        solution: "Established a unified delivery cadence, risk controls, and cross-team communication rhythm.",
+        impact: "Improved predictability and decision confidence without exposing confidential project details."
+      }
     },
     {
-      title: "Pharma Post-M&A Integration",
-      subtitle: "Case Study",
-      description: "Factory migration + people transition + 30+ validated systems managed under a single delivery playbook.",
-      status: "SHIPPING",
-      tech: ["ServiceNow", "Jira", "Confluence", "API"],
-      caseStudy: {
-        problem: "Post-acquisition integration introduced operational and compliance risk across teams, tools, and systems.",
-        solution: "Led phased integration planning with dependency mapping, stakeholder rituals, and validation-aware change governance.",
-        impact: "Delivered a stable transition with business continuity while preserving validation standards."
-      },
-      links: {}
-    },
-    {
-      title: "Inbenta — AI Platform Delivery",
-      subtitle: "Building Now",
-      description: "Enterprise conversational AI delivery with QA automation and integration reliability.",
+      title: "Enterprise Integration & Automation",
+      subtitle: "Systems + Workflow",
+      description: "Integration and workflow orchestration that connects business process owners with engineering delivery.",
       status: "BUILDING",
-      tech: ["NLP", "RAG", "API", "Power Automate", "React"],
+      stack: ["APIs", "Automation", "Node.js"],
       caseStudy: {
-        problem: "Enterprise teams needed AI rollout plans that balanced speed with quality and governance.",
-        solution: "Built QA workflows, integration standards, and release controls to reduce production risk.",
-        impact: "Increased implementation confidence and improved time-to-value for enterprise clients."
-      },
-      links: { github: "https://github.com/alexmarroig" }
+        problem: "Disconnected tools and manual handoffs slowed delivery and increased context loss.",
+        solution: "Mapped core workflows, implemented automations, and created shared operational visibility.",
+        impact: "Faster handoffs, fewer blockers, and stronger alignment between product and operations."
+      }
+    },
+    {
+      title: "QA & Reliability Delivery",
+      subtitle: "Quality Systems",
+      description: "QA strategy, automation, and defect triage practices to harden releases and reduce avoidable issues.",
+      status: "IMPROVING",
+      stack: ["QA", "Automation", "CI/CD"],
+      caseStudy: {
+        problem: "Release reliability was inconsistent due to fragmented validation and triage ownership.",
+        solution: "Introduced quality gates, shared defect ownership, and automation for repeatable checks.",
+        impact: "More stable releases and clearer accountability across product and engineering teams."
+      }
+    },
+    {
+      title: "M&A Technical Due Diligence & Integration",
+      subtitle: "Strategic Integration",
+      description: "Multi-stakeholder due diligence and integration planning for high-value, high-visibility initiatives.",
+      status: "SHIPPING",
+      stack: ["Assessment", "Architecture", "Execution"],
+      caseStudy: {
+        problem: "Post-acquisition programs required aligned technical and operational integration decisions.",
+        solution: "Led practical due diligence and integration roadmaps with C-level and cross-functional stakeholders.",
+        impact: "Reduced integration ambiguity and enabled confident phased execution plans."
+      }
     }
   ]
 };

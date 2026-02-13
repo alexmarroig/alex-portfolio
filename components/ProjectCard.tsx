@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import FlipCard from "@/components/ui/FlipCard";
 import StatusPill from "@/components/ui/StatusPill";
-import TechBadge from "@/components/ui/TechBadge";
 import type { SiteContent } from "@/src/data/content";
-import { techCatalog } from "@/src/data/techCatalog";
+import { FaProjectDiagram, FaShieldAlt } from "react-icons/fa";
+import { MdIntegrationInstructions, MdOutlinePublishedWithChanges, MdOutlinePrecisionManufacturing } from "react-icons/md";
+import { RiRobot2Line } from "react-icons/ri";
+import { SiNodedotjs, SiTestinglibrary } from "react-icons/si";
 
 type ProjectCardProps = SiteContent["projects"][number];
 
@@ -15,7 +16,21 @@ const sections = [
   { key: "impact", label: "Impact" }
 ] as const;
 
-export default function ProjectCard({ title, subtitle, description, status, tech, caseStudy, links }: ProjectCardProps) {
+const iconMap = {
+  Delivery: MdOutlinePrecisionManufacturing,
+  Governance: FaProjectDiagram,
+  Risk: FaShieldAlt,
+  APIs: MdIntegrationInstructions,
+  Automation: RiRobot2Line,
+  "Node.js": SiNodedotjs,
+  QA: SiTestinglibrary,
+  "CI/CD": MdOutlinePublishedWithChanges,
+  Assessment: FaProjectDiagram,
+  Architecture: FaShieldAlt,
+  Execution: MdOutlinePublishedWithChanges
+} as const;
+
+export default function ProjectCard({ title, subtitle, description, status, stack, caseStudy }: ProjectCardProps) {
   return (
     <FlipCard
       label={`Flip card for ${title} case study`}
@@ -25,12 +40,17 @@ export default function ProjectCard({ title, subtitle, description, status, tech
           <h3 className="projectTitle">{title}</h3>
           <StatusPill status={status} />
           <p className="projectDescription">{description}</p>
-          <div className="badgeRow">
-            {tech.map((item) => (
-              <TechBadge key={item} {...techCatalog[item]} compact />
-            ))}
+          <div className="projectPills">
+            {stack.map((name) => {
+              const Icon = iconMap[name as keyof typeof iconMap] ?? FaProjectDiagram;
+              return (
+                <span className="projectPill" key={name}>
+                  <Icon aria-hidden="true" /> {name}
+                </span>
+              );
+            })}
           </div>
-          <p className="projectFlipCta">Hover or tap to flip →</p>
+          <p className="projectFlipCta">Hover or tap to view details</p>
         </>
       }
       back={
@@ -43,20 +63,6 @@ export default function ProjectCard({ title, subtitle, description, status, tech
                 <p>{caseStudy[section.key]}</p>
               </div>
             ))}
-          </div>
-          <div className="projectLinks">
-            {links.github ? (
-              <Link href={links.github} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()} className="projectLink">
-                GitHub ↗
-              </Link>
-            ) : (
-              <span className="projectPrivateNote">Private engagement</span>
-            )}
-            {links.live ? (
-              <Link href={links.live} onClick={(event) => event.stopPropagation()} className="projectLink">
-                Case study ↗
-              </Link>
-            ) : null}
           </div>
         </>
       }
