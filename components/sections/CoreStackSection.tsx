@@ -7,7 +7,7 @@ export default function CoreStackSection() {
   return (
     <RevealSection className="section" id="core-stack" staggerChildren>
       <h2 className="sectionTitle">Core Stack</h2>
-      <p className="sectionLead">How I operate as a Technical PM who also builds, integrates, and validates.</p>
+      <p className="sectionLead">Core languages, frameworks, and cloud tooling I use to ship reliable systems.</p>
       <div className="stackGrid">
         {coreStack.map((group, index) => (
           <RevealItem order={index} key={group.category}>

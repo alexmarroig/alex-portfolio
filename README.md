@@ -1,8 +1,21 @@
 # Alex de Freitas Marroig — Portfolio
 
-Technical Project Manager | Technical PM | Systems Integrator | QA-minded Builder
+Technical PM | Systems Integrator | QA-minded Builder
 
-Built with Next.js (App Router) and deployed on Vercel.
+This portfolio is built with Next.js App Router and styled as an interactive resume experience inspired by cinematic, high-contrast technical portfolios.
+
+## What changed in the redesign
+
+- Refined **Hero** introduction with subtle parallax tilt, clear positioning statement, and direct CTA.
+- Reworked **Current Focus** into responsive cards with icon-led themes:
+  - LLM Reasoning + ChatOps
+  - Systems Architecture
+  - GenAI in Production
+- Expanded **Core Stack** into icon-backed rounded badges across frameworks, languages, data, and cloud tooling.
+- Improved **Selected Work** flip cards (desktop hover + mobile tap + keyboard support) with polished case-study backs.
+- Upgraded **How I Think** narrative with stronger philosophy and delivery context.
+- Strengthened **Contact / CTA** with availability language and service focus.
+- Updated footer with social icons, 2026 copyright, and version tag.
 
 ## Local development
 
@@ -13,36 +26,25 @@ npm run dev
 
 ## Routes
 
-- `/` home (hero, current focus, core stack, selected work, about, contract CTA)
+- `/` home (hero, current focus, core stack, selected work, about, contact CTA)
 - `/case/ethos`
 - `/case/cryptoalert`
 - `/project/ai-ops-assistant`
 - `/about`
 - `/contact`
-- `/api/proxy/[...path]` optional server-side proxy to external backend
+- `/api/proxy/[...path]`
 
-## Vercel environment variables
+## Validation scripts
 
-Set these in **Project Settings → Environment Variables**:
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-- `API_BASE_URL` (recommended, server-side)
-- `NEXT_PUBLIC_API_BASE_URL` (optional fallback)
+## Tech notes
 
-If set, requests to `/api/proxy/<path>` are forwarded to `<API_BASE_URL>/<path>` with query params preserved.
-
-### Example
-
-`GET /api/proxy/v1/health` → `GET ${API_BASE_URL}/v1/health`
-
-## Styling architecture
-
-- Global styles: `app/globals.css`
-- Design tokens: `styles/tokens.css`
-- Section components: `components/sections/*`
-- Shared UI primitives: `components/ui/*`
-
-## Notes
-
-- Motion and hover interactions respect `prefers-reduced-motion`.
-- Hero tilt disables naturally on coarse pointer devices (mobile/touch).
-- Core SEO metadata lives in `app/layout.tsx`.
+- App Router structure with `app/layout.tsx` + `app/page.tsx`
+- Framer Motion reveal/interaction effects
+- Accessible card interactions (hover, tap, keyboard)
+- Dark theme gradients and glow accents for visual hierarchy

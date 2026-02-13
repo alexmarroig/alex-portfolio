@@ -252,6 +252,7 @@ a {
   }
 }
 
+
 .heroCard::before {
   content: "";
   position: absolute;
@@ -982,6 +983,12 @@ a {
   margin-top: 14px;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.footerVersion {
+  margin: 6px 0 0;
+  color: #8fa2d2;
+  font-size: 0.8rem;
 }
 
 /* ================================

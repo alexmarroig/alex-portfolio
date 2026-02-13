@@ -1,24 +1,29 @@
 import RevealItem from "@/components/RevealItem";
 import RevealSection from "@/components/RevealSection";
 
-const areas = ["Systems Architecture", "AI Integration", "Technical PM Delivery", "Technical Consulting", "Workflow Automation"];
+const areas = [
+  "Systems Architecture",
+  "Full-Stack Development",
+  "AI/ML Integration",
+  "Technical Project Management",
+  "QA & Testing"
+];
 
 export default function ContractSection() {
   return (
     <RevealSection className="section contractSection" id="contract" staggerChildren>
-      <div className="contractStatus" role="status" aria-label="Open to contract work">
+      <div className="contractStatus" role="status" aria-label="Availability">
         <span className="contractDot" aria-hidden="true" />
-        Open to Contract Work
+        Open to full-time, contract, or consulting roles
       </div>
-      <h2 className="sectionTitle contractTitle">Let’s Build Something</h2>
+      <h2 className="sectionTitle contractTitle">Let&apos;s Build Something</h2>
       <p className="contractLead">
-        Looking for high-impact delivery with strong technical execution, QA rigor, and stakeholder clarity? I help
-        teams ship and scale reliably.
+        If you need someone who can align stakeholders, design the system, and deliver with QA rigor—I&apos;m ready to help.
       </p>
       <a href="mailto:alex.c.marroig@gmail.com" className="contractCta">
         Start a Conversation
       </a>
-      <p className="contractNote">Response in up to 48 hours</p>
+      <p className="contractNote">Typical response time: within 48 hours.</p>
 
       <div className="contractDivider" aria-hidden="true" />
 

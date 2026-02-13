@@ -83,7 +83,7 @@ export default function HeroCard() {
         </div>
       </article>
 
-      <a className="scrollCue" href="#core-stack" aria-label="Scroll to core stack section">
+      <a className="scrollCue" href="#current-focus" aria-label="Scroll to current focus section">
         Scroll
         <span aria-hidden="true">↓</span>
       </a>
