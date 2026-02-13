@@ -4,10 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/#selected-work", label: "Work" },
-  { href: "/about", label: "How I Think" },
-  { href: "/#current-focus", label: "Current Focus" },
+  { href: "/#work", label: "Work" },
+  { href: "/#about", label: "About" },
+  { href: "/#current-focus", label: "Mission Control" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -31,6 +30,7 @@ export default function Nav() {
               </Link>
             );
           })}
+          <a className="availabilityBadge" href="mailto:alex.c.marroig@gmail.com">Available for High-Impact Work</a>
         </nav>
       </div>
     </header>

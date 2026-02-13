@@ -1,14 +1,14 @@
 import ProjectCard from "@/components/ProjectCard";
 import RevealSection from "@/components/RevealSection";
-import { projects } from "@/src/data/projects";
+import { siteContent } from "@/src/data/content";
 
 export default function SelectedWorkSection() {
   return (
-    <RevealSection className="section" id="selected-work" staggerChildren>
+    <RevealSection className="section" id="work" staggerChildren>
       <h2 className="sectionTitle">Selected Work</h2>
-      <p className="sectionLead">Flip each card for problem framing, solution details, and impact.</p>
+      <p className="sectionLead">Desktop hover flips cards. On mobile, tap to flip.</p>
       <div className="projectGrid">
-        {projects.map((project) => (
+        {siteContent.projects.map((project) => (
           <ProjectCard key={project.title} {...project} />
         ))}
       </div>

@@ -1,10 +1,10 @@
 import TechPill from "@/components/ui/TechPill";
-import { coreStack } from "@/src/data/coreStack";
+import { siteContent } from "@/src/data/content";
 
 export default function CoreStack() {
   return (
     <div className="stackGrid" role="list" aria-label="Core stack categories">
-      {coreStack.map((group) => (
+      {siteContent.stackCategories.map((group) => (
         <article className="glassPanel stackCard" key={group.category} role="listitem">
           <h3 className="stackTitle">{group.category}</h3>
           <div className="techPillGroup">
