@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, useState } from "react";
+import { type CSSProperties, type MouseEvent, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const MAX_TILT = 8;
@@ -10,7 +10,7 @@ export default function HeroCard() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
 
-  const updateTilt = (event: React.MouseEvent<HTMLDivElement>) => {
+  const updateTilt = (event: MouseEvent<HTMLDivElement>) => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
@@ -23,7 +23,7 @@ export default function HeroCard() {
 
     setTilt({
       x: (0.5 - py) * MAX_TILT,
-      y: (px - 0.5) * MAX_TILT
+      y: (px - 0.5) * MAX_TILT,
     });
   };
 
@@ -34,7 +34,7 @@ export default function HeroCard() {
 
   const heroStyle = {
     "--mx": `${cursor.x}%`,
-    "--my": `${cursor.y}%`
+    "--my": `${cursor.y}%`,
   } as CSSProperties;
 
   return (
@@ -46,20 +46,13 @@ export default function HeroCard() {
         onMouseLeave={resetTilt}
         style={heroStyle}
         animate={{
-          transform: reducedMotion ? "none" : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
           transform: reducedMotion
             ? "none"
-            : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+            : `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         }}
         transition={{ type: "spring", stiffness: 120, damping: 12, mass: 0.7 }}
       >
         <div className="heroNoise" aria-hidden="true" />
-        <p className="heroKicker">Technical Project Manager | Technical PM | Systems Integrator | QA-minded Builder</p>
-        <h1 className="heroTitle">Shipping intelligent systems with clarity, control, and trust.</h1>
-        <p className="heroSummary">
-          PMP + PSM-I with 10+ years across pharma, tech, oil & gas, and manufacturing. I lead discovery →
-          delivery for AI customer service platforms, while staying close to integration, QA validation, and
-          production reliability.
         <p className="heroKicker">AI Product Manager • Technical PM • Systems Integrator</p>
         <h1 className="heroTitle">Building intelligent products that ship with trust.</h1>
         <p className="heroSummary">
