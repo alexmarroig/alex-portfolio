@@ -4,7 +4,7 @@ const HIGHLIGHTS = [
   "Post-M&A integration in pharma: 200+ people transition and 30+ regulated systems rollout.",
 ] as const;
 
-export default function About() {
+export default function AboutPage() {
   return (
     <section className="simplePage glassPanel about">
       <header className="aboutHeader">
@@ -26,9 +26,6 @@ export default function About() {
           ))}
         </ul>
       </section>
-    </section>
-  );
-}
     </section>
   );
 }
