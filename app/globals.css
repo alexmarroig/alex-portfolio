@@ -2,7 +2,6 @@
 
 /* ================================
    Global base
-================================ */
 
 :root {
   /* “Film grade” tweaks */
@@ -92,6 +91,11 @@ a {
   margin: 0;
   letter-spacing: -0.02em;
   font-size: clamp(1.5rem, 3vw, 1.95rem);
+}
+
+/* Typography polish */
+.sectionTitle {
+  letter-spacing: -0.02em;
   text-shadow: 0 0 22px rgba(90, 160, 255, 0.12);
 }
 
