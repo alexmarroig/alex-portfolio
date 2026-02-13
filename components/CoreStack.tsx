@@ -1,5 +1,6 @@
-import TechPill from "@/components/ui/TechPill";
+import TechBadge from "@/components/ui/TechBadge";
 import { siteContent } from "@/src/data/content";
+import { techCatalog } from "@/src/data/techCatalog";
 
 export default function CoreStack() {
   return (
@@ -7,9 +8,9 @@ export default function CoreStack() {
       {siteContent.stackCategories.map((group) => (
         <article className="glassPanel stackCard" key={group.category} role="listitem">
           <h3 className="stackTitle">{group.category}</h3>
-          <div className="techPillGroup">
+          <div className="badgeRow">
             {group.items.map((item) => (
-              <TechPill key={item.label} icon={item.icon} label={item.label} />
+              <TechBadge key={item} {...techCatalog[item]} compact />
             ))}
           </div>
         </article>

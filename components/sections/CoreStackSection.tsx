@@ -1,11 +1,11 @@
 import CoreStack from "@/components/CoreStack";
 import RevealSection from "@/components/RevealSection";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function CoreStackSection() {
   return (
     <RevealSection className="section" id="core-stack">
-      <h2 className="sectionTitle">Technology & Systems Stack</h2>
-      <p className="sectionLead">Core technologies I use across product delivery, integrations, automation, and AI systems.</p>
+      <SectionHeader title="Technology & Systems Stack" lead="The platforms and tools I use to bridge project leadership and implementation depth." />
       <CoreStack />
     </RevealSection>
   );

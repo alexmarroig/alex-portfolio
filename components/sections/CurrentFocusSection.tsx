@@ -1,24 +1,44 @@
-import RevealItem from "@/components/RevealItem";
+import SectionHeader from "@/components/ui/SectionHeader";
+import StatusPill from "@/components/ui/StatusPill";
+import TechBadge from "@/components/ui/TechBadge";
 import RevealSection from "@/components/RevealSection";
 import { siteContent } from "@/src/data/content";
+import { techCatalog } from "@/src/data/techCatalog";
 
 export default function CurrentFocusSection() {
+  const main = siteContent.currentFocus.main;
+
   return (
     <RevealSection className="section" id="current-focus">
-      <h2 className="sectionTitle">Current Focus</h2>
-      <p className="sectionLead">Execution priorities where I deliver immediate leverage.</p>
+      <SectionHeader title="Current Focus" lead="A curated view of what I’m actively building, shipping, and targeting next." />
 
-      <div className="focusVerticalStack">
-        {siteContent.currentFocus.map((item, index) => (
-          <RevealItem order={index} key={item.title}>
-            <article className="glassPanel focusVerticalCard">
-              <div className="focusVerticalHead">
-                <h3>{item.title}</h3>
-                <span className={`focusStatus ${item.status === "ACTIVE" ? "statusActive" : "statusFoundational"}`}>{item.status}</span>
-              </div>
-              <p>{item.description}</p>
-            </article>
-          </RevealItem>
+      <div className="focusCuratedGrid">
+        <article className="glassPanel focusCuratedCard mainCard">
+          <div className="focusHead">
+            <h3>{main.title}</h3>
+            <StatusPill status={main.status} />
+          </div>
+          <p>{main.summary}</p>
+          <div className="badgeRow">
+            {main.tags.map((tag) => (
+              <TechBadge key={tag} {...techCatalog[tag]} />
+            ))}
+          </div>
+        </article>
+
+        {siteContent.currentFocus.supporting.map((item) => (
+          <article key={item.title} className="glassPanel focusCuratedCard">
+            <div className="focusHead">
+              <h3>{item.title}</h3>
+              <StatusPill status={item.status} />
+            </div>
+            <p>{item.summary}</p>
+            <div className="badgeRow">
+              {item.tags.map((tag) => (
+                <TechBadge key={tag} {...techCatalog[tag]} compact />
+              ))}
+            </div>
+          </article>
         ))}
       </div>
     </RevealSection>

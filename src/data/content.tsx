@@ -1,213 +1,156 @@
-import { type ReactNode } from "react";
 import type { IconType } from "react-icons";
-import { FaAward, FaBullseye, FaProjectDiagram, FaSyncAlt, FaTrophy } from "react-icons/fa";
-import { BiLogoVisualStudio } from "react-icons/bi";
-import { RiNextjsFill, RiNodejsLine, RiReactjsLine, RiTailwindCssFill, RiVercelFill } from "react-icons/ri";
-import {
-  SiGithub,
-  SiOpenai,
-  SiPostgresql,
-  SiPython,
-  SiTypescript,
-  SiSqlite,
-  SiDatabricks
-} from "react-icons/si";
+import { FaAward, FaCertificate, FaPeopleCarry, FaProjectDiagram, FaShieldAlt, FaTrophy } from "react-icons/fa";
+import { MdPrecisionManufacturing } from "react-icons/md";
+import type { TechKey } from "@/src/data/techCatalog";
 
-export type ProjectStatus = "ACTIVE" | "FOUNDATIONAL" | "PRIVATE";
+export type ProjectStatus = "BUILDING" | "SHIPPING" | "OPEN TO WORK";
 
 export type SiteContent = {
   hero: {
-    headline: string;
-    supportLine: string;
-    experienceLine: string;
-    subhead: string[];
+    name: string;
+    roleLine: string;
+    narrative: string[];
+    humanLayer: string;
     ctas: { label: string; href: string; external?: boolean }[];
+    proofPoints: string[];
   };
-  currentFocus: { title: string; description: string; status: "ACTIVE" | "FOUNDATIONAL" }[];
-  stackCategories: { category: string; items: { label: string; icon: IconType }[] }[];
-  credentials: {
-    subtitle: string;
-    certs: { title: string; issuer: string; year: string; description: string; icon: IconType }[];
-    awards: { title: string; issuer: string; year: string; description: string; icon: IconType }[];
+  currentFocus: {
+    main: { title: string; summary: string; tags: TechKey[]; status: ProjectStatus };
+    supporting: { title: string; summary: string; tags: TechKey[]; status: ProjectStatus }[];
   };
+  stackCategories: { category: string; items: TechKey[] }[];
+  certifications: { title: string; issuer: string; date: string; icon: IconType }[];
+  awards: { title: string; detail: string; icon: IconType }[];
+  about: { heading: string; paragraphs: string[] };
   projects: {
     title: string;
     subtitle: string;
     description: string;
     status: ProjectStatus;
-    icon: ReactNode;
-    tech: string[];
+    tech: TechKey[];
     caseStudy: { problem: string; solution: string; impact: string };
     links: { github?: string; live?: string };
-    isPrivate?: boolean;
   }[];
-  about: { heading: string; paragraphs: string[] };
 };
 
 export const siteContent: SiteContent = {
   hero: {
-    headline: "Technical Project Manager who builds, not just manages.",
-    supportLine: "PMP • PSM-I • Product (PM3) • Mechanical Engineer",
-    experienceLine: "10+ years bridging business + engineering + software delivery across industrial, pharma, and AI enterprise.",
-    subhead: [
-      "I lead complex systems from scope → architecture → delivery.",
-      "I ship automation, QA strategy, integrations, and AI workflows in production."
+    name: "I’m Alex de Freitas Marroig",
+    roleLine: "Technical Project Manager who builds, not just manages.",
+    narrative: [
+      "I lead cross-functional delivery where business outcomes, technical architecture, and execution discipline all have to align.",
+      "My edge is systems thinking: translating ambiguity into clear plans, then building the workflows, automations, and integrations that make those plans real.",
+      "From industrial engineering to enterprise AI, I operate end-to-end—from strategy and stakeholder alignment to shipping implementation."
     ],
+    humanLayer: "Married, faith-driven, and family-first — values that keep my leadership grounded and steady.",
     ctas: [
-      { label: "View Selected Work", href: "#work" },
-      { label: "Download Resume", href: "/alex-de-freitas-marroig-resume.pdf" },
-      { label: "Let’s Talk", href: "mailto:alex.c.marroig@gmail.com" }
+      { label: "Download Resume (PDF)", href: "/alex-de-freitas-marroig-resume.pdf" },
+      { label: "LinkedIn", href: "https://www.linkedin.com", external: true },
+      { label: "GitHub", href: "https://github.com/alexmarroig", external: true },
+      { label: "Start a Conversation", href: "mailto:alex.c.marroig@gmail.com" }
+    ],
+    proofPoints: ["10+ years delivery leadership", "PMP Certified", "Multi-industry execution", "Automation + AI systems", "Enterprise program delivery"]
+  },
+  currentFocus: {
+    main: {
+      title: "Enterprise AI Delivery Systems",
+      summary: "Designing onboarding + QA + integration layers so AI products ship reliably in regulated environments.",
+      tags: ["RAG", "NLP", "API", "Power Automate"],
+      status: "BUILDING"
+    },
+    supporting: [
+      {
+        title: "Cross-Platform PM Tooling",
+        summary: "Unifying Jira, Confluence, ClickUp, and ServiceNow workflows for tighter delivery visibility.",
+        tags: ["Jira", "Confluence", "ClickUp", "ServiceNow"],
+        status: "SHIPPING"
+      },
+      {
+        title: "High-Impact PM Leadership Roles",
+        summary: "Open to TPM / Program roles where strategy and implementation ownership are equally valued.",
+        tags: ["MS Project", "Primavera P6", "SAP"],
+        status: "OPEN TO WORK"
+      }
     ]
   },
-  currentFocus: [
-    {
-      title: "AI Enterprise Onboarding & Conversational Systems",
-      description: "Designing onboarding journeys that connect enterprise workflows with AI copilots teams can trust.",
-      status: "ACTIVE"
-    },
-    {
-      title: "QA Automation & Quality Systems",
-      description: "Building pragmatic QA frameworks that improve release confidence without slowing down delivery.",
-      status: "ACTIVE"
-    },
-    {
-      title: "Systems Integration & API Architecture",
-      description: "Aligning APIs, process automation, and governance so data and decisions move cleanly across teams.",
-      status: "ACTIVE"
-    },
-    {
-      title: "Industrial Program Delivery & M&A Integration",
-      description: "Applying industrial execution rigor to large, multi-stakeholder programs and post-acquisition transitions.",
-      status: "FOUNDATIONAL"
-    }
-  ],
   stackCategories: [
     {
-      category: "Frontend",
-      items: [
-        { label: "Next.js", icon: RiNextjsFill },
-        { label: "React", icon: RiReactjsLine },
-        { label: "TypeScript", icon: SiTypescript },
-        { label: "Tailwind", icon: RiTailwindCssFill }
-      ]
+      category: "Delivery + Systems",
+      items: ["API", "MySQL/SQL", "HTML/CSS", "Power Apps", "Power Automate", "Google Analytics"]
     },
     {
-      category: "Backend / Automation",
-      items: [
-        { label: "Node.js", icon: RiNodejsLine },
-        { label: "Python", icon: SiPython },
-        { label: "SQL", icon: SiSqlite },
-        { label: "APIs", icon: FaProjectDiagram },
-        { label: "Power Automate", icon: FaProjectDiagram }
-      ]
+      category: "AI + Analytics",
+      items: ["NLP", "RAG", "Power BI", "Tableau", "VBA"]
     },
     {
-      category: "AI / Data",
-      items: [
-        { label: "OpenAI", icon: SiOpenai },
-        { label: "RAG", icon: FaSyncAlt },
-        { label: "Vector DB Concepts", icon: SiDatabricks },
-        { label: "Postgres", icon: SiPostgresql }
-      ]
+      category: "Execution Platforms",
+      items: ["Jira", "Confluence", "ClickUp", "MS Project", "Primavera P6", "ServiceNow", "SAP"]
     },
     {
-      category: "Dev & Ops",
-      items: [
-        { label: "GitHub", icon: SiGithub },
-        { label: "Vercel", icon: RiVercelFill },
-        { label: "VS Code", icon: BiLogoVisualStudio }
-      ]
+      category: "Modern Web",
+      items: ["Next.js", "React", "TypeScript", "Node"]
     }
   ],
-  credentials: {
-    subtitle: "Signals that I operate with rigor and deliver outcomes.",
-    certs: [
-      {
-        title: "PMP",
-        issuer: "Project Management Institute (PMI)",
-        year: "Active",
-        description: "Program-level planning, risk, cost, governance.",
-        icon: FaTrophy
-      },
-      {
-        title: "PSM I",
-        issuer: "Scrum.org",
-        year: "Certified",
-        description: "Agile execution, iterative delivery, team velocity.",
-        icon: FaSyncAlt
-      },
-      {
-        title: "Product Management (PM3)",
-        issuer: "Product School",
-        year: "Completed",
-        description: "Product thinking, prioritization, outcomes over output.",
-        icon: FaBullseye
-      }
-    ],
-    awards: [
-      {
-        title: "Top Performer / Best Employee",
-        issuer: "SANDECH",
-        year: "Multiple years",
-        description: "Recognized for delivery excellence and ownership across multiple years.",
-        icon: FaAward
-      }
+  certifications: [
+    { title: "PMP", issuer: "PMI", date: "Dec/2023", icon: FaTrophy },
+    { title: "PSM I", issuer: "Scrum.org", date: "Sep/2023", icon: FaCertificate },
+    { title: "Six Sigma Green Belt", issuer: "Master Método", date: "Oct/2023", icon: FaShieldAlt },
+    { title: "Product Management", issuer: "PM3", date: "Oct/2023", icon: FaProjectDiagram }
+  ],
+  awards: [
+    {
+      title: "Top Performer / Employee Recognition",
+      detail: "SANDECH — recognized for multiple consecutive years of delivery excellence and ownership.",
+      icon: FaAward
+    }
+  ],
+  about: {
+    heading: "I convert complexity into systems teams can execute with confidence.",
+    paragraphs: [
+      "I lead in environments where compliance, schedule pressure, and executive expectations are all real at once.",
+      "My work style combines planning rigor with technical hands-on depth, so decisions stay grounded in implementation reality.",
+      "The outcome I optimize for is reliable delivery: launched programs, stable operations, and stakeholder trust earned over time."
     ]
   },
   projects: [
     {
-      title: "Hypera Pharma — Factory / Systems Integration",
-      subtitle: "Systems Leadership Case",
-      description: "Integration governance connecting operations, readiness, and delivery decision-making.",
-      status: "PRIVATE",
-      icon: <FaProjectDiagram aria-hidden="true" />,
-      tech: ["Systems Integration", "Stakeholder Governance", "Readiness Planning"],
+      title: "SANDECH — Industrial Engineering Portfolios",
+      subtitle: "Case Study",
+      description: "Complex industrial project portfolios with strict governance across scope, risk, and execution cadence.",
+      status: "SHIPPING",
+      tech: ["Primavera P6", "MS Project", "SAP", "Power BI"],
       caseStudy: {
-        problem: "Factory and systems initiatives required tight coordination across technical and business stakeholders.",
-        solution: "Structured cross-functional governance rituals, integration checkpoints, and readiness criteria for delivery teams.",
-        impact: "Improved alignment and launch readiness across integrated systems without sacrificing execution speed."
+        problem: "Engineering portfolios were fragmented across planning tracks, making coordination and visibility difficult.",
+        solution: "Implemented unified delivery governance, standardized reporting, and risk controls across workstreams.",
+        impact: "Improved predictability and executive confidence while sustaining throughput on complex programs."
       },
-      links: {},
-      isPrivate: true
+      links: {}
     },
     {
-      title: "SANDECH — Industrial Engineering Program Delivery",
-      subtitle: "Industrial Engineering",
-      description: "Complex engineering portfolio delivery with cost, risk, and schedule discipline.",
-      status: "PRIVATE",
-      icon: <FaAward aria-hidden="true" />,
-      tech: ["Program Delivery", "Cost Control", "Risk"],
+      title: "Pharma Post-M&A Integration",
+      subtitle: "Case Study",
+      description: "Factory migration + people transition + 30+ validated systems managed under a single delivery playbook.",
+      status: "SHIPPING",
+      tech: ["ServiceNow", "Jira", "Confluence", "API"],
       caseStudy: {
-        problem: "Large industrial initiatives demanded strict coordination across engineering scope, budgets, and multi-team schedules.",
-        solution: "Led program governance with structured planning, risk controls, and execution cadences shared across stakeholders.",
-        impact: "Delivered complex portfolios with strong financial control and schedule discipline."
+        problem: "Post-acquisition integration introduced operational and compliance risk across teams, tools, and systems.",
+        solution: "Led phased integration planning with dependency mapping, stakeholder rituals, and validation-aware change governance.",
+        impact: "Delivered a stable transition with business continuity while preserving validation standards."
       },
-      links: {},
-      isPrivate: true
+      links: {}
     },
     {
-      title: "Inbenta — AI Platform Delivery & Integrations",
-      subtitle: "AI Delivery",
-      description: "Enterprise AI delivery focused on QA systems, integrations, and automation outcomes.",
-      status: "ACTIVE",
-      icon: <SiOpenai aria-hidden="true" />,
-      tech: ["QA Systems", "Integrations", "Automation", "Client Delivery"],
+      title: "Inbenta — AI Platform Delivery",
+      subtitle: "Building Now",
+      description: "Enterprise conversational AI delivery with QA automation and integration reliability.",
+      status: "BUILDING",
+      tech: ["NLP", "RAG", "API", "Power Automate", "React"],
       caseStudy: {
-        problem: "Enterprise clients needed conversational AI solutions integrated into existing systems with predictable quality.",
-        solution: "Implemented QA workflows, integration playbooks, and automation patterns for consistent client delivery.",
-        impact: "Raised delivery reliability and operational trust across production AI implementations."
+        problem: "Enterprise teams needed AI rollout plans that balanced speed with quality and governance.",
+        solution: "Built QA workflows, integration standards, and release controls to reduce production risk.",
+        impact: "Increased implementation confidence and improved time-to-value for enterprise clients."
       },
-      links: {
-        github: "https://github.com/alexmarroig"
-      }
+      links: { github: "https://github.com/alexmarroig" }
     }
-  ],
-  about: {
-    heading: "I structure complex delivery into systems that teams can execute.",
-    paragraphs: [
-      "I work in industry-heavy environments where timelines, compliance, and C-level expectations are all real at the same time. My role is to translate complexity into aligned plans and execution clarity.",
-      "I stay close to technical reality: architecture decisions, integration risks, QA strategy, and automation opportunities. That hands-on depth keeps delivery grounded and decisions faster.",
-      "My focus is outcomes—reliable launches, stable operations, and stakeholder trust built through consistent delivery discipline."
-    ]
-  }
+  ]
 };
