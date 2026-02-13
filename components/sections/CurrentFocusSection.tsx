@@ -4,10 +4,12 @@ import RevealSection from "@/components/RevealSection";
 export default function CurrentFocusSection() {
   return (
     <RevealSection className="section" id="current-focus" staggerChildren>
-      <h2 className="sectionTitle">Current Focus</h2>
-      <p className="sectionLead">Where I create the most value right now.</p>
+      <div className="currentFocusHeader">
+        <h2 className="sectionTitle">Current Focus</h2>
+        <p className="sectionLead">Where I create the most value right now.</p>
+      </div>
 
-      <div className="focusGrid">
+      <div className="focusGrid focusGridStacked">
         <RevealItem order={0}>
           <article className="glassPanel focusCard">
             <h3>Open To</h3>
