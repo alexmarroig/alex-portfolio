@@ -1,6 +1,7 @@
 "use client";
 
 import { createElement, forwardRef, useEffect, useMemo, useState } from "react";
+import type React from "react";
 
 type MotionProps = Record<string, unknown>;
 
@@ -26,7 +27,7 @@ function cleanProps(props: MotionProps) {
   return next;
 }
 
-function makeMotion(tag: keyof JSX.IntrinsicElements) {
+function makeMotion(tag: keyof React.JSX.IntrinsicElements) {
   return forwardRef<HTMLElement, MotionProps>(function MotionTag(props, ref) {
     return createElement(tag, { ...cleanProps(props), ref }, props.children as React.ReactNode);
   });
@@ -36,7 +37,7 @@ export const motion = new Proxy(
   {},
   {
     get(_target, prop: string) {
-      return makeMotion(prop as keyof JSX.IntrinsicElements);
+      return makeMotion(prop as keyof React.JSX.IntrinsicElements);
     }
   }
 ) as Record<string, ReturnType<typeof makeMotion>>;
