@@ -76,7 +76,7 @@ export const siteContent: SiteContent = {
     ],
     ctas: [
       { label: "View Featured Work", href: "#work", variant: "primary" },
-      { label: "Download Resume", href: "/alex-de-freitas-marroig-resume.pdf", variant: "secondary" },
+      { label: "Download Resume", href: "/api/analytics/resume-download?file=%2Falex-de-freitas-marroig-resume.pdf", variant: "secondary" },
       { label: "Get in Touch", href: "/contact", variant: "text" }
     ]
   },

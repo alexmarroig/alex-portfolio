@@ -38,7 +38,12 @@ export default function HeroCard() {
 
       <div className="heroActions" aria-label="Primary calls to action">
         {hero.ctas.map((cta) => (
-          <a key={cta.label} href={cta.href} className={`btn ${cta.variant === "primary" ? "btnPrimary" : cta.variant === "secondary" ? "btnGhost" : "btnText"}`}>
+          <a
+            key={cta.label}
+            href={cta.href}
+            data-analytics={cta.href.includes("resume-download") ? "resume-download" : undefined}
+            className={`btn ${cta.variant === "primary" ? "btnPrimary" : cta.variant === "secondary" ? "btnGhost" : "btnText"}`}
+          >
             {cta.label}
           </a>
         ))}
