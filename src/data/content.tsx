@@ -68,7 +68,7 @@ export const siteContent: SiteContent = {
     headline: "Technical Project Manager who builds, not just manages.",
     subheadline: "Systems Integrator | QA-minded Builder | Delivery & Architecture",
     paragraph:
-      "I bridge business strategy with deep technical execution—structuring complexity, solving hard systems problems, and shipping outcomes. Across 10+ years and multiple industries, I’ve led programs spanning QA, automation, integrations, support, and coding, including M&A assessment and integration work with C-level stakeholders.",
+      "I bridge business strategy with deep technical execution—structuring complexity, solving hard systems problems, and shipping outcomes. Across 10+ years and multiple industries, I’ve led programs spanning QA, automation, integrations, support, and coding, including post-merger integration delivery with C-level and cross-functional stakeholders.",
     humanLine: [
       { icon: FaHeart, label: "Husband" },
       { icon: FaCross, label: "Faith-driven" },
@@ -90,10 +90,10 @@ export const siteContent: SiteContent = {
     },
     supporting: [
       {
-        title: "M&A Due Diligence + Integration Planning",
-        summary: "Shipping practical operating plans for billion-scale initiatives with executive and cross-functional alignment.",
+        title: "Post-Merger Integration Planning",
+        summary: "Designing and executing practical post-merger operating plans with executive and cross-functional alignment.",
         tags: ["M&A", "C-Level", "Governance"],
-        status: "SHIPPING"
+        status: "BUILDING"
       },
       {
         title: "QA & Reliability Delivery",
@@ -214,14 +214,14 @@ export const siteContent: SiteContent = {
       }
     },
     {
-      title: "M&A Technical Due Diligence & Integration",
+      title: "Post-Merger Technical Integration",
       subtitle: "Strategic Integration",
-      description: "Multi-stakeholder due diligence and integration planning for high-value, high-visibility initiatives.",
-      status: "SHIPPING",
-      stack: ["Assessment", "Architecture", "Execution"],
+      description: "Multi-stakeholder post-merger integration planning for high-value, high-visibility initiatives.",
+      status: "BUILDING",
+      stack: ["Integration", "Architecture", "Execution"],
       caseStudy: {
         problem: "Post-acquisition programs required aligned technical and operational integration decisions.",
-        solution: "Led practical due diligence and integration roadmaps with C-level and cross-functional stakeholders.",
+        solution: "Led practical post-merger integration roadmaps with C-level and cross-functional stakeholders.",
         impact: "Reduced integration ambiguity and enabled confident phased execution plans."
       }
     }
