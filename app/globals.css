@@ -138,9 +138,19 @@ a {
   position: sticky;
   top: 0;
   z-index: 40;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(5, 8, 18, 0.78);
+  background: rgba(5, 8, 18, 0.72);
   backdrop-filter: blur(14px);
+}
+
+.navShell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 20px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(8, 13, 27, 0.38), transparent);
 }
 
 .navInner {
@@ -1796,6 +1806,8 @@ a {
 body {
   background:
     radial-gradient(circle at 20% -10%, rgba(101, 128, 255, 0.24), transparent 42%),
+    radial-gradient(circle at 78% 20%, rgba(73, 241, 255, 0.12), transparent 42%),
+    radial-gradient(circle at 52% 84%, rgba(255, 62, 166, 0.08), transparent 46%),
     linear-gradient(180deg, #070b14, #0a1020 55%, #090f1d 100%);
 }
 .siteBody::after { display: none; }
