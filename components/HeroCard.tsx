@@ -1,16 +1,27 @@
-import { siteContent } from "@/src/data/content";
+"use client";
+
+import { useSiteContent } from "@/src/data/siteContentContext";
 
 export default function HeroCard() {
-  const { hero } = siteContent;
+  const { content } = useSiteContent();
+  const { hero } = content;
 
   return (
     <article className="heroOpenLayout" aria-label="Intro hero section">
       <p className="heroIntroLine">
-        Hey, I’m <span>Alex</span> de Freitas <span>Marroig</span>
+        {hero.intro}
       </p>
 
       <h1 className="heroOpenTitle">
-        Technical Project Manager who <span className="heroBuildsGradient">builds</span>, not just manages.
+        {hero.headline.includes("builds") ? (
+          <>
+            {hero.headline.split("builds")[0]}
+            <span className="heroBuildsGradient">builds</span>
+            {hero.headline.split("builds")[1]}
+          </>
+        ) : (
+          hero.headline
+        )}
       </h1>
 
       <p className="heroSubHeadline">{hero.subheadline}</p>

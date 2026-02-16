@@ -1,35 +1,33 @@
+"use client";
+
 import RevealItem from "@/components/RevealItem";
 import RevealSection from "@/components/RevealSection";
-
-const areas = [
-  "Systems Architecture",
-  "Full-Stack Development",
-  "AI/ML Integration",
-  "Technical Project Management",
-  "QA & Testing"
-];
+import { useSiteContent } from "@/src/data/siteContentContext";
 
 export default function ContractSection() {
+  const { content } = useSiteContent();
+  const { contract } = content;
+
   return (
     <RevealSection className="section contractSection" id="contract" staggerChildren>
       <div className="contractStatus" role="status" aria-label="Availability">
         <span className="contractDot" aria-hidden="true" />
-        Open to full-time, contract, or consulting roles
+        {contract.availability}
       </div>
-      <h2 className="sectionTitle contractTitle">Let&apos;s Build Something</h2>
+      <h2 className="sectionTitle contractTitle">{contract.title}</h2>
       <p className="contractLead">
-        If you need someone who can align stakeholders, design the system, and deliver with QA rigor—I&apos;m ready to help.
+        {contract.lead}
       </p>
       <a href="mailto:alex.c.marroig@gmail.com" className="contractCta">
-        Start a Conversation
+        {contract.ctaLabel}
       </a>
-      <p className="contractNote">Typical response time: within 48 hours.</p>
+      <p className="contractNote">{contract.note}</p>
 
       <div className="contractDivider" aria-hidden="true" />
 
-      <h3 className="contractSubTitle">What I Take On</h3>
+      <h3 className="contractSubTitle">{contract.subTitle}</h3>
       <div className="contractChipRow">
-        {areas.map((item, index) => (
+        {contract.areas.map((item, index) => (
           <RevealItem order={index} key={item}>
             <span className="contractChip">{item}</span>
           </RevealItem>
