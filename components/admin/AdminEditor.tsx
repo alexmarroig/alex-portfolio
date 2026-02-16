@@ -1,36 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import type { SiteContent } from "@/src/data/content";
 import { useSiteContent } from "@/src/data/siteContentContext";
 
-type TabKey = "hero" | "focus" | "about" | "projects" | "theme" | "analytics";
-
-type AnalyticsEntry = { label: string; value: number };
-
-type AnalyticsSummary = {
-  totals: {
-    events: number;
-    pageviews: number;
-    resumeDownloads: number;
-    uniqueVisitors: number;
-  };
-  topPages: AnalyticsEntry[];
-  topReferrers: AnalyticsEntry[];
-  topSources: AnalyticsEntry[];
-  topCountries: AnalyticsEntry[];
-  topKeywords: AnalyticsEntry[];
-  llmAgents: AnalyticsEntry[];
-  timeline: { date: string; pageviews: number; resumeDownloads: number; visitors: number }[];
-};
+type TabKey = "hero" | "focus" | "about" | "projects" | "theme";
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: "hero", label: "Hero" },
   { key: "focus", label: "Current Focus" },
   { key: "about", label: "About + Contract" },
   { key: "projects", label: "Projetos" },
-  { key: "theme", label: "Tema" },
-  { key: "analytics", label: "Analytics" }
+  { key: "theme", label: "Tema" }
 ];
 
 function reorder<T>(items: T[], from: number, to: number) {
@@ -40,55 +21,15 @@ function reorder<T>(items: T[], from: number, to: number) {
   return copy;
 }
 
-function MetricTable({ title, items }: { title: string; items: AnalyticsEntry[] }) {
-  return (
-    <div className="analyticsCard">
-      <h3>{title}</h3>
-      {items.length === 0 ? (
-        <p className="adminHint">Sem dados ainda.</p>
-      ) : (
-        <ul className="analyticsList">
-          {items.map((item) => (
-            <li key={`${title}-${item.label}`}>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 export default function AdminEditor() {
   const { content, updateContent, theme, setThemeValue, resetAll } = useSiteContent();
   const [activeTab, setActiveTab] = useState<TabKey>("hero");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [loadingAnalytics, setLoadingAnalytics] = useState(false);
-  const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     window.location.href = "/admin/login";
   }
-
-  async function loadAnalytics() {
-    setLoadingAnalytics(true);
-    const response = await fetch("/api/admin/analytics", { cache: "no-store" });
-    const data = (await response.json()) as { ok: boolean; analytics?: AnalyticsSummary };
-    setAnalytics(data.analytics ?? null);
-    setLoadingAnalytics(false);
-  }
-
-  useEffect(() => {
-    if (activeTab !== "analytics") return;
-    loadAnalytics().catch(() => {
-      setAnalytics(null);
-      setLoadingAnalytics(false);
-    });
-  }, [activeTab]);
-
-  const timeline = useMemo(() => analytics?.timeline ?? [], [analytics]);
 
   return (
     <section className="section simplePage glassPanel adminPage">
@@ -199,55 +140,6 @@ export default function AdminEditor() {
                   </label>
                 ))}
               </div>
-            </>
-          ) : null}
-
-          {activeTab === "analytics" ? (
-            <>
-              <div className="analyticsTopRow">
-                <h2>Site Analytics</h2>
-                <button className="btn btnGhost" onClick={() => loadAnalytics()} disabled={loadingAnalytics}>
-                  {loadingAnalytics ? "Atualizando..." : "Atualizar"}
-                </button>
-              </div>
-
-              {!analytics ? (
-                <p className="adminHint">Ainda não há dados. Navegue no site para gerar pageviews.</p>
-              ) : (
-                <>
-                  <div className="analyticsTotalsGrid">
-                    <article className="analyticsMiniCard"><span>Eventos</span><strong>{analytics.totals.events}</strong></article>
-                    <article className="analyticsMiniCard"><span>Pageviews</span><strong>{analytics.totals.pageviews}</strong></article>
-                    <article className="analyticsMiniCard"><span>Downloads CV</span><strong>{analytics.totals.resumeDownloads}</strong></article>
-                    <article className="analyticsMiniCard"><span>Visitantes únicos</span><strong>{analytics.totals.uniqueVisitors}</strong></article>
-                  </div>
-
-                  <div className="analyticsGrid">
-                    <MetricTable title="Top páginas" items={analytics.topPages} />
-                    <MetricTable title="Top fontes" items={analytics.topSources} />
-                    <MetricTable title="Top referrers" items={analytics.topReferrers} />
-                    <MetricTable title="Top países" items={analytics.topCountries} />
-                    <MetricTable title="Keywords" items={analytics.topKeywords} />
-                    <MetricTable title="Agentes LLM/bot" items={analytics.llmAgents} />
-                  </div>
-
-                  <div className="analyticsCard">
-                    <h3>Últimos 14 dias</h3>
-                    {timeline.length === 0 ? (
-                      <p className="adminHint">Sem dados de timeline.</p>
-                    ) : (
-                      <ul className="analyticsList timelineList">
-                        {timeline.map((row) => (
-                          <li key={row.date}>
-                            <span>{row.date}</span>
-                            <strong>PV {row.pageviews} • DL {row.resumeDownloads} • U {row.visitors}</strong>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </>
-              )}
             </>
           ) : null}
         </div>

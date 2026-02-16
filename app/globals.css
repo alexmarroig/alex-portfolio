@@ -1942,78 +1942,25 @@ body {
 
 .neonGamePage {
   padding: 24px;
-  display: grid;
-  gap: 12px;
-}
-
-.neonTopRow {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .neonGameHud {
   display: grid;
-  gap: 6px;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-}
-
-.neonGameHud p {
-  margin: 0;
-  border: 1px solid rgba(130, 170, 255, 0.24);
-  border-radius: 10px;
-  padding: 8px 10px;
-  background: rgba(10, 16, 35, 0.52);
-}
-
-.neonLevelMeter {
-  height: 8px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: rgba(125, 160, 255, 0.16);
-  border: 1px solid rgba(125, 160, 255, 0.3);
-}
-
-.neonLevelMeter > span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent2), var(--accent));
-  transition: width 220ms ease;
-}
-
-.neonFlash {
-  margin: 0;
-  color: #b8f7ff;
-  font-size: 0.95rem;
+  gap: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
 .neonArena {
   position: relative;
-  margin-top: 8px;
-  height: 430px;
+  margin-top: 14px;
+  height: 420px;
   border-radius: 18px;
   border: 1px solid rgba(73, 241, 255, 0.3);
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 62, 166, 0.15), transparent 45%),
     radial-gradient(circle at 80% 70%, rgba(73, 241, 255, 0.18), transparent 42%),
-    linear-gradient(145deg, rgba(4, 8, 20, 0.9), rgba(5, 13, 33, 0.95));
+    rgba(4, 8, 20, 0.8);
   overflow: hidden;
-}
-
-.neonArena::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.1;
-  pointer-events: none;
-  background-image: linear-gradient(rgba(160, 198, 255, 0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(160, 198, 255, 0.35) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.neonArena.isOverdrive {
-  box-shadow: inset 0 0 35px rgba(73, 241, 255, 0.2), 0 0 35px rgba(255, 62, 166, 0.18);
 }
 
 .neonOverlay {
@@ -2025,17 +1972,11 @@ body {
   gap: 10px;
 }
 
-.neonHint {
-  margin: 0;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
 .neonTarget {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   border-radius: 999px;
   border: none;
   cursor: crosshair;
@@ -2044,180 +1985,12 @@ body {
   animation: pulseTarget 900ms ease-in-out infinite;
 }
 
-.neonTarget > span {
-  position: absolute;
-  inset: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 999px;
-}
-
-.neonTarget.isBonus {
-  background: radial-gradient(circle at 30% 30%, #fff8c5, #ffd86f 35%, #ff8f4f 72%);
-  box-shadow: 0 0 26px rgba(255, 206, 92, 0.85), 0 0 48px rgba(255, 158, 62, 0.5);
-}
-
-.neonTarget.isTrap {
-  background: radial-gradient(circle at 30% 30%, #ffd2d9, #ff5f80 36%, #6e001a 80%);
-  box-shadow: 0 0 22px rgba(255, 95, 128, 0.75), 0 0 48px rgba(150, 0, 40, 0.6);
-}
-
 @keyframes pulseTarget {
   0%,
   100% {
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(0.84);
+    transform: translate(-50%, -50%) scale(0.88);
   }
-}
-
-.adminLoginPage {
-  padding: 24px;
-  max-width: 520px;
-  margin: 50px auto 0;
-}
-
-.adminLoginForm {
-  display: grid;
-  gap: 6px;
-}
-
-.adminHeaderRow {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.adminHeaderActions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.adminStudioLayout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 16px;
-}
-
-.adminSidebar {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px;
-  display: grid;
-  gap: 8px;
-  align-content: start;
-  background: rgba(11, 16, 35, 0.45);
-}
-
-.adminSidebarItem {
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text);
-  border-radius: 10px;
-  padding: 10px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.adminSidebarItem.isActive,
-.adminSidebarItem:hover {
-  background: rgba(73, 241, 255, 0.12);
-  border-color: rgba(73, 241, 255, 0.4);
-}
-
-.adminPanel {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  background: rgba(11, 16, 35, 0.35);
-}
-
-@media (max-width: 880px) {
-  .adminStudioLayout {
-    grid-template-columns: 1fr;
-  }
-
-  .adminSidebar {
-    grid-auto-flow: column;
-    overflow-x: auto;
-  }
-}
-
-.analyticsTopRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.analyticsTotalsGrid {
-  margin-top: 8px;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-.analyticsMiniCard {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px;
-  background: rgba(11, 16, 35, 0.42);
-}
-
-.analyticsMiniCard span {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-.analyticsMiniCard strong {
-  font-size: 1.1rem;
-}
-
-.analyticsGrid {
-  margin-top: 12px;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.analyticsCard {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px;
-  background: rgba(11, 16, 35, 0.34);
-}
-
-.analyticsCard h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.analyticsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.analyticsList li {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px dashed rgba(156, 180, 255, 0.2);
-  padding-bottom: 6px;
-}
-
-.analyticsList li span {
-  color: #d9e7ff;
-  word-break: break-word;
-}
-
-.timelineList li {
-  align-items: center;
 }

@@ -5,7 +5,6 @@ import Container from "@/components/Container";
 import FloatingTalk from "@/components/FloatingTalk";
 import Footer from "@/components/Footer";
 import LoadingOverlay from "@/components/LoadingOverlay";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { SiteContentProvider } from "@/src/data/siteContentContext";
 import "./globals.css";
 
@@ -88,13 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="siteBody">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
-
         <SiteContentProvider>
-          <Suspense fallback={null}>
-            <AnalyticsTracker />
-          </Suspense>
           <LoadingOverlay />
           <Nav />
           <Container>{children}</Container>
