@@ -1,12 +1,15 @@
+"use client";
+
 import RevealSection from "@/components/RevealSection";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
 import StatusPill from "@/components/ui/StatusPill";
 import Tag from "@/components/ui/Tag";
-import { siteContent } from "@/src/data/content";
+import { useSiteContent } from "@/src/data/siteContentContext";
 
 export default function CurrentFocusSection() {
-  const { currentFocus } = siteContent;
+  const { content } = useSiteContent();
+  const { currentFocus } = content;
 
   return (
     <RevealSection className="section" id="current-focus">
