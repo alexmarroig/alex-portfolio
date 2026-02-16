@@ -8,7 +8,7 @@ const links = [
   { href: "/#about", label: "About" },
   { href: "/#current-focus", label: "Mission Control" },
   { href: "/contact", label: "Contact" },
-  { href: "/game", label: "Play Game (Optional)" }
+  { href: "/game", label: "Play Game" }
 ];
 
 export default function Nav() {

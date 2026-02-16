@@ -43,6 +43,15 @@ export type SiteContent = {
   certifications: { title: string; issuer: string; year: string; icon: IconType }[];
   awards: string[];
   about: { heading: string; paragraphs: string[] };
+  contract: {
+    availability: string;
+    title: string;
+    lead: string;
+    ctaLabel: string;
+    note: string;
+    subTitle: string;
+    areas: string[];
+  };
   projects: {
     title: string;
     subtitle: string;
@@ -67,7 +76,7 @@ export const siteContent: SiteContent = {
     ],
     ctas: [
       { label: "View Featured Work", href: "#work", variant: "primary" },
-      { label: "Download Resume", href: "/alex-de-freitas-marroig-resume.pdf", variant: "secondary" },
+      { label: "Download Resume", href: "/api/analytics/resume-download?file=%2Falex-de-freitas-marroig-resume.pdf", variant: "secondary" },
       { label: "Get in Touch", href: "/contact", variant: "text" }
     ]
   },
@@ -150,6 +159,21 @@ export const siteContent: SiteContent = {
       "I’m most effective where business pressure and technical depth collide: regulated environments, integration-heavy programs, and fast-moving product delivery.",
       "My operating model is simple—clarify outcomes, architect the system, then execute with QA discipline and close stakeholder alignment.",
       "The result is practical, end-to-end delivery: clearer decisions, healthier releases, and stronger trust from teams to C-level leadership."
+    ]
+  },
+  contract: {
+    availability: "Open to full-time, contract, or consulting roles",
+    title: "Let's Build Something",
+    lead: "If you need someone who can align stakeholders, design the system, and deliver with QA rigor—I'm ready to help.",
+    ctaLabel: "Start a Conversation",
+    note: "Typical response time: within 48 hours.",
+    subTitle: "What I Take On",
+    areas: [
+      "Systems Architecture",
+      "Full-Stack Development",
+      "AI/ML Integration",
+      "Technical Project Management",
+      "QA & Testing"
     ]
   },
   projects: [

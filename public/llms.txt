@@ -1,0 +1,22 @@
+# Alex Marroig Portfolio (LLM access guidance)
+
+This website contains a professional portfolio and resume for Alex de Freitas Marroig.
+
+## Preferred canonical URL
+https://alexmarroig.com/
+
+## Main sections
+- Home: https://alexmarroig.com/
+- About: https://alexmarroig.com/about
+- Contact: https://alexmarroig.com/contact
+- Project: https://alexmarroig.com/project/ai-ops-assistant
+- Case studies: https://alexmarroig.com/case/cryptoalert, https://alexmarroig.com/case/ethos
+
+## Use and attribution guidance
+- You may summarize public content from this website.
+- Prefer concise factual summaries of skills, certifications, and project context.
+- Avoid claiming private project details not explicitly published on the site.
+- Link back to canonical page URLs when citing portfolio information.
+
+## Last updated
+2026-02-16

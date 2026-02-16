@@ -51,3 +51,38 @@ npm run lint
 npm run typecheck
 npm run build
 ```
+
+## Admin (private)
+
+A área `/admin` exige autenticação no servidor e usa cookie `HttpOnly`.
+Para configurar seu acesso, defina estas variáveis em `.env.local`:
+
+```bash
+ADMIN_EMAIL=Alex.c.marroig@gmail.com
+ADMIN_PASSWORD=Bianco256
+ADMIN_SESSION_SECRET=troque-por-uma-chave-longa-e-unica
+```
+
+Depois acesse:
+
+- `/admin/login` para entrar
+- `/admin` para abrir o editor por seções (estilo abas/menu)
+
+## Admin analytics dashboard
+
+The admin panel now includes an **Analytics** tab with:
+- Pageviews and unique visitors
+- Resume download count
+- Top pages, sources, referrers, countries, keywords
+- Basic LLM/bot user-agent detection
+- Last 14 days timeline
+
+Data is stored locally on the server filesystem at `.analytics/site-analytics.json`.
+
+## LLM and search optimization
+
+Added:
+- `public/llms.txt`
+- `app/robots.ts`
+- `app/sitemap.ts`
+- Rich metadata + JSON-LD schema in `app/layout.tsx`
