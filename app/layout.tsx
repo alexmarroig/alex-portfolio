@@ -4,6 +4,7 @@ import Container from "@/components/Container";
 import FloatingTalk from "@/components/FloatingTalk";
 import Footer from "@/components/Footer";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import { SiteContentProvider } from "@/src/data/siteContentContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,11 +17,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="siteBody">
-        <LoadingOverlay />
-        <Nav />
-        <Container>{children}</Container>
-        <Footer />
-        <FloatingTalk />
+        <SiteContentProvider>
+          <LoadingOverlay />
+          <Nav />
+          <Container>{children}</Container>
+          <Footer />
+          <FloatingTalk />
+        </SiteContentProvider>
       </body>
     </html>
   );
