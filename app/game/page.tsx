@@ -95,6 +95,47 @@ export default function GamePage() {
           </div>
         )}
       </div>
+
+      <div className="neonGameHud">
+        <p><strong>Tempo:</strong> {time}s</p>
+        <p><strong>Score:</strong> {score}</p>
+        <p><strong>Melhor:</strong> {bestScore}</p>
+        <p><strong>Nível:</strong> {level.level}</p>
+        <p><strong>Combo:</strong> {combo}</p>
+        <p><strong>Multiplicador:</strong> x{multiplier}</p>
+        <p><strong>Misses:</strong> {misses}/8</p>
+        <p><strong>Status:</strong> {overdriveActive ? "Overdrive" : "Normal"}</p>
+      </div>
+
+      <div className="neonLevelMeter" aria-label="Level progress">
+        <span style={{ width: `${progressToNextLevel}%` }} />
+      </div>
+
+      <p className="neonFlash" aria-live="polite">{flashMessage}</p>
+
+      <div className={`neonArena ${overdriveActive ? "isOverdrive" : ""}`} role="application" aria-label="Game arena" onClick={handleArenaMiss}>
+        {mode === "playing" ? (
+          <button
+            className={`neonTarget ${target.kind === "bonus" ? "isBonus" : ""} ${target.kind === "trap" ? "isTrap" : ""}`}
+            style={{ left: `${target.x}%`, top: `${target.y}%`, animationDuration: `${level.duration}s` }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleTargetHit();
+            }}
+            aria-label={`Target ${target.kind}`}
+          >
+            <span />
+          </button>
+        ) : (
+          <div className="neonOverlay">
+            <p>{mode === "finished" ? "Partida encerrada." : "Ready to lock target?"}</p>
+            <button className="btn btnPrimary" onClick={startGame}>
+              {mode === "finished" ? "Jogar novamente" : "Iniciar missão"}
+            </button>
+            <p className="neonHint">Dica: pressione espaço para iniciar.</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
