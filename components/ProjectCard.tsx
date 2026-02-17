@@ -16,6 +16,10 @@ const iconMap = {
   "M&A": FaCubes,
   Architecture: MdSettingsEthernet
 } as const;
+import { FaProjectDiagram, FaShieldAlt } from "react-icons/fa";
+import { MdIntegrationInstructions, MdOutlinePublishedWithChanges, MdOutlinePrecisionManufacturing } from "react-icons/md";
+import { RiRobot2Line } from "react-icons/ri";
+import { SiNodedotjs, SiTestinglibrary } from "react-icons/si";
 
 type ProjectCardProps = SiteContent["projects"][number];
 
@@ -24,6 +28,20 @@ const sections = [
   { key: "solution", label: "Solution" },
   { key: "impact", label: "Impact" }
 ] as const;
+
+const iconMap = {
+  Delivery: MdOutlinePrecisionManufacturing,
+  Governance: FaProjectDiagram,
+  Risk: FaShieldAlt,
+  APIs: MdIntegrationInstructions,
+  Automation: RiRobot2Line,
+  "Node.js": SiNodedotjs,
+  QA: SiTestinglibrary,
+  "CI/CD": MdOutlinePublishedWithChanges,
+  Assessment: FaProjectDiagram,
+  Architecture: FaShieldAlt,
+  Execution: MdOutlinePublishedWithChanges
+} as const;
 
 export default function ProjectCard({ title, subtitle, description, status, stack, caseStudy }: ProjectCardProps) {
   return (
@@ -46,6 +64,7 @@ export default function ProjectCard({ title, subtitle, description, status, stac
             })}
           </div>
           <p className="projectFlipCta"><span className="desktopOnly">Hover</span><span className="mobileOnly">Tap</span> for case study</p>
+          <p className="projectFlipCta">Hover or tap to view details</p>
         </>
       }
       back={
