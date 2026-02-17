@@ -7,8 +7,8 @@ const links = [
   { href: "/#work", label: "Work" },
   { href: "/#about", label: "About" },
   { href: "/#current-focus", label: "Mission Control" },
-  { href: "/contact", label: "Contact" },
-  { href: "/game", label: "Play Game" }
+  { href: "/game", label: "Play Game" },
+  { href: "/contact", label: "Contact" }
 ];
 
 export default function Nav() {
@@ -17,9 +17,7 @@ export default function Nav() {
   return (
     <header className="navShell">
       <div className="navInner">
-        <Link href="/" className="navBrand">
-          Alex de Freitas Marroig
-        </Link>
+        <Link href="/" className="navBrand">Alex de Freitas Marroig</Link>
 
         <nav className="navGroup" aria-label="Primary">
           {links.map((link) => {

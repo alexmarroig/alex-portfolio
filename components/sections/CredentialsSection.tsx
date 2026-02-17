@@ -1,6 +1,8 @@
 "use client";
 
 import RevealSection from "@/components/RevealSection";
+import SectionTitle from "@/components/ui/SectionTitle";
+import { siteContent } from "@/src/data/content";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { useSiteContent } from "@/src/data/siteContentContext";
@@ -22,9 +24,13 @@ export default function CredentialsSection() {
                   <Icon aria-hidden="true" />
                 </span>
                 <div>
-                  <h3>{item.title}</h3>
-                  <p className="credentialIssuer">{item.issuer}</p>
+                  <h3>{award.title}</h3>
+                  <p>{award.detail}</p>
                 </div>
+              </article>
+            );
+          })}
+        </div>
               </div>
               <span className="credentialYear">{item.year}</span>
             </Card>
