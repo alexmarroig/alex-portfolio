@@ -47,6 +47,8 @@ type AnalyticsSummary = {
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
 
+type SaveState = "Não salvo" | "Salvando..." | "Salvo" | "Publicado";
+
 const tabs: { key: TabKey; label: string }[] = [
   { key: "hero", label: "Hero" },
   { key: "about", label: "About" },
@@ -71,7 +73,7 @@ function prettyJson(value: unknown) {
 }
 
 export default function AdminPage() {
-  const { content, updateContent, theme, setThemeValue, resetAll } = useSiteContent();
+  const { content, updateContent, theme, setThemeValue, resetAll, isHydrated, replaceContent, replaceTheme } = useSiteContent();
   const [inputKey, setInputKey] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("hero");
@@ -85,6 +87,10 @@ export default function AdminPage() {
   const [certificationsInput, setCertificationsInput] = useState(prettyJson(content.certifications.map((item) => ({ title: item.title, issuer: item.issuer, year: item.year }))));
   const [awardsInput, setAwardsInput] = useState(prettyJson(content.awards));
 
+  const [jsonError, setJsonError] = useState<string>("");
+  const [saveState, setSaveState] = useState<SaveState>("Salvo");
+  const [saveError, setSaveError] = useState("");
+  const [lastSyncedSnapshot, setLastSyncedSnapshot] = useState<string | null>(null);
   const [sectionErrors, setSectionErrors] = useState<Record<string, string[]>>({});
 
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
@@ -98,6 +104,21 @@ export default function AdminPage() {
 
   const canAccess = unlocked || unlockedByQuery;
   const lockError = inputKey.length > 0 && inputKey !== ADMIN_SECRET;
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    const currentSnapshot = JSON.stringify({ content, theme });
+
+    if (!lastSyncedSnapshot) {
+      setLastSyncedSnapshot(currentSnapshot);
+      setSaveState("Salvo");
+      return;
+    }
+
+    if (currentSnapshot !== lastSyncedSnapshot && saveState !== "Salvando...") {
+      setSaveState("Não salvo");
+    }
+  }, [content, theme, isHydrated, lastSyncedSnapshot, saveState]);
 
   useEffect(() => {
     setAboutParagraphsInput(prettyJson(content.about.paragraphs));
@@ -152,6 +173,83 @@ export default function AdminPage() {
     }
   }
 
+  async function saveDraftToServer() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/draft", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, content, theme, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as { ok?: boolean; message?: string };
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.message ?? "Não foi possível salvar rascunho.");
+      }
+
+      setSaveState("Salvo");
+      setLastSyncedSnapshot(JSON.stringify({ content, theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha ao salvar rascunho.");
+    }
+  }
+
+  async function publishDraftToServer() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/publish", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as { ok?: boolean; message?: string };
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.message ?? "Não foi possível publicar.");
+      }
+
+      setSaveState("Publicado");
+      setLastSyncedSnapshot(JSON.stringify({ content, theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha ao publicar.");
+    }
+  }
+
+  async function rollbackPublishedContent() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/rollback", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as {
+        ok?: boolean;
+        message?: string;
+        published?: { content: SiteContent; theme: typeof theme };
+      };
+
+      if (!response.ok || !payload.ok || !payload.published) {
+        throw new Error(payload.message ?? "Não foi possível executar rollback.");
+      }
+
+      replaceContent(payload.published.content);
+      replaceTheme(payload.published.theme);
+      setSaveState("Publicado");
+      setLastSyncedSnapshot(JSON.stringify({ content: payload.published.content, theme: payload.published.theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha no rollback.");
+    }
   function renderSectionError(section: string) {
     const messages = sectionErrors[section];
     if (!messages || messages.length === 0) return null;
@@ -199,6 +297,10 @@ export default function AdminPage() {
           <p>Editor completo por abas + dashboard de audiência.</p>
         </div>
         <div className="adminHeaderActions">
+          <span className="adminHint">Status: <strong>{saveState}</strong></span>
+          <button className="btn btnPrimary" onClick={saveDraftToServer} disabled={saveState === "Salvando..."}>Salvar rascunho</button>
+          <button className="btn btnPrimary" onClick={publishDraftToServer} disabled={saveState === "Salvando..."}>Publicar</button>
+          <button className="btn btnGhost" onClick={rollbackPublishedContent} disabled={saveState === "Salvando..."}>Rollback última publicação</button>
           <button className="btn btnGhost" onClick={resetAll}>Resetar alterações locais</button>
         </div>
       </div>
@@ -217,6 +319,9 @@ export default function AdminPage() {
         </aside>
 
         <div className="adminPanel">
+          {jsonError ? <p className="adminError">{jsonError}</p> : null}
+          {saveError ? <p className="adminError">{saveError}</p> : null}
+
           {activeTab === "hero" ? (
             <>
               <h2>Hero</h2>
