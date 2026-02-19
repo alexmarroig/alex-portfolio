@@ -1994,6 +1994,7 @@ body::before {
 @keyframes spin { to { transform: rotate(360deg);} }
 /* ================================
    Admin Lab
+================================ */
 
 .adminPage {
   padding: 24px;
@@ -2068,6 +2069,7 @@ body::before {
 
 /* ================================
    Neon Reactor Game
+================================ */
 
 .neonGamePage {
   padding: 24px;
