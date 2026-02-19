@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { JSX } from "react";
 
 type GameMode = "idle" | "playing" | "finished";
 
@@ -15,7 +14,7 @@ function randomPosition() {
   };
 }
 
-export default function GamePage(): JSX.Element {
+export default function GamePage() {
   const [mode, setMode] = useState<GameMode>("idle");
   const [time, setTime] = useState(ROUND_SECONDS);
   const [score, setScore] = useState(0);
