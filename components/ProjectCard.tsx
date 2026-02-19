@@ -3,21 +3,8 @@
 import FlipCard from "@/components/ui/FlipCard";
 import StatusPill from "@/components/ui/StatusPill";
 import type { SiteContent } from "@/src/data/content";
-import { FaCubes, FaIndustry, FaProjectDiagram, FaShieldAlt, FaVial } from "react-icons/fa";
-import { MdHub, MdPrecisionManufacturing, MdSettingsEthernet } from "react-icons/md";
-
-const iconMap = {
-  Integrations: MdHub,
-  Governance: FaProjectDiagram,
-  Validation: FaVial,
-  "Program Delivery": MdPrecisionManufacturing,
-  Risk: FaShieldAlt,
-  Industrial: FaIndustry,
-  "M&A": FaCubes,
-  Architecture: MdSettingsEthernet
-} as const;
 import { FaProjectDiagram, FaShieldAlt } from "react-icons/fa";
-import { MdIntegrationInstructions, MdOutlinePublishedWithChanges, MdOutlinePrecisionManufacturing } from "react-icons/md";
+import { MdIntegrationInstructions, MdOutlinePrecisionManufacturing, MdOutlinePublishedWithChanges } from "react-icons/md";
 import { RiRobot2Line } from "react-icons/ri";
 import { SiNodedotjs, SiTestinglibrary } from "react-icons/si";
 
@@ -38,7 +25,7 @@ const iconMap = {
   "Node.js": SiNodedotjs,
   QA: SiTestinglibrary,
   "CI/CD": MdOutlinePublishedWithChanges,
-  Assessment: FaProjectDiagram,
+  Integration: MdIntegrationInstructions,
   Architecture: FaShieldAlt,
   Execution: MdOutlinePublishedWithChanges
 } as const;
@@ -63,7 +50,6 @@ export default function ProjectCard({ title, subtitle, description, status, stac
               );
             })}
           </div>
-          <p className="projectFlipCta"><span className="desktopOnly">Hover</span><span className="mobileOnly">Tap</span> for case study</p>
           <p className="projectFlipCta">Hover or tap to view details</p>
         </>
       }
