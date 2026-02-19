@@ -1881,6 +1881,42 @@ a {
   align-items: center;
 }
 
+.adminActionRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.adminSparkline {
+  margin-top: 8px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  min-height: 40px;
+}
+
+.adminSparkBar {
+  width: 6px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  opacity: 0.9;
+}
+
+.adminInsight {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.adminInsight--positive {
+  border-color: rgba(73, 241, 255, 0.45);
+}
+
+.adminInsight--warning {
+  border-color: rgba(255, 124, 174, 0.6);
+}
+
 /* ================================
    Neon Reactor Game
 ================================ */

@@ -18,11 +18,41 @@ type TabKey =
 type AnalyticsEntry = { label: string; value: number };
 
 type AnalyticsSummary = {
+  period: {
+    preset: "7d" | "14d" | "30d" | "custom";
+    startDate: string;
+    endDate: string;
+    previousStartDate: string;
+    previousEndDate: string;
+    days: number;
+  };
   totals: {
     events: number;
     pageviews: number;
     resumeDownloads: number;
     uniqueVisitors: number;
+  };
+  previousTotals: {
+    events: number;
+    pageviews: number;
+    resumeDownloads: number;
+    uniqueVisitors: number;
+  };
+  deltas: {
+    events: number;
+    pageviews: number;
+    resumeDownloads: number;
+    uniqueVisitors: number;
+  };
+  filters: {
+    country: string;
+    referrer: string;
+    source: string;
+  };
+  availableFilters: {
+    countries: string[];
+    referrers: string[];
+    sources: string[];
   };
   topPages: AnalyticsEntry[];
   topReferrers: AnalyticsEntry[];
@@ -31,6 +61,17 @@ type AnalyticsSummary = {
   topKeywords: AnalyticsEntry[];
   llmAgents: AnalyticsEntry[];
   timeline: { date: string; pageviews: number; resumeDownloads: number; visitors: number }[];
+  comparativeTimeline: {
+    date: string;
+    previousDate: string;
+    pageviews: number;
+    visitors: number;
+    resumeDownloads: number;
+    previousPageviews: number;
+    previousVisitors: number;
+    previousResumeDownloads: number;
+  }[];
+  insights: { title: string; detail: string; tone: "positive" | "warning" | "neutral" }[];
 };
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
@@ -78,6 +119,12 @@ export default function AdminPage() {
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsError, setAnalyticsError] = useState("");
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [period, setPeriod] = useState<"7d" | "14d" | "30d" | "custom">("14d");
+  const [customStartDate, setCustomStartDate] = useState("");
+  const [customEndDate, setCustomEndDate] = useState("");
+  const [countryFilter, setCountryFilter] = useState("");
+  const [referrerFilter, setReferrerFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
 
   const unlockedByQuery = useMemo(() => {
     if (typeof window === "undefined") return false;
@@ -102,7 +149,21 @@ export default function AdminPage() {
     setAnalyticsError("");
 
     try {
-      const response = await fetch(`/api/admin/lab-analytics?key=${encodeURIComponent(ADMIN_SECRET)}`);
+      const params = new URLSearchParams({
+        key: ADMIN_SECRET,
+        period
+      });
+
+      if (period === "custom" && customStartDate && customEndDate) {
+        params.set("start", customStartDate);
+        params.set("end", customEndDate);
+      }
+
+      if (countryFilter) params.set("country", countryFilter);
+      if (referrerFilter) params.set("referrer", referrerFilter);
+      if (sourceFilter) params.set("source", sourceFilter);
+
+      const response = await fetch(`/api/admin/lab-analytics?${params.toString()}`);
       const payload = (await response.json()) as { ok: boolean; analytics?: AnalyticsSummary; message?: string };
 
       if (!response.ok || !payload.ok || !payload.analytics) {
@@ -116,6 +177,28 @@ export default function AdminPage() {
     } finally {
       setAnalyticsLoading(false);
     }
+  }
+
+  function renderSparkline(points: number[]) {
+    if (!points.length) return null;
+    const max = Math.max(...points, 1);
+    const bars = points.map((point, index) => (
+      <span key={`${point}-${index}`} className="adminSparkBar" style={{ height: `${Math.max(8, (point / max) * 36)}px` }} />
+    ));
+    return <div className="adminSparkline">{bars}</div>;
+  }
+
+  function exportCsv() {
+    const params = new URLSearchParams({ key: ADMIN_SECRET, period, format: "csv" });
+    if (period === "custom" && customStartDate && customEndDate) {
+      params.set("start", customStartDate);
+      params.set("end", customEndDate);
+    }
+    if (countryFilter) params.set("country", countryFilter);
+    if (referrerFilter) params.set("referrer", referrerFilter);
+    if (sourceFilter) params.set("source", sourceFilter);
+
+    window.open(`/api/admin/lab-analytics?${params.toString()}`, "_blank", "noopener,noreferrer");
   }
 
   function applyJsonUpdate(label: string, callback: () => void) {
@@ -385,10 +468,59 @@ export default function AdminPage() {
           {activeTab === "dashboard" ? (
             <>
               <h2>Dashboard de audiência</h2>
-              <p className="adminHint">Métricas de visualização: volume, origem, país, referrer e horários (timeline diária).</p>
-              <button className="btn btnPrimary" onClick={loadAnalytics} disabled={analyticsLoading}>
-                {analyticsLoading ? "Carregando..." : "Atualizar dashboard"}
-              </button>
+              <p className="adminHint">Métricas de visualização: volume, origem, país, referrer, comparação com período anterior e insights.</p>
+              <div className="adminGrid">
+                <div>
+                  <label className="adminLabel">Período</label>
+                  <select className="adminInput" value={period} onChange={(event) => setPeriod(event.target.value as "7d" | "14d" | "30d" | "custom")}>
+                    <option value="7d">Últimos 7 dias</option>
+                    <option value="14d">Últimos 14 dias</option>
+                    <option value="30d">Últimos 30 dias</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                {period === "custom" ? (
+                  <>
+                    <div>
+                      <label className="adminLabel">Data inicial</label>
+                      <input className="adminInput" type="date" value={customStartDate} onChange={(event) => setCustomStartDate(event.target.value)} />
+                    </div>
+                    <div>
+                      <label className="adminLabel">Data final</label>
+                      <input className="adminInput" type="date" value={customEndDate} onChange={(event) => setCustomEndDate(event.target.value)} />
+                    </div>
+                  </>
+                ) : null}
+                <div>
+                  <label className="adminLabel">País</label>
+                  <select className="adminInput" value={countryFilter} onChange={(event) => setCountryFilter(event.target.value)}>
+                    <option value="">Todos</option>
+                    {analytics?.availableFilters.countries.map((country) => <option key={country} value={country}>{country}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="adminLabel">Referrer</label>
+                  <select className="adminInput" value={referrerFilter} onChange={(event) => setReferrerFilter(event.target.value)}>
+                    <option value="">Todos</option>
+                    {analytics?.availableFilters.referrers.map((referrer) => <option key={referrer} value={referrer}>{referrer}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="adminLabel">Source</label>
+                  <select className="adminInput" value={sourceFilter} onChange={(event) => setSourceFilter(event.target.value)}>
+                    <option value="">Todos</option>
+                    {analytics?.availableFilters.sources.map((source) => <option key={source} value={source}>{source}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="adminActionRow">
+                <button className="btn btnPrimary" onClick={loadAnalytics} disabled={analyticsLoading}>
+                  {analyticsLoading ? "Carregando..." : "Atualizar dashboard"}
+                </button>
+                <button className="btn btnGhost" onClick={exportCsv}>
+                  Exportar CSV
+                </button>
+              </div>
               {analyticsError ? <p className="adminError">{analyticsError}</p> : null}
 
               {analytics ? (
@@ -400,16 +532,28 @@ export default function AdminPage() {
                     </div>
                     <div>
                       <h3>Pageviews</h3>
-                      <p>{analytics.totals.pageviews}</p>
+                      <p>{analytics.totals.pageviews} <small>({analytics.deltas.pageviews}% vs anterior)</small></p>
+                      {renderSparkline(analytics.comparativeTimeline.map((item) => item.pageviews))}
                     </div>
                     <div>
                       <h3>Downloads de currículo</h3>
-                      <p>{analytics.totals.resumeDownloads}</p>
+                      <p>{analytics.totals.resumeDownloads} <small>({analytics.deltas.resumeDownloads}% vs anterior)</small></p>
+                      {renderSparkline(analytics.comparativeTimeline.map((item) => item.resumeDownloads))}
                     </div>
                     <div>
                       <h3>Visitantes únicos</h3>
-                      <p>{analytics.totals.uniqueVisitors}</p>
+                      <p>{analytics.totals.uniqueVisitors} <small>({analytics.deltas.uniqueVisitors}% vs anterior)</small></p>
+                      {renderSparkline(analytics.comparativeTimeline.map((item) => item.visitors))}
                     </div>
+                  </div>
+
+                  <div className="adminGrid">
+                    {analytics.insights.map((insight) => (
+                      <div key={insight.title} className={`adminInsight adminInsight--${insight.tone}`}>
+                        <h3>{insight.title}</h3>
+                        <p>{insight.detail}</p>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="adminGrid">
@@ -441,10 +585,10 @@ export default function AdminPage() {
                       <ul>{analytics.llmAgents.map((item) => <li key={`llm-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
                     </div>
                     <div>
-                      <h3>Timeline (14 dias)</h3>
+                      <h3>Timeline ({analytics.period.days} dias)</h3>
                       <ul>
-                        {analytics.timeline.map((row) => (
-                          <li key={row.date}>{row.date} — views: {row.pageviews}, visitors: {row.visitors}, downloads: {row.resumeDownloads}</li>
+                        {analytics.comparativeTimeline.map((row) => (
+                          <li key={row.date}>{row.date} — views: {row.pageviews} (anterior {row.previousPageviews}), visitors: {row.visitors} (anterior {row.previousVisitors}), downloads: {row.resumeDownloads} (anterior {row.previousResumeDownloads})</li>
                         ))}
                       </ul>
                     </div>
