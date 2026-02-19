@@ -1,20 +1,8 @@
-import { redirect } from "next/navigation";
-import AdminClientPage from "./AdminClientPage";
-import { isAdminAuthenticated } from "@/lib/adminAuth";
+"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { SiteContent } from "@/src/data/content";
 import { useSiteContent } from "@/src/data/siteContentContext";
-import {
-  type ValidationResult,
-  validateAboutParagraphs,
-  validateAwards,
-  validateCertifications,
-  validateContractAreas,
-  validateMainFocusTags,
-  validateStackCategories,
-  validateSupportingFocus
-} from "@/lib/adminValidators";
 
 type TabKey =
   | "hero"
@@ -45,7 +33,6 @@ type AnalyticsSummary = {
   timeline: { date: string; pageviews: number; resumeDownloads: number; visitors: number }[];
 };
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: "hero", label: "Hero" },
@@ -70,10 +57,8 @@ function prettyJson(value: unknown) {
   return JSON.stringify(value, null, 2);
 }
 
-export default function AdminPage() {
+export default function AdminClientPage() {
   const { content, updateContent, theme, setThemeValue, resetAll } = useSiteContent();
-  const [inputKey, setInputKey] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("hero");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
@@ -85,19 +70,12 @@ export default function AdminPage() {
   const [certificationsInput, setCertificationsInput] = useState(prettyJson(content.certifications.map((item) => ({ title: item.title, issuer: item.issuer, year: item.year }))));
   const [awardsInput, setAwardsInput] = useState(prettyJson(content.awards));
 
-  const [sectionErrors, setSectionErrors] = useState<Record<string, string[]>>({});
+  const [jsonError, setJsonError] = useState<string>("");
 
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsError, setAnalyticsError] = useState("");
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
 
-  const unlockedByQuery = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return new URLSearchParams(window.location.search).get("key") === ADMIN_SECRET;
-  }, []);
-
-  const canAccess = unlocked || unlockedByQuery;
-  const lockError = inputKey.length > 0 && inputKey !== ADMIN_SECRET;
 
   useEffect(() => {
     setAboutParagraphsInput(prettyJson(content.about.paragraphs));
@@ -114,7 +92,7 @@ export default function AdminPage() {
     setAnalyticsError("");
 
     try {
-      const response = await fetch(`/api/admin/lab-analytics?key=${encodeURIComponent(ADMIN_SECRET)}`);
+      const response = await fetch("/api/admin/lab-analytics");
       const payload = (await response.json()) as { ok: boolean; analytics?: AnalyticsSummary; message?: string };
 
       if (!response.ok || !payload.ok || !payload.analytics) {
@@ -130,65 +108,13 @@ export default function AdminPage() {
     }
   }
 
-  function applyJsonUpdate<T>(
-    section: string,
-    rawValue: string,
-    validator: (parsed: unknown) => ValidationResult<T>,
-    onSuccess: (nextValue: T) => void
-  ) {
+  function applyJsonUpdate(label: string, callback: () => void) {
     try {
-      const parsed = JSON.parse(rawValue) as unknown;
-      const validated = validator(parsed);
-
-      if (!validated.ok) {
-        setSectionErrors((current) => ({ ...current, [section]: validated.errors }));
-        return;
-      }
-
-      onSuccess(validated.data);
-      setSectionErrors((current) => ({ ...current, [section]: [] }));
+      callback();
+      setJsonError("");
     } catch {
-      setSectionErrors((current) => ({ ...current, [section]: ["JSON inválido para esta seção."] }));
+      setJsonError(`JSON inválido em: ${label}.`);
     }
-  }
-
-  function renderSectionError(section: string) {
-    const messages = sectionErrors[section];
-    if (!messages || messages.length === 0) return null;
-
-    return (
-      <ul className="adminError" role="alert">
-        {messages.map((message) => (
-          <li key={`${section}-${message}`}>{message}</li>
-        ))}
-      </ul>
-    );
-  }
-
-  if (!canAccess) {
-    return (
-      <section className="section simplePage glassPanel adminPage">
-        <h1>Admin Lab (private)</h1>
-        <p>Área privada para editar todo o site sem mexer em código.</p>
-        <p>
-          Chave padrão atual: <code>Bianco256</code>. Recomendado: definir <code>NEXT_PUBLIC_ADMIN_KEY</code> no ambiente.
-        </p>
-
-        <label className="adminLabel" htmlFor="adminKey">Chave de acesso</label>
-        <input
-          id="adminKey"
-          className="adminInput"
-          type="password"
-          value={inputKey}
-          onChange={(event) => setInputKey(event.target.value)}
-          placeholder="Digite sua chave"
-        />
-        {lockError ? <p className="adminError">Chave inválida.</p> : null}
-        <button className="btn btnPrimary" onClick={() => setUnlocked(inputKey === ADMIN_SECRET)}>
-          Entrar
-        </button>
-      </section>
-    );
   }
 
   return (
@@ -217,6 +143,8 @@ export default function AdminPage() {
         </aside>
 
         <div className="adminPanel">
+          {jsonError ? <p className="adminError">{jsonError}</p> : null}
+
           {activeTab === "hero" ? (
             <>
               <h2>Hero</h2>
@@ -240,15 +168,14 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={aboutParagraphsInput} onChange={(event) => setAboutParagraphsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("about.paragraphs", aboutParagraphsInput, validateAboutParagraphs, (paragraphs) => {
-                    updateContent({ about: { paragraphs } });
-                  })
-                }
+                onClick={() => applyJsonUpdate("About.paragraphs", () => {
+                  const parsed = JSON.parse(aboutParagraphsInput) as string[];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ about: { paragraphs: parsed } });
+                })}
               >
                 Salvar parágrafos
               </button>
-              {renderSectionError("about.paragraphs")}
             </>
           ) : null}
 
@@ -265,29 +192,27 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={focusTagsInput} onChange={(event) => setFocusTagsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("currentFocus.main.tags", focusTagsInput, validateMainFocusTags, (tags) => {
-                    updateContent({ currentFocus: { main: { ...content.currentFocus.main, tags } } });
-                  })
-                }
+                onClick={() => applyJsonUpdate("CurrentFocus.main.tags", () => {
+                  const parsed = JSON.parse(focusTagsInput) as string[];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ currentFocus: { main: { ...content.currentFocus.main, tags: parsed } } });
+                })}
               >
                 Salvar tags do bloco principal
               </button>
-              {renderSectionError("currentFocus.main.tags")}
 
               <label className="adminLabel">Cards secundários (JSON)</label>
               <textarea className="adminInput adminTextArea" value={focusSupportingInput} onChange={(event) => setFocusSupportingInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("currentFocus.supporting", focusSupportingInput, validateSupportingFocus, (supporting) => {
-                    updateContent({ currentFocus: { supporting } });
-                  })
-                }
+                onClick={() => applyJsonUpdate("CurrentFocus.supporting", () => {
+                  const parsed = JSON.parse(focusSupportingInput) as SiteContent["currentFocus"]["supporting"];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ currentFocus: { supporting: parsed } });
+                })}
               >
                 Salvar cards secundários
               </button>
-              {renderSectionError("currentFocus.supporting")}
             </>
           ) : null}
 
@@ -310,15 +235,14 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={contractAreasInput} onChange={(event) => setContractAreasInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("contract.areas", contractAreasInput, validateContractAreas, (areas) => {
-                    updateContent({ contract: { areas } });
-                  })
-                }
+                onClick={() => applyJsonUpdate("Contract.areas", () => {
+                  const parsed = JSON.parse(contractAreasInput) as string[];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ contract: { areas: parsed } });
+                })}
               >
                 Salvar áreas
               </button>
-              {renderSectionError("contract.areas")}
             </>
           ) : null}
 
@@ -330,25 +254,14 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={stackInput} onChange={(event) => setStackInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("stackCategories", stackInput, validateStackCategories, (stackCategories) => {
-                    const stackWithIcons = stackCategories.map((category, categoryIndex) => ({
-                      ...category,
-                      items: category.items.map((item, itemIndex) => ({
-                        ...item,
-                        icon:
-                          content.stackCategories[categoryIndex]?.items[itemIndex]?.icon ??
-                          content.stackCategories[0]?.items[0]?.icon
-                      }))
-                    }));
-
-                    updateContent({ stackCategories: stackWithIcons as SiteContent["stackCategories"] });
-                  })
-                }
+                onClick={() => applyJsonUpdate("stackCategories", () => {
+                  const parsed = JSON.parse(stackInput) as SiteContent["stackCategories"];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ stackCategories: parsed });
+                })}
               >
                 Salvar stack
               </button>
-              {renderSectionError("stackCategories")}
             </>
           ) : null}
 
@@ -359,34 +272,31 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={certificationsInput} onChange={(event) => setCertificationsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("certifications", certificationsInput, validateCertifications, (certifications) => {
-                    const next = certifications.map((item, index) => ({
-                      ...item,
-                      icon: content.certifications[index]?.icon ?? content.certifications[0]?.icon
-                    }));
-
-                    updateContent({ certifications: next as SiteContent["certifications"] });
-                  })
-                }
+                onClick={() => applyJsonUpdate("certifications", () => {
+                  const parsed = JSON.parse(certificationsInput) as { title: string; issuer: string; year: string }[];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  const next = parsed.map((item, index) => ({
+                    ...content.certifications[index],
+                    ...item
+                  }));
+                  updateContent({ certifications: next as SiteContent["certifications"] });
+                })}
               >
                 Salvar certificações
               </button>
-              {renderSectionError("certifications")}
 
               <label className="adminLabel">Awards (JSON string[])</label>
               <textarea className="adminInput adminTextArea" value={awardsInput} onChange={(event) => setAwardsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() =>
-                  applyJsonUpdate("awards", awardsInput, validateAwards, (awards) => {
-                    updateContent({ awards });
-                  })
-                }
+                onClick={() => applyJsonUpdate("awards", () => {
+                  const parsed = JSON.parse(awardsInput) as string[];
+                  if (!Array.isArray(parsed)) throw new Error();
+                  updateContent({ awards: parsed });
+                })}
               >
                 Salvar awards
               </button>
-              {renderSectionError("awards")}
             </>
           ) : null}
 
@@ -511,12 +421,4 @@ export default function AdminPage() {
       </div>
     </section>
   );
-export default async function AdminPage() {
-  const isAllowed = await isAdminAuthenticated();
-
-  if (!isAllowed) {
-    redirect("/admin/login");
-  }
-
-  return <AdminClientPage />;
 }
