@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import { getAnalyticsSummary } from "@/lib/analyticsStore";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 
-const ADMIN_LAB_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+export async function GET() {
+  const isAllowed = await isAdminAuthenticated();
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const key = searchParams.get("key") ?? "";
-
-  if (!ADMIN_LAB_KEY || key !== ADMIN_LAB_KEY) {
+  if (!isAllowed) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
 
