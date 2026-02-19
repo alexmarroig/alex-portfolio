@@ -3,14 +3,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { siteContent, type SiteContent } from "@/src/data/content";
 
-type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends Array<infer U>
-    ? Array<DeepPartial<U>>
-    : T[K] extends object
-      ? DeepPartial<T[K]>
-      : T[K];
-};
-
 type ThemeConfig = {
   accent: string;
   accent2: string;
@@ -21,11 +13,22 @@ type ThemeConfig = {
   border: string;
 };
 
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T[K] extends object
+      ? DeepPartial<T[K]>
+      : T[K];
+};
+
 type SiteContentContextValue = {
   content: SiteContent;
   theme: ThemeConfig;
+  isHydrated: boolean;
   setThemeValue: (key: keyof ThemeConfig, value: string) => void;
+  replaceTheme: (nextTheme: ThemeConfig) => void;
   updateContent: (patch: DeepPartial<SiteContent>) => void;
+  replaceContent: (nextContent: SiteContent) => void;
   resetAll: () => void;
 };
 
@@ -41,6 +44,7 @@ const DEFAULT_THEME: ThemeConfig = {
 
 const STORAGE_CONTENT_KEY = "alex-portfolio-content-overrides";
 const STORAGE_THEME_KEY = "alex-portfolio-theme-overrides";
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 
@@ -94,52 +98,88 @@ function applyThemeToRoot(theme: ThemeConfig) {
 }
 
 export function SiteContentProvider({ children }: { children: React.ReactNode }) {
-  const [overrides, setOverrides] = useState<DeepPartial<SiteContent>>({});
+  const [content, setContent] = useState<SiteContent>(siteContent);
   const [theme, setTheme] = useState<ThemeConfig>(DEFAULT_THEME);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const rawContent = localStorage.getItem(STORAGE_CONTENT_KEY);
-      if (rawContent) {
-        setOverrides(JSON.parse(rawContent) as DeepPartial<SiteContent>);
-      }
+    let mounted = true;
 
-      const rawTheme = localStorage.getItem(STORAGE_THEME_KEY);
-      if (rawTheme) {
-        const parsed = JSON.parse(rawTheme) as Partial<ThemeConfig>;
-        setTheme((prev) => ({ ...prev, ...parsed }));
+    const hydrate = async () => {
+      try {
+        const response = await fetch(`/api/admin/content?key=${encodeURIComponent(ADMIN_SECRET)}`);
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          draft?: { content: SiteContent; theme: ThemeConfig };
+        };
+
+        if (!response.ok || !payload.ok || !payload.draft) {
+          throw new Error("Falha ao carregar conteúdo remoto");
+        }
+
+        if (!mounted) return;
+        setContent(payload.draft.content);
+        setTheme(payload.draft.theme);
+        localStorage.setItem(STORAGE_CONTENT_KEY, JSON.stringify(payload.draft.content));
+        localStorage.setItem(STORAGE_THEME_KEY, JSON.stringify(payload.draft.theme));
+      } catch {
+        try {
+          const rawContent = localStorage.getItem(STORAGE_CONTENT_KEY);
+          if (rawContent) {
+            setContent(JSON.parse(rawContent) as SiteContent);
+          }
+
+          const rawTheme = localStorage.getItem(STORAGE_THEME_KEY);
+          if (rawTheme) {
+            const parsed = JSON.parse(rawTheme) as Partial<ThemeConfig>;
+            setTheme((prev) => ({ ...prev, ...parsed }));
+          }
+        } catch {
+          setContent(siteContent);
+          setTheme(DEFAULT_THEME);
+        }
+      } finally {
+        if (mounted) {
+          setIsHydrated(true);
+        }
       }
-    } catch {
-      setOverrides({});
-      setTheme(DEFAULT_THEME);
-    }
+    };
+
+    hydrate();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
     applyThemeToRoot(theme);
+    if (!isHydrated) return;
     localStorage.setItem(STORAGE_THEME_KEY, JSON.stringify(theme));
-  }, [theme]);
+  }, [theme, isHydrated]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_CONTENT_KEY, JSON.stringify(overrides));
-  }, [overrides]);
-
-  const content = useMemo(() => deepMerge(siteContent, overrides), [overrides]);
+    if (!isHydrated) return;
+    localStorage.setItem(STORAGE_CONTENT_KEY, JSON.stringify(content));
+  }, [content, isHydrated]);
 
   const value = useMemo<SiteContentContextValue>(
     () => ({
       content,
       theme,
+      isHydrated,
       setThemeValue: (key, value) => setTheme((prev) => ({ ...prev, [key]: value })),
-      updateContent: (patch) => setOverrides((prev) => deepMerge(prev, patch)),
+      replaceTheme: (nextTheme) => setTheme(nextTheme),
+      updateContent: (patch) => setContent((prev) => deepMerge(prev, patch)),
+      replaceContent: (nextContent) => setContent(nextContent),
       resetAll: () => {
-        setOverrides({});
+        setContent(siteContent);
         setTheme(DEFAULT_THEME);
         localStorage.removeItem(STORAGE_CONTENT_KEY);
         localStorage.removeItem(STORAGE_THEME_KEY);
       }
     }),
-    [content, theme]
+    [content, theme, isHydrated]
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;

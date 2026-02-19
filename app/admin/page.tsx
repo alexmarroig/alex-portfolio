@@ -1,8 +1,20 @@
-"use client";
+import { redirect } from "next/navigation";
+import AdminClientPage from "./AdminClientPage";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SiteContent } from "@/src/data/content";
 import { useSiteContent } from "@/src/data/siteContentContext";
+import {
+  type ValidationResult,
+  validateAboutParagraphs,
+  validateAwards,
+  validateCertifications,
+  validateContractAreas,
+  validateMainFocusTags,
+  validateStackCategories,
+  validateSupportingFocus
+} from "@/lib/adminValidators";
 
 type TabKey =
   | "hero"
@@ -76,6 +88,8 @@ type AnalyticsSummary = {
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
 
+type SaveState = "Não salvo" | "Salvando..." | "Salvo" | "Publicado";
+
 const tabs: { key: TabKey; label: string }[] = [
   { key: "hero", label: "Hero" },
   { key: "about", label: "About" },
@@ -100,11 +114,18 @@ function prettyJson(value: unknown) {
 }
 
 export default function AdminPage() {
-  const { content, updateContent, theme, setThemeValue, resetAll } = useSiteContent();
+  const { content, updateContent, theme, setThemeValue, resetAll, isHydrated, replaceContent, replaceTheme } = useSiteContent();
   const [inputKey, setInputKey] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("hero");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [projectKeyboardIndex, setProjectKeyboardIndex] = useState<number | null>(null);
+  const [tabQuery, setTabQuery] = useState("");
+  const [syncStatus, setSyncStatus] = useState<"synced" | "saving" | "error" | "draft">("synced");
+  const [lastSyncAt, setLastSyncAt] = useState<string | null>(null);
+
+  const tabSearchRef = useRef<HTMLInputElement>(null);
 
   const [aboutParagraphsInput, setAboutParagraphsInput] = useState(prettyJson(content.about.paragraphs));
   const [focusTagsInput, setFocusTagsInput] = useState(prettyJson(content.currentFocus.main.tags));
@@ -115,6 +136,10 @@ export default function AdminPage() {
   const [awardsInput, setAwardsInput] = useState(prettyJson(content.awards));
 
   const [jsonError, setJsonError] = useState<string>("");
+  const [saveState, setSaveState] = useState<SaveState>("Salvo");
+  const [saveError, setSaveError] = useState("");
+  const [lastSyncedSnapshot, setLastSyncedSnapshot] = useState<string | null>(null);
+  const [sectionErrors, setSectionErrors] = useState<Record<string, string[]>>({});
 
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsError, setAnalyticsError] = useState("");
@@ -134,6 +159,35 @@ export default function AdminPage() {
   const canAccess = unlocked || unlockedByQuery;
   const lockError = inputKey.length > 0 && inputKey !== ADMIN_SECRET;
 
+  const visibleTabs = useMemo(() => tabs.filter((tab) => tab.label.toLowerCase().includes(tabQuery.toLowerCase())), [tabQuery]);
+
+  const overflowRules = {
+    headline: 72,
+    subheadline: 95,
+    cta: 26
+  };
+
+  const charCounters = {
+    headline: content.hero.headline.length,
+    subheadline: content.hero.subheadline.length,
+    cta: content.contract.ctaLabel.length
+  };
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    const currentSnapshot = JSON.stringify({ content, theme });
+
+    if (!lastSyncedSnapshot) {
+      setLastSyncedSnapshot(currentSnapshot);
+      setSaveState("Salvo");
+      return;
+    }
+
+    if (currentSnapshot !== lastSyncedSnapshot && saveState !== "Salvando...") {
+      setSaveState("Não salvo");
+    }
+  }, [content, theme, isHydrated, lastSyncedSnapshot, saveState]);
+
   useEffect(() => {
     setAboutParagraphsInput(prettyJson(content.about.paragraphs));
     setFocusTagsInput(prettyJson(content.currentFocus.main.tags));
@@ -143,6 +197,54 @@ export default function AdminPage() {
     setCertificationsInput(prettyJson(content.certifications.map((item) => ({ title: item.title, issuer: item.issuer, year: item.year }))));
     setAwardsInput(prettyJson(content.awards));
   }, [content]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        tabSearchRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleShortcut);
+    return () => window.removeEventListener("keydown", handleShortcut);
+  }, []);
+
+  function updateWithSync<T>(updater: () => T) {
+    try {
+      setSyncStatus("saving");
+      updater();
+      setSyncStatus("synced");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    } catch {
+      setSyncStatus("error");
+    }
+  }
+
+  function saveDraft() {
+    try {
+      localStorage.setItem("alex-portfolio-admin-draft", JSON.stringify(content));
+      setSyncStatus("draft");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    } catch {
+      setSyncStatus("error");
+    }
+  }
+
+  function publishNow() {
+    setSyncStatus("saving");
+    setTimeout(() => {
+      setSyncStatus("synced");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    }, 450);
+  }
+
+  function discardChanges() {
+    resetAll();
+    setSyncStatus("synced");
+  }
 
   async function loadAnalytics() {
     setAnalyticsLoading(true);
@@ -202,12 +304,116 @@ export default function AdminPage() {
   }
 
   function applyJsonUpdate(label: string, callback: () => void) {
+  function applyJsonUpdate<T>(
+    section: string,
+    rawValue: string,
+    validator: (parsed: unknown) => ValidationResult<T>,
+    onSuccess: (nextValue: T) => void
+  ) {
     try {
-      callback();
-      setJsonError("");
+      const parsed = JSON.parse(rawValue) as unknown;
+      const validated = validator(parsed);
+
+      if (!validated.ok) {
+        setSectionErrors((current) => ({ ...current, [section]: validated.errors }));
+        return;
+      }
+
+      onSuccess(validated.data);
+      setSectionErrors((current) => ({ ...current, [section]: [] }));
     } catch {
-      setJsonError(`JSON inválido em: ${label}.`);
+      setSectionErrors((current) => ({ ...current, [section]: ["JSON inválido para esta seção."] }));
     }
+  }
+
+  async function saveDraftToServer() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/draft", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, content, theme, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as { ok?: boolean; message?: string };
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.message ?? "Não foi possível salvar rascunho.");
+      }
+
+      setSaveState("Salvo");
+      setLastSyncedSnapshot(JSON.stringify({ content, theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha ao salvar rascunho.");
+    }
+  }
+
+  async function publishDraftToServer() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/publish", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as { ok?: boolean; message?: string };
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.message ?? "Não foi possível publicar.");
+      }
+
+      setSaveState("Publicado");
+      setLastSyncedSnapshot(JSON.stringify({ content, theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha ao publicar.");
+    }
+  }
+
+  async function rollbackPublishedContent() {
+    setSaveState("Salvando...");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/admin/content/rollback", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, updatedBy: "admin-lab" })
+      });
+
+      const payload = (await response.json()) as {
+        ok?: boolean;
+        message?: string;
+        published?: { content: SiteContent; theme: typeof theme };
+      };
+
+      if (!response.ok || !payload.ok || !payload.published) {
+        throw new Error(payload.message ?? "Não foi possível executar rollback.");
+      }
+
+      replaceContent(payload.published.content);
+      replaceTheme(payload.published.theme);
+      setSaveState("Publicado");
+      setLastSyncedSnapshot(JSON.stringify({ content: payload.published.content, theme: payload.published.theme }));
+    } catch (error) {
+      setSaveState("Não salvo");
+      setSaveError(error instanceof Error ? error.message : "Falha no rollback.");
+    }
+  function renderSectionError(section: string) {
+    const messages = sectionErrors[section];
+    if (!messages || messages.length === 0) return null;
+
+    return (
+      <ul className="adminError" role="alert">
+        {messages.map((message) => (
+          <li key={`${section}-${message}`}>{message}</li>
+        ))}
+      </ul>
+    );
   }
 
   if (!canAccess) {
@@ -238,19 +444,49 @@ export default function AdminPage() {
 
   return (
     <section className="section simplePage glassPanel adminPage">
+      <div className="adminStickyHeader">
+        <div>
+          <strong>Sincronização:</strong> {syncStatus === "saving" ? "salvando..." : syncStatus === "synced" ? "sincronizado" : syncStatus === "draft" ? "draft salvo" : "erro"}
+          {lastSyncAt ? <span className="adminSyncTime"> · {lastSyncAt}</span> : null}
+        </div>
+        <div className="adminHeaderActions">
+          <button className="btn btnGhost" onClick={saveDraft}>Salvar draft</button>
+          <button className="btn btnPrimary" onClick={publishNow}>Publicar</button>
+          <button className="btn btnGhost" onClick={discardChanges}>Descartar</button>
+        </div>
+      </div>
+
       <div className="adminHeaderRow">
         <div>
           <h1>Admin Lab</h1>
           <p>Editor completo por abas + dashboard de audiência.</p>
         </div>
         <div className="adminHeaderActions">
+          <span className="adminHint">Status: <strong>{saveState}</strong></span>
+          <button className="btn btnPrimary" onClick={saveDraftToServer} disabled={saveState === "Salvando..."}>Salvar rascunho</button>
+          <button className="btn btnPrimary" onClick={publishDraftToServer} disabled={saveState === "Salvando..."}>Publicar</button>
+          <button className="btn btnGhost" onClick={rollbackPublishedContent} disabled={saveState === "Salvando..."}>Rollback última publicação</button>
           <button className="btn btnGhost" onClick={resetAll}>Resetar alterações locais</button>
         </div>
       </div>
 
       <div className="adminStudioLayout">
         <aside className="adminSidebar" aria-label="Admin sections">
-          {tabs.map((tab) => (
+          <label className="adminLabel" htmlFor="tabSearch">Buscar seção</label>
+          <input
+            id="tabSearch"
+            ref={tabSearchRef}
+            className="adminInput"
+            placeholder="Filtrar tabs… (Ctrl/Cmd+K)"
+            value={tabQuery}
+            onChange={(event) => setTabQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && visibleTabs[0]) {
+                setActiveTab(visibleTabs[0].key);
+              }
+            }}
+          />
+          {visibleTabs.map((tab) => (
             <button
               key={tab.key}
               className={`adminSidebarItem ${activeTab === tab.key ? "isActive" : ""}`}
@@ -263,6 +499,7 @@ export default function AdminPage() {
 
         <div className="adminPanel">
           {jsonError ? <p className="adminError">{jsonError}</p> : null}
+          {saveError ? <p className="adminError">{saveError}</p> : null}
 
           {activeTab === "hero" ? (
             <>
@@ -270,9 +507,11 @@ export default function AdminPage() {
               <label className="adminLabel">Introdução</label>
               <input className="adminInput" value={content.hero.intro} onChange={(event) => updateContent({ hero: { intro: event.target.value } })} />
               <label className="adminLabel">Headline</label>
-              <textarea className="adminInput adminTextArea" value={content.hero.headline} onChange={(event) => updateContent({ hero: { headline: event.target.value } })} />
+              <textarea className="adminInput adminTextArea" value={content.hero.headline} onChange={(event) => updateWithSync(() => updateContent({ hero: { headline: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.headline > overflowRules.headline ? "isOverflow" : ""}`}>{charCounters.headline}/{overflowRules.headline}</p>
               <label className="adminLabel">Subheadline</label>
-              <input className="adminInput" value={content.hero.subheadline} onChange={(event) => updateContent({ hero: { subheadline: event.target.value } })} />
+              <input className="adminInput" value={content.hero.subheadline} onChange={(event) => updateWithSync(() => updateContent({ hero: { subheadline: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.subheadline > overflowRules.subheadline ? "isOverflow" : ""}`}>{charCounters.subheadline}/{overflowRules.subheadline}</p>
               <label className="adminLabel">Parágrafo</label>
               <textarea className="adminInput adminTextArea" value={content.hero.paragraph} onChange={(event) => updateContent({ hero: { paragraph: event.target.value } })} />
             </>
@@ -287,14 +526,15 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={aboutParagraphsInput} onChange={(event) => setAboutParagraphsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("About.paragraphs", () => {
-                  const parsed = JSON.parse(aboutParagraphsInput) as string[];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ about: { paragraphs: parsed } });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("about.paragraphs", aboutParagraphsInput, validateAboutParagraphs, (paragraphs) => {
+                    updateContent({ about: { paragraphs } });
+                  })
+                }
               >
                 Salvar parágrafos
               </button>
+              {renderSectionError("about.paragraphs")}
             </>
           ) : null}
 
@@ -311,27 +551,29 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={focusTagsInput} onChange={(event) => setFocusTagsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("CurrentFocus.main.tags", () => {
-                  const parsed = JSON.parse(focusTagsInput) as string[];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ currentFocus: { main: { ...content.currentFocus.main, tags: parsed } } });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("currentFocus.main.tags", focusTagsInput, validateMainFocusTags, (tags) => {
+                    updateContent({ currentFocus: { main: { ...content.currentFocus.main, tags } } });
+                  })
+                }
               >
                 Salvar tags do bloco principal
               </button>
+              {renderSectionError("currentFocus.main.tags")}
 
               <label className="adminLabel">Cards secundários (JSON)</label>
               <textarea className="adminInput adminTextArea" value={focusSupportingInput} onChange={(event) => setFocusSupportingInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("CurrentFocus.supporting", () => {
-                  const parsed = JSON.parse(focusSupportingInput) as SiteContent["currentFocus"]["supporting"];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ currentFocus: { supporting: parsed } });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("currentFocus.supporting", focusSupportingInput, validateSupportingFocus, (supporting) => {
+                    updateContent({ currentFocus: { supporting } });
+                  })
+                }
               >
                 Salvar cards secundários
               </button>
+              {renderSectionError("currentFocus.supporting")}
             </>
           ) : null}
 
@@ -345,7 +587,8 @@ export default function AdminPage() {
               <label className="adminLabel">Lead</label>
               <textarea className="adminInput adminTextArea" value={content.contract.lead} onChange={(event) => updateContent({ contract: { lead: event.target.value } })} />
               <label className="adminLabel">CTA label</label>
-              <input className="adminInput" value={content.contract.ctaLabel} onChange={(event) => updateContent({ contract: { ctaLabel: event.target.value } })} />
+              <input className="adminInput" value={content.contract.ctaLabel} onChange={(event) => updateWithSync(() => updateContent({ contract: { ctaLabel: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.cta > overflowRules.cta ? "isOverflow" : ""}`}>{charCounters.cta}/{overflowRules.cta}</p>
               <label className="adminLabel">Nota</label>
               <input className="adminInput" value={content.contract.note} onChange={(event) => updateContent({ contract: { note: event.target.value } })} />
               <label className="adminLabel">Subtítulo</label>
@@ -354,14 +597,15 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={contractAreasInput} onChange={(event) => setContractAreasInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("Contract.areas", () => {
-                  const parsed = JSON.parse(contractAreasInput) as string[];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ contract: { areas: parsed } });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("contract.areas", contractAreasInput, validateContractAreas, (areas) => {
+                    updateContent({ contract: { areas } });
+                  })
+                }
               >
                 Salvar áreas
               </button>
+              {renderSectionError("contract.areas")}
             </>
           ) : null}
 
@@ -373,14 +617,25 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={stackInput} onChange={(event) => setStackInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("stackCategories", () => {
-                  const parsed = JSON.parse(stackInput) as SiteContent["stackCategories"];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ stackCategories: parsed });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("stackCategories", stackInput, validateStackCategories, (stackCategories) => {
+                    const stackWithIcons = stackCategories.map((category, categoryIndex) => ({
+                      ...category,
+                      items: category.items.map((item, itemIndex) => ({
+                        ...item,
+                        icon:
+                          content.stackCategories[categoryIndex]?.items[itemIndex]?.icon ??
+                          content.stackCategories[0]?.items[0]?.icon
+                      }))
+                    }));
+
+                    updateContent({ stackCategories: stackWithIcons as SiteContent["stackCategories"] });
+                  })
+                }
               >
                 Salvar stack
               </button>
+              {renderSectionError("stackCategories")}
             </>
           ) : null}
 
@@ -391,31 +646,34 @@ export default function AdminPage() {
               <textarea className="adminInput adminTextArea" value={certificationsInput} onChange={(event) => setCertificationsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("certifications", () => {
-                  const parsed = JSON.parse(certificationsInput) as { title: string; issuer: string; year: string }[];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  const next = parsed.map((item, index) => ({
-                    ...content.certifications[index],
-                    ...item
-                  }));
-                  updateContent({ certifications: next as SiteContent["certifications"] });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("certifications", certificationsInput, validateCertifications, (certifications) => {
+                    const next = certifications.map((item, index) => ({
+                      ...item,
+                      icon: content.certifications[index]?.icon ?? content.certifications[0]?.icon
+                    }));
+
+                    updateContent({ certifications: next as SiteContent["certifications"] });
+                  })
+                }
               >
                 Salvar certificações
               </button>
+              {renderSectionError("certifications")}
 
               <label className="adminLabel">Awards (JSON string[])</label>
               <textarea className="adminInput adminTextArea" value={awardsInput} onChange={(event) => setAwardsInput(event.target.value)} />
               <button
                 className="btn btnGhost"
-                onClick={() => applyJsonUpdate("awards", () => {
-                  const parsed = JSON.parse(awardsInput) as string[];
-                  if (!Array.isArray(parsed)) throw new Error();
-                  updateContent({ awards: parsed });
-                })}
+                onClick={() =>
+                  applyJsonUpdate("awards", awardsInput, validateAwards, (awards) => {
+                    updateContent({ awards });
+                  })
+                }
               >
                 Salvar awards
               </button>
+              {renderSectionError("awards")}
             </>
           ) : null}
 
@@ -429,19 +687,44 @@ export default function AdminPage() {
                     key={`${project.title}-${index}`}
                     draggable
                     onDragStart={() => setDragIndex(index)}
-                    onDragOver={(event) => event.preventDefault()}
+                    onDragOver={(event) => {
+                      event.preventDefault();
+                      setDragOverIndex(index);
+                    }}
                     onDrop={() => {
                       if (dragIndex === null || dragIndex === index) return;
-                      updateContent({ projects: reorder(content.projects, dragIndex, index) as SiteContent["projects"] });
+                      updateWithSync(() => updateContent({ projects: reorder(content.projects, dragIndex, index) as SiteContent["projects"] }));
                       setDragIndex(null);
+                      setDragOverIndex(null);
                     }}
-                    className="adminProjectItem"
+                    onDragEnd={() => {
+                      setDragIndex(null);
+                      setDragOverIndex(null);
+                    }}
+                    tabIndex={0}
+                    onFocus={() => setProjectKeyboardIndex(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === "ArrowUp" && index > 0) {
+                        event.preventDefault();
+                        updateWithSync(() => updateContent({ projects: reorder(content.projects, index, index - 1) as SiteContent["projects"] }));
+                        setProjectKeyboardIndex(index - 1);
+                      }
+
+                      if (event.key === "ArrowDown" && index < content.projects.length - 1) {
+                        event.preventDefault();
+                        updateWithSync(() => updateContent({ projects: reorder(content.projects, index, index + 1) as SiteContent["projects"] }));
+                        setProjectKeyboardIndex(index + 1);
+                      }
+                    }}
+                    className={`adminProjectItem ${dragOverIndex === index ? "isDropTarget" : ""} ${projectKeyboardIndex === index ? "isKeyboardActive" : ""}`}
                   >
+                    <span className="adminDragHandle" aria-hidden>⋮⋮</span>
                     <span>{index + 1}. {project.title}</span>
                     <small>{project.status}</small>
                   </li>
                 ))}
               </ul>
+              <p className="adminHint">Use ↑/↓ com foco em um card para mover via teclado.</p>
             </>
           ) : null}
 
@@ -598,7 +881,32 @@ export default function AdminPage() {
             </>
           ) : null}
         </div>
+
+        <aside className="adminPreviewPanel" aria-label="Preview da seção">
+          <h3>Preview rápido</h3>
+          {activeTab === "hero" ? (
+            <div>
+              <p className="adminPreviewKicker">{content.hero.intro}</p>
+              <h4>{content.hero.headline}</h4>
+              <p>{content.hero.subheadline}</p>
+            </div>
+          ) : null}
+          {activeTab === "about" ? <p>{content.about.heading}</p> : null}
+          {activeTab === "focus" ? <p>{content.currentFocus.main.title}: {content.currentFocus.main.summary}</p> : null}
+          {activeTab === "contract" ? <p>{content.contract.title} · CTA: {content.contract.ctaLabel}</p> : null}
+          {activeTab === "projects" ? <ol>{content.projects.slice(0, 3).map((project) => <li key={project.title}>{project.title}</li>)}</ol> : null}
+          {activeTab === "theme" ? <p>As mudanças de tema já refletem no site em tempo real.</p> : null}
+          {activeTab === "dashboard" ? <p>Use atualização manual para obter os últimos dados.</p> : null}
+        </aside>
       </div>
     </section>
   );
+export default async function AdminPage() {
+  const isAllowed = await isAdminAuthenticated();
+
+  if (!isAllowed) {
+    redirect("/admin/login");
+  }
+
+  return <AdminClientPage />;
 }
