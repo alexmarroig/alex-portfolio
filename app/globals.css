@@ -1816,6 +1816,88 @@ a {
   gap: 20px;
 }
 
+.adminStickyHeader {
+  position: sticky;
+  top: 10px;
+  z-index: 20;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(5, 8, 21, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.adminSyncTime {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.adminHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.adminHeaderActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.adminStudioLayout {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) minmax(240px, 320px);
+  gap: 16px;
+}
+
+.adminSidebar,
+.adminPanel,
+.adminPreviewPanel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(9, 14, 34, 0.52);
+}
+
+.adminSidebar {
+  height: fit-content;
+  position: sticky;
+  top: 84px;
+}
+
+.adminSidebarItem {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px;
+  background: transparent;
+  color: var(--text);
+}
+
+.adminSidebarItem.isActive {
+  border-color: rgba(73, 241, 255, 0.5);
+  background: rgba(73, 241, 255, 0.12);
+}
+
+.adminPreviewPanel {
+  position: sticky;
+  top: 84px;
+  height: fit-content;
+}
+
+.adminPreviewKicker {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
 .adminGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1866,6 +1948,39 @@ a {
   border-radius: 10px;
   padding: 10px 12px;
   cursor: grab;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.adminProjectItem:hover {
+  border-color: rgba(255, 62, 166, 0.7);
+}
+
+.adminProjectItem.isDropTarget {
+  background: rgba(255, 62, 166, 0.15);
+  border-color: rgba(255, 62, 166, 0.9);
+}
+
+.adminProjectItem.isKeyboardActive {
+  outline: 2px solid rgba(73, 241, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.adminDragHandle {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.adminCounter {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.adminCounter.isOverflow {
+  color: #ff7cae;
 }
 
 .adminThemeGrid {
@@ -1879,6 +1994,17 @@ a {
   justify-content: space-between;
   gap: 12px;
   align-items: center;
+}
+
+@media (max-width: 1100px) {
+  .adminStudioLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .adminSidebar,
+  .adminPreviewPanel {
+    position: static;
+  }
 }
 
 /* ================================

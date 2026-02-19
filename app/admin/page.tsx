@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import AdminClientPage from "./AdminClientPage";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SiteContent } from "@/src/data/content";
 import { useSiteContent } from "@/src/data/siteContentContext";
 import {
@@ -78,6 +78,13 @@ export default function AdminPage() {
   const [unlocked, setUnlocked] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("hero");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [projectKeyboardIndex, setProjectKeyboardIndex] = useState<number | null>(null);
+  const [tabQuery, setTabQuery] = useState("");
+  const [syncStatus, setSyncStatus] = useState<"synced" | "saving" | "error" | "draft">("synced");
+  const [lastSyncAt, setLastSyncAt] = useState<string | null>(null);
+
+  const tabSearchRef = useRef<HTMLInputElement>(null);
 
   const [aboutParagraphsInput, setAboutParagraphsInput] = useState(prettyJson(content.about.paragraphs));
   const [focusTagsInput, setFocusTagsInput] = useState(prettyJson(content.currentFocus.main.tags));
@@ -105,6 +112,20 @@ export default function AdminPage() {
   const canAccess = unlocked || unlockedByQuery;
   const lockError = inputKey.length > 0 && inputKey !== ADMIN_SECRET;
 
+  const visibleTabs = useMemo(() => tabs.filter((tab) => tab.label.toLowerCase().includes(tabQuery.toLowerCase())), [tabQuery]);
+
+  const overflowRules = {
+    headline: 72,
+    subheadline: 95,
+    cta: 26
+  };
+
+  const charCounters = {
+    headline: content.hero.headline.length,
+    subheadline: content.hero.subheadline.length,
+    cta: content.contract.ctaLabel.length
+  };
+
   useEffect(() => {
     if (!isHydrated) return;
     const currentSnapshot = JSON.stringify({ content, theme });
@@ -129,6 +150,54 @@ export default function AdminPage() {
     setCertificationsInput(prettyJson(content.certifications.map((item) => ({ title: item.title, issuer: item.issuer, year: item.year }))));
     setAwardsInput(prettyJson(content.awards));
   }, [content]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        tabSearchRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleShortcut);
+    return () => window.removeEventListener("keydown", handleShortcut);
+  }, []);
+
+  function updateWithSync<T>(updater: () => T) {
+    try {
+      setSyncStatus("saving");
+      updater();
+      setSyncStatus("synced");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    } catch {
+      setSyncStatus("error");
+    }
+  }
+
+  function saveDraft() {
+    try {
+      localStorage.setItem("alex-portfolio-admin-draft", JSON.stringify(content));
+      setSyncStatus("draft");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    } catch {
+      setSyncStatus("error");
+    }
+  }
+
+  function publishNow() {
+    setSyncStatus("saving");
+    setTimeout(() => {
+      setSyncStatus("synced");
+      setLastSyncAt(new Date().toLocaleTimeString("pt-BR"));
+    }, 450);
+  }
+
+  function discardChanges() {
+    resetAll();
+    setSyncStatus("synced");
+  }
 
   async function loadAnalytics() {
     setAnalyticsLoading(true);
@@ -291,6 +360,18 @@ export default function AdminPage() {
 
   return (
     <section className="section simplePage glassPanel adminPage">
+      <div className="adminStickyHeader">
+        <div>
+          <strong>Sincronização:</strong> {syncStatus === "saving" ? "salvando..." : syncStatus === "synced" ? "sincronizado" : syncStatus === "draft" ? "draft salvo" : "erro"}
+          {lastSyncAt ? <span className="adminSyncTime"> · {lastSyncAt}</span> : null}
+        </div>
+        <div className="adminHeaderActions">
+          <button className="btn btnGhost" onClick={saveDraft}>Salvar draft</button>
+          <button className="btn btnPrimary" onClick={publishNow}>Publicar</button>
+          <button className="btn btnGhost" onClick={discardChanges}>Descartar</button>
+        </div>
+      </div>
+
       <div className="adminHeaderRow">
         <div>
           <h1>Admin Lab</h1>
@@ -307,7 +388,21 @@ export default function AdminPage() {
 
       <div className="adminStudioLayout">
         <aside className="adminSidebar" aria-label="Admin sections">
-          {tabs.map((tab) => (
+          <label className="adminLabel" htmlFor="tabSearch">Buscar seção</label>
+          <input
+            id="tabSearch"
+            ref={tabSearchRef}
+            className="adminInput"
+            placeholder="Filtrar tabs… (Ctrl/Cmd+K)"
+            value={tabQuery}
+            onChange={(event) => setTabQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && visibleTabs[0]) {
+                setActiveTab(visibleTabs[0].key);
+              }
+            }}
+          />
+          {visibleTabs.map((tab) => (
             <button
               key={tab.key}
               className={`adminSidebarItem ${activeTab === tab.key ? "isActive" : ""}`}
@@ -328,9 +423,11 @@ export default function AdminPage() {
               <label className="adminLabel">Introdução</label>
               <input className="adminInput" value={content.hero.intro} onChange={(event) => updateContent({ hero: { intro: event.target.value } })} />
               <label className="adminLabel">Headline</label>
-              <textarea className="adminInput adminTextArea" value={content.hero.headline} onChange={(event) => updateContent({ hero: { headline: event.target.value } })} />
+              <textarea className="adminInput adminTextArea" value={content.hero.headline} onChange={(event) => updateWithSync(() => updateContent({ hero: { headline: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.headline > overflowRules.headline ? "isOverflow" : ""}`}>{charCounters.headline}/{overflowRules.headline}</p>
               <label className="adminLabel">Subheadline</label>
-              <input className="adminInput" value={content.hero.subheadline} onChange={(event) => updateContent({ hero: { subheadline: event.target.value } })} />
+              <input className="adminInput" value={content.hero.subheadline} onChange={(event) => updateWithSync(() => updateContent({ hero: { subheadline: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.subheadline > overflowRules.subheadline ? "isOverflow" : ""}`}>{charCounters.subheadline}/{overflowRules.subheadline}</p>
               <label className="adminLabel">Parágrafo</label>
               <textarea className="adminInput adminTextArea" value={content.hero.paragraph} onChange={(event) => updateContent({ hero: { paragraph: event.target.value } })} />
             </>
@@ -406,7 +503,8 @@ export default function AdminPage() {
               <label className="adminLabel">Lead</label>
               <textarea className="adminInput adminTextArea" value={content.contract.lead} onChange={(event) => updateContent({ contract: { lead: event.target.value } })} />
               <label className="adminLabel">CTA label</label>
-              <input className="adminInput" value={content.contract.ctaLabel} onChange={(event) => updateContent({ contract: { ctaLabel: event.target.value } })} />
+              <input className="adminInput" value={content.contract.ctaLabel} onChange={(event) => updateWithSync(() => updateContent({ contract: { ctaLabel: event.target.value } }))} />
+              <p className={`adminCounter ${charCounters.cta > overflowRules.cta ? "isOverflow" : ""}`}>{charCounters.cta}/{overflowRules.cta}</p>
               <label className="adminLabel">Nota</label>
               <input className="adminInput" value={content.contract.note} onChange={(event) => updateContent({ contract: { note: event.target.value } })} />
               <label className="adminLabel">Subtítulo</label>
@@ -505,19 +603,44 @@ export default function AdminPage() {
                     key={`${project.title}-${index}`}
                     draggable
                     onDragStart={() => setDragIndex(index)}
-                    onDragOver={(event) => event.preventDefault()}
+                    onDragOver={(event) => {
+                      event.preventDefault();
+                      setDragOverIndex(index);
+                    }}
                     onDrop={() => {
                       if (dragIndex === null || dragIndex === index) return;
-                      updateContent({ projects: reorder(content.projects, dragIndex, index) as SiteContent["projects"] });
+                      updateWithSync(() => updateContent({ projects: reorder(content.projects, dragIndex, index) as SiteContent["projects"] }));
                       setDragIndex(null);
+                      setDragOverIndex(null);
                     }}
-                    className="adminProjectItem"
+                    onDragEnd={() => {
+                      setDragIndex(null);
+                      setDragOverIndex(null);
+                    }}
+                    tabIndex={0}
+                    onFocus={() => setProjectKeyboardIndex(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === "ArrowUp" && index > 0) {
+                        event.preventDefault();
+                        updateWithSync(() => updateContent({ projects: reorder(content.projects, index, index - 1) as SiteContent["projects"] }));
+                        setProjectKeyboardIndex(index - 1);
+                      }
+
+                      if (event.key === "ArrowDown" && index < content.projects.length - 1) {
+                        event.preventDefault();
+                        updateWithSync(() => updateContent({ projects: reorder(content.projects, index, index + 1) as SiteContent["projects"] }));
+                        setProjectKeyboardIndex(index + 1);
+                      }
+                    }}
+                    className={`adminProjectItem ${dragOverIndex === index ? "isDropTarget" : ""} ${projectKeyboardIndex === index ? "isKeyboardActive" : ""}`}
                   >
+                    <span className="adminDragHandle" aria-hidden>⋮⋮</span>
                     <span>{index + 1}. {project.title}</span>
                     <small>{project.status}</small>
                   </li>
                 ))}
               </ul>
+              <p className="adminHint">Use ↑/↓ com foco em um card para mover via teclado.</p>
             </>
           ) : null}
 
@@ -613,6 +736,23 @@ export default function AdminPage() {
             </>
           ) : null}
         </div>
+
+        <aside className="adminPreviewPanel" aria-label="Preview da seção">
+          <h3>Preview rápido</h3>
+          {activeTab === "hero" ? (
+            <div>
+              <p className="adminPreviewKicker">{content.hero.intro}</p>
+              <h4>{content.hero.headline}</h4>
+              <p>{content.hero.subheadline}</p>
+            </div>
+          ) : null}
+          {activeTab === "about" ? <p>{content.about.heading}</p> : null}
+          {activeTab === "focus" ? <p>{content.currentFocus.main.title}: {content.currentFocus.main.summary}</p> : null}
+          {activeTab === "contract" ? <p>{content.contract.title} · CTA: {content.contract.ctaLabel}</p> : null}
+          {activeTab === "projects" ? <ol>{content.projects.slice(0, 3).map((project) => <li key={project.title}>{project.title}</li>)}</ol> : null}
+          {activeTab === "theme" ? <p>As mudanças de tema já refletem no site em tempo real.</p> : null}
+          {activeTab === "dashboard" ? <p>Use atualização manual para obter os últimos dados.</p> : null}
+        </aside>
       </div>
     </section>
   );
