@@ -52,6 +52,18 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+
+
+function normalizeContent(candidate: unknown): SiteContent {
+  if (!isObject(candidate)) return structuredClone(siteContent);
+  return deepMerge(structuredClone(siteContent), candidate as DeepPartial<SiteContent>);
+}
+
+function normalizeTheme(candidate: unknown): ThemeConfig {
+  if (!isObject(candidate)) return structuredClone(DEFAULT_THEME);
+  return { ...DEFAULT_THEME, ...(candidate as Partial<ThemeConfig>) };
+}
+
 function deepMerge<T>(target: T, source: DeepPartial<T>): T {
   if (Array.isArray(target)) {
     return (Array.isArray(source) ? source : target) as T;
@@ -118,21 +130,20 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
         }
 
         if (!mounted) return;
-        setContent(payload.draft.content);
-        setTheme(payload.draft.theme);
+        setContent(normalizeContent(payload.draft.content));
+        setTheme(normalizeTheme(payload.draft.theme));
         localStorage.setItem(STORAGE_CONTENT_KEY, JSON.stringify(payload.draft.content));
         localStorage.setItem(STORAGE_THEME_KEY, JSON.stringify(payload.draft.theme));
       } catch {
         try {
           const rawContent = localStorage.getItem(STORAGE_CONTENT_KEY);
           if (rawContent) {
-            setContent(JSON.parse(rawContent) as SiteContent);
+            setContent(normalizeContent(JSON.parse(rawContent)));
           }
 
           const rawTheme = localStorage.getItem(STORAGE_THEME_KEY);
           if (rawTheme) {
-            const parsed = JSON.parse(rawTheme) as Partial<ThemeConfig>;
-            setTheme((prev) => ({ ...prev, ...parsed }));
+            setTheme(normalizeTheme(JSON.parse(rawTheme)));
           }
         } catch {
           setContent(siteContent);
