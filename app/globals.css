@@ -106,6 +106,10 @@ a {
   font-size: clamp(1.5rem, 3vw, 1.95rem);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+}
+
 /* Typography polish */
 .sectionTitle {
   letter-spacing: -0.02em;
@@ -524,6 +528,51 @@ a {
   padding: 0;
   list-style: none;
 }
+
+.focusLayout {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.focusGridClean {
+  display: grid;
+  gap: 16px;
+}
+
+.focusCardHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(164, 177, 255, 0.22);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  background: rgba(15, 20, 36, 0.65);
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .focusLayout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
 
 /* ================================
    Project cards
@@ -1610,14 +1659,15 @@ a {
 
 .heroOpenTitle {
   margin: 0;
-  display: grid;
-  gap: 2px;
   font-size: clamp(2.2rem, 7.5vw, 5.2rem);
-  line-height: 0.98;
+  line-height: 1.08;
   letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .heroBuildsGradient {
+  display: inline-block;
+  vertical-align: baseline;
   background: linear-gradient(100deg, #81d7ff 0%, #c6beff 50%, #ff9ad8 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -1659,6 +1709,53 @@ a {
   height: 18px;
   background: linear-gradient(to bottom, rgba(158, 180, 230, 0.1), rgba(158, 180, 230, 0.8));
   animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+.capabilitySection {
+  margin-top: clamp(28px, 5vw, 48px);
+}
+
+.capabilityGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+.capabilityTile {
+  padding: 18px;
+}
+
+.capabilityTileHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.capabilityTile h3 {
+  margin: 0;
+  line-height: 1.15;
+}
+
+.capabilityTile p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.capabilityIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(144, 201, 255, 0.4);
+  background: rgba(89, 166, 255, 0.12);
+}
+
+@media (min-width: 880px) {
+  .capabilityGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .featureGrid {
@@ -2030,6 +2127,8 @@ a {
 
 .adminInsight--warning {
   border-color: rgba(255, 124, 174, 0.6);
+}
+
 @media (max-width: 1100px) {
   .adminStudioLayout {
     grid-template-columns: 1fr;

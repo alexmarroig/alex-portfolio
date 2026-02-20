@@ -1,15 +1,16 @@
-import { NextResponse } from "next/server";
-import { getAnalyticsSummary, toAnalyticsCsv, type AnalyticsRangePreset } from "@/lib/analyticsStore";
-import { getAnalyticsSummary } from "@/lib/analyticsStore";
-import { isAdminAuthenticated } from "@/lib/adminAuth";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+import { isAdminAuthenticated } from "@/lib/adminAuth";
+import { getAnalyticsSummary, toAnalyticsCsv, type AnalyticsRangePreset } from "@/lib/analyticsStore";
+
+export async function GET(request: NextRequest) {
   const isAllowed = await isAdminAuthenticated();
 
   if (!isAllowed) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
 
+  const searchParams = request.nextUrl.searchParams;
   const period = (searchParams.get("period") ?? "14d") as AnalyticsRangePreset;
   const startDate = searchParams.get("start") ?? undefined;
   const endDate = searchParams.get("end") ?? undefined;
