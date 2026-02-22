@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/#work", label: "Work" },
@@ -12,8 +9,6 @@ const links = [
 ];
 
 export default function Nav() {
-  const pathname = usePathname();
-
   return (
     <header className="navShell">
       <div className="navInner">
@@ -21,10 +16,8 @@ export default function Nav() {
 
         <nav className="navGroup" aria-label="Primary">
           {links.map((link) => {
-            const routePath = link.href.split("#")[0] || "/";
-            const isActive = routePath === pathname;
             return (
-              <Link key={link.href} href={link.href} className={`navLink ${isActive ? "isActive" : ""}`}>
+              <Link key={link.href} href={link.href} className="navLink">
                 {link.label}
               </Link>
             );
