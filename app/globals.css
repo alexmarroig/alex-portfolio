@@ -2298,3 +2298,79 @@ h1, h2, h3, h4, h5, h6 {
     transform: translate(-50%, -50%) scale(0.88);
   }
 }
+
+
+/* ================================
+   Performance + Interaction pass (2026)
+================================ */
+@supports (content-visibility: auto) {
+  .section:not(.heroSection),
+  .projectGrid,
+  .stackCategoryGrid,
+  .credentialsGrid {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 620px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iconBadge,
+  .socialLink,
+  .navLink {
+    will-change: transform;
+    transition: transform 220ms var(--ease-premium), border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease, color 220ms ease;
+  }
+
+  .iconBadge {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .iconBadge::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+    background: linear-gradient(130deg, rgba(73, 241, 255, 0.35), rgba(255, 62, 166, 0.28));
+    z-index: -1;
+  }
+
+  .iconBadge:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: rgba(108, 221, 255, 0.55);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(73, 241, 255, 0.22) inset;
+  }
+
+  .iconBadge:hover::after {
+    opacity: 1;
+  }
+
+  .iconBadge:hover .iconBadgeIcon {
+    transform: rotate(-8deg) scale(1.12);
+    box-shadow: 0 0 0 1px rgba(73, 241, 255, 0.35) inset, 0 0 18px rgba(73, 241, 255, 0.24);
+  }
+
+  .iconBadgeIcon {
+    transition: transform 220ms var(--ease-premium), box-shadow 220ms ease;
+  }
+
+  .socialLink:hover,
+  .navLink:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(17, 27, 52, 0.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconBadge,
+  .iconBadgeIcon,
+  .socialLink,
+  .navLink {
+    will-change: auto;
+    transition: none !important;
+    transform: none !important;
+  }
+}
