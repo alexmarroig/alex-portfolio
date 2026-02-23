@@ -116,10 +116,38 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     let mounted = true;
+    let idleId: number | null = null;
 
-    const hydrate = async () => {
+    const hydrateFromStorage = () => {
       try {
-        const response = await fetch(`/api/admin/content?key=${encodeURIComponent(ADMIN_SECRET)}`);
+        const rawContent = localStorage.getItem(STORAGE_CONTENT_KEY);
+        if (rawContent) {
+          setContent(normalizeContent(JSON.parse(rawContent)));
+        }
+
+        const rawTheme = localStorage.getItem(STORAGE_THEME_KEY);
+        if (rawTheme) {
+          setTheme(normalizeTheme(JSON.parse(rawTheme)));
+        }
+      } catch {
+        setContent(siteContent);
+        setTheme(DEFAULT_THEME);
+      } finally {
+        if (mounted) {
+          setIsHydrated(true);
+        }
+      }
+    };
+
+    const revalidateFromRemote = async () => {
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 2200);
+
+      try {
+        const response = await fetch(`/api/admin/content?key=${encodeURIComponent(ADMIN_SECRET)}`, {
+          signal: controller.signal,
+          cache: "no-store"
+        });
         const payload = (await response.json()) as {
           ok?: boolean;
           draft?: { content: SiteContent; theme: ThemeConfig };
@@ -135,31 +163,22 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
         localStorage.setItem(STORAGE_CONTENT_KEY, JSON.stringify(payload.draft.content));
         localStorage.setItem(STORAGE_THEME_KEY, JSON.stringify(payload.draft.theme));
       } catch {
-        try {
-          const rawContent = localStorage.getItem(STORAGE_CONTENT_KEY);
-          if (rawContent) {
-            setContent(normalizeContent(JSON.parse(rawContent)));
-          }
-
-          const rawTheme = localStorage.getItem(STORAGE_THEME_KEY);
-          if (rawTheme) {
-            setTheme(normalizeTheme(JSON.parse(rawTheme)));
-          }
-        } catch {
-          setContent(siteContent);
-          setTheme(DEFAULT_THEME);
-        }
+        // Ignore remote refresh failures to keep first paint smooth.
       } finally {
-        if (mounted) {
-          setIsHydrated(true);
-        }
+        window.clearTimeout(timeoutId);
       }
     };
 
-    hydrate();
+    hydrateFromStorage();
+    idleId = window.setTimeout(() => {
+      void revalidateFromRemote();
+    }, 250);
 
     return () => {
       mounted = false;
+      if (idleId !== null) {
+        window.clearTimeout(idleId);
+      }
     };
   }, []);
 
