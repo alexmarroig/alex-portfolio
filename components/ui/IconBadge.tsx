@@ -1,6 +1,7 @@
-import type { IconType } from "react-icons";
+import { getIcon } from "@/components/IconRegistry";
 
-export default function IconBadge({ icon: Icon, label, note }: { icon: IconType; label: string; note?: string }) {
+export default function IconBadge({ icon, label, note }: { icon: string; label: string; note?: string }) {
+  const Icon = getIcon(icon);
   return (
     <div className="iconBadge">
       <span className="iconBadgeIcon" aria-hidden="true">

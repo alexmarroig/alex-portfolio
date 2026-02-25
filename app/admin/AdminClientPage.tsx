@@ -13,7 +13,8 @@ type TabKey =
   | "credentials"
   | "projects"
   | "theme"
-  | "dashboard";
+  | "dashboard"
+  | "settings";
 
 type AnalyticsEntry = { label: string; value: number };
 
@@ -30,6 +31,7 @@ type AnalyticsSummary = {
   topCountries: AnalyticsEntry[];
   topKeywords: AnalyticsEntry[];
   llmAgents: AnalyticsEntry[];
+  loginLogs: { date: string; country: string; userAgent: string; visitorId: string }[];
   timeline: { date: string; pageviews: number; resumeDownloads: number; visitors: number }[];
 };
 
@@ -43,7 +45,8 @@ const tabs: { key: TabKey; label: string }[] = [
   { key: "credentials", label: "Certifications" },
   { key: "projects", label: "Featured Work" },
   { key: "theme", label: "Theme" },
-  { key: "dashboard", label: "Dashboard" }
+  { key: "dashboard", label: "Dashboard" },
+  { key: "settings", label: "Settings" }
 ];
 
 function reorder<T>(items: T[], from: number, to: number) {
@@ -75,6 +78,9 @@ export default function AdminClientPage() {
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsError, setAnalyticsError] = useState("");
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordStatus, setPasswordStatus] = useState("");
 
 
   useEffect(() => {
@@ -114,6 +120,26 @@ export default function AdminClientPage() {
       setJsonError("");
     } catch {
       setJsonError(`JSON inválido em: ${label}.`);
+    }
+  }
+
+  async function handlePasswordChange() {
+    setPasswordStatus("Alterando...");
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newPassword })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setPasswordStatus("Senha alterada com sucesso!");
+        setNewPassword("");
+      } else {
+        setPasswordStatus(`Erro: ${data.message}`);
+      }
+    } catch {
+      setPasswordStatus("Erro ao conectar com o servidor.");
     }
   }
 
@@ -349,7 +375,7 @@ export default function AdminClientPage() {
           {activeTab === "dashboard" ? (
             <>
               <h2>Dashboard de audiência</h2>
-              <p className="adminHint">Métricas de visualização: volume, origem, país, referrer e horários (timeline diária).</p>
+              <p className="adminHint">Métricas de visualização e logs de acesso administrativo.</p>
               <button className="btn btnPrimary" onClick={loadAnalytics} disabled={analyticsLoading}>
                 {analyticsLoading ? "Carregando..." : "Atualizar dashboard"}
               </button>
@@ -358,25 +384,34 @@ export default function AdminClientPage() {
               {analytics ? (
                 <>
                   <div className="adminGrid">
-                    <div>
-                      <h3>Total de eventos</h3>
-                      <p>{analytics.totals.events}</p>
-                    </div>
-                    <div>
+                    <div className="glassPanel" style={{ padding: '15px' }}>
                       <h3>Pageviews</h3>
-                      <p>{analytics.totals.pageviews}</p>
+                      <p style={{ fontSize: '2rem' }}>{analytics.totals.pageviews}</p>
                     </div>
-                    <div>
-                      <h3>Downloads de currículo</h3>
-                      <p>{analytics.totals.resumeDownloads}</p>
+                    <div className="glassPanel" style={{ padding: '15px' }}>
+                      <h3>Downloads</h3>
+                      <p style={{ fontSize: '2rem' }}>{analytics.totals.resumeDownloads}</p>
                     </div>
-                    <div>
-                      <h3>Visitantes únicos</h3>
-                      <p>{analytics.totals.uniqueVisitors}</p>
+                    <div className="glassPanel" style={{ padding: '15px' }}>
+                      <h3>Visitantes</h3>
+                      <p style={{ fontSize: '2rem' }}>{analytics.totals.uniqueVisitors}</p>
                     </div>
                   </div>
 
-                  <div className="adminGrid">
+                  <div className="glassPanel" style={{ marginTop: '20px', padding: '15px' }}>
+                    <h3>Logs de Acesso Admin</h3>
+                    <ul className="adminProjectList">
+                      {analytics.loginLogs.map((log, i) => (
+                        <li key={i} className="adminProjectItem" style={{ gridTemplateColumns: 'auto 1fr auto' }}>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>{log.date}</span>
+                          <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>{log.userAgent.slice(0, 50)}...</span>
+                          <span className="tag">{log.country}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="adminGrid" style={{ marginTop: '20px' }}>
                     <div>
                       <h3>Top páginas</h3>
                       <ul>{analytics.topPages.map((item) => <li key={`page-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
@@ -385,36 +420,34 @@ export default function AdminClientPage() {
                       <h3>Top países</h3>
                       <ul>{analytics.topCountries.map((item) => <li key={`country-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
                     </div>
-                    <div>
-                      <h3>Top referrers</h3>
-                      <ul>{analytics.topReferrers.map((item) => <li key={`ref-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
-                    </div>
-                    <div>
-                      <h3>Top fontes</h3>
-                      <ul>{analytics.topSources.map((item) => <li key={`source-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
-                    </div>
-                  </div>
-
-                  <div className="adminGrid">
-                    <div>
-                      <h3>Keywords</h3>
-                      <ul>{analytics.topKeywords.map((item) => <li key={`keyword-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
-                    </div>
-                    <div>
-                      <h3>Agentes LLM</h3>
-                      <ul>{analytics.llmAgents.map((item) => <li key={`llm-${item.label}`}>{item.label}: {item.value}</li>)}</ul>
-                    </div>
-                    <div>
-                      <h3>Timeline (14 dias)</h3>
-                      <ul>
-                        {analytics.timeline.map((row) => (
-                          <li key={row.date}>{row.date} — views: {row.pageviews}, visitors: {row.visitors}, downloads: {row.resumeDownloads}</li>
-                        ))}
-                      </ul>
-                    </div>
                   </div>
                 </>
               ) : null}
+            </>
+          ) : null}
+
+          {activeTab === "settings" ? (
+            <>
+              <h2>Configurações</h2>
+              <div className="glassPanel" style={{ padding: '20px' }}>
+                <h3>Alterar Senha Admin</h3>
+                <label className="adminLabel">Nova Senha</label>
+                <input
+                  type="password"
+                  className="adminInput"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <button
+                  className="btn btnPrimary"
+                  style={{ marginTop: '15px' }}
+                  onClick={handlePasswordChange}
+                  disabled={newPassword.length < 6}
+                >
+                  Salvar Nova Senha
+                </button>
+                {passwordStatus && <p style={{ marginTop: '10px' }}>{passwordStatus}</p>}
+              </div>
             </>
           ) : null}
         </div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { getAnalyticsSummary, toAnalyticsCsv, type AnalyticsRangePreset } from "@/lib/analyticsStore";
+import { getAdminLogs } from "@/lib/adminConfig";
 
 export async function GET(request: NextRequest) {
   const isAllowed = await isAdminAuthenticated();
@@ -19,7 +20,13 @@ export async function GET(request: NextRequest) {
   const source = searchParams.get("source") ?? undefined;
   const format = searchParams.get("format") ?? "json";
 
-  const analytics = await getAnalyticsSummary({ period, startDate, endDate, country, referrer, source });
+  const analyticsSummary = await getAnalyticsSummary({ period, startDate, endDate, country, referrer, source });
+  const loginLogs = await getAdminLogs();
+
+  const analytics = {
+    ...analyticsSummary,
+    loginLogs
+  };
 
   if (format === "csv") {
     const csv = toAnalyticsCsv(analytics);
