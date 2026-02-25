@@ -59,8 +59,8 @@ Para configurar seu acesso, defina estas variáveis em `.env.local`:
 
 ```bash
 ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=your_password
-ADMIN_SESSION_SECRET=your_secret
+ADMIN_PASSWORD=REPLACE_WITH_YOUR_PASSWORD
+ADMIN_SESSION_SECRET=REPLACE_WITH_YOUR_SECRET
 ```
 
 Depois acesse:
