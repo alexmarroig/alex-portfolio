@@ -10,9 +10,9 @@ export async function getAdminPassword() {
   try {
     const raw = await readFile(CONFIG_FILE, "utf8");
     const parsed = JSON.parse(raw);
-    return parsed.password || process.env.ADMIN_PASSWORD || "admin";
+    return parsed.password || process.env.ADMIN_PASSWORD || "";
   } catch {
-    return process.env.ADMIN_PASSWORD || "admin";
+    return process.env.ADMIN_PASSWORD || "";
   }
 }
 

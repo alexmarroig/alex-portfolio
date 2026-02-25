@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { rollbackLastPublished } from "@/lib/siteContentStore";
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "admin-key-placeholder";
+const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "";
 
 type RollbackBody = {
   key?: string;

@@ -7,8 +7,8 @@ export const ADMIN_SESSION_COOKIE = "alex_admin_session";
 
 import { getAdminPassword } from "./adminConfig";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "alex.c.marroig@gmail.com";
-const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET ?? "dev-secret-only";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "";
+const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET ?? "placeholder";
 
 function sha256(input: string) {
   return createHmac("sha256", SESSION_SECRET).update(input).digest("hex");
