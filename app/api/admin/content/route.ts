@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { readSiteContentStore } from "@/lib/siteContentStore";
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "admin-key-placeholder";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

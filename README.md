@@ -59,7 +59,7 @@ Para configurar seu acesso, defina estas variáveis em `.env.local`:
 
 ```bash
 ADMIN_EMAIL=Alex.c.marroig@gmail.com
-ADMIN_PASSWORD=Bianco256
+ADMIN_PASSWORD=admin
 ADMIN_SESSION_SECRET=troque-por-uma-chave-longa-e-unica
 ```
 

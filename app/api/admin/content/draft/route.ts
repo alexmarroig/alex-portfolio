@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { saveDraft, type ThemeConfig } from "@/lib/siteContentStore";
 import type { SiteContent } from "@/src/data/content";
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "admin-key-placeholder";
 
 type SaveDraftBody = {
   key?: string;

@@ -10,9 +10,9 @@ export async function getAdminPassword() {
   try {
     const raw = await readFile(CONFIG_FILE, "utf8");
     const parsed = JSON.parse(raw);
-    return parsed.password || process.env.ADMIN_PASSWORD || "Bianco256";
+    return parsed.password || process.env.ADMIN_PASSWORD || "admin";
   } catch {
-    return process.env.ADMIN_PASSWORD || "Bianco256";
+    return process.env.ADMIN_PASSWORD || "admin";
   }
 }
 
