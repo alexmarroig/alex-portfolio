@@ -44,7 +44,7 @@ const DEFAULT_THEME: ThemeConfig = {
 
 const STORAGE_CONTENT_KEY = "alex-portfolio-content-overrides";
 const STORAGE_THEME_KEY = "alex-portfolio-theme-overrides";
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "";
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 

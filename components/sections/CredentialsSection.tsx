@@ -4,6 +4,7 @@ import RevealSection from "@/components/RevealSection";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { useSiteContent } from "@/src/data/siteContentContext";
+import { getIcon } from "@/components/IconRegistry";
 
 export default function CredentialsSection() {
   const { content } = useSiteContent();
@@ -14,7 +15,7 @@ export default function CredentialsSection() {
 
       <div className="credentialsGrid">
         {content.certifications.map((item) => {
-          const Icon = item.icon;
+          const Icon = getIcon(item.icon);
           return (
             <Card key={item.title} className="credentialCard">
               <div className="credentialTop">

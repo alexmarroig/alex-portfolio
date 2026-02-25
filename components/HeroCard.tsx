@@ -1,6 +1,7 @@
 "use client";
 
 import { useSiteContent } from "@/src/data/siteContentContext";
+import { getIcon } from "@/components/IconRegistry";
 
 export default function HeroCard() {
   const { content } = useSiteContent();
@@ -28,12 +29,15 @@ export default function HeroCard() {
       <p className="heroPositioning">{hero.paragraph}</p>
 
       <p className="humanLine">
-        {hero.humanLine.map(({ icon: Icon, label }, index) => (
-          <span key={label}>
-            <Icon aria-hidden="true" /> {label}
-            {index < hero.humanLine.length - 1 ? " • " : ""}
-          </span>
-        ))}
+        {hero.humanLine.map(({ icon, label }, index) => {
+          const Icon = getIcon(icon);
+          return (
+            <span key={label}>
+              <Icon aria-hidden="true" /> {label}
+              {index < hero.humanLine.length - 1 ? " • " : ""}
+            </span>
+          );
+        })}
       </p>
 
       <div className="heroActions" aria-label="Primary calls to action">

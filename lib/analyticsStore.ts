@@ -204,8 +204,13 @@ async function readStore() {
 }
 
 async function writeStore(store: AnalyticsStore) {
-  await mkdir(ANALYTICS_DIR, { recursive: true });
-  await writeFile(ANALYTICS_FILE, JSON.stringify(store, null, 2), "utf8");
+  try {
+    await mkdir(ANALYTICS_DIR, { recursive: true });
+    await writeFile(ANALYTICS_FILE, JSON.stringify(store, null, 2), "utf8");
+  } catch (err) {
+    // Fail gracefully on read-only filesystems (Vercel)
+    console.warn("Analytics write failed (likely read-only filesystem):", err);
+  }
 }
 
 function hashVisitor(value: string) {

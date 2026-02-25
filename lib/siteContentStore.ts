@@ -59,8 +59,12 @@ function createInitialStore(): SiteContentStore {
 }
 
 async function writeStore(store: SiteContentStore) {
-  await mkdir(CONTENT_DIR, { recursive: true });
-  await writeFile(CONTENT_FILE, JSON.stringify(store, null, 2), "utf8");
+  try {
+    await mkdir(CONTENT_DIR, { recursive: true });
+    await writeFile(CONTENT_FILE, JSON.stringify(store, null, 2), "utf8");
+  } catch (err) {
+    console.warn("Site content store write failed (likely Vercel read-only):", err);
+  }
 }
 
 export async function readSiteContentStore() {

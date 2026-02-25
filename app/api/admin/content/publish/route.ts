@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { publishDraft } from "@/lib/siteContentStore";
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "";
 
 type PublishBody = {
   key?: string;

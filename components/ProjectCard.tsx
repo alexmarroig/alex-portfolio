@@ -30,7 +30,7 @@ const iconMap = {
   Execution: MdOutlinePublishedWithChanges
 } as const;
 
-export default function ProjectCard({ title, subtitle, description, status, stack, caseStudy }: ProjectCardProps) {
+export default function ProjectCard({ title, subtitle, description, status, stack, caseStudy, asciiDiagram }: ProjectCardProps) {
   return (
     <FlipCard
       label={`Flip card for ${title} case study`}
@@ -56,6 +56,11 @@ export default function ProjectCard({ title, subtitle, description, status, stac
       back={
         <>
           <h3 className="projectTitle">{title}</h3>
+          {asciiDiagram && (
+            <pre className="asciiDiagram">
+              <code>{asciiDiagram}</code>
+            </pre>
+          )}
           <div className="caseStudyBlocks">
             {sections.map((section) => (
               <div className="caseRow" key={section.key}>

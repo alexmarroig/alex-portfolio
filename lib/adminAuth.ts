@@ -5,9 +5,10 @@ import { cookies } from "next/headers";
 
 export const ADMIN_SESSION_COOKIE = "alex_admin_session";
 
+import { getAdminPassword } from "./adminConfig";
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "";
-const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET ?? "change-this-admin-session-secret";
+const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET ?? "dummy-secret";
 
 function sha256(input: string) {
   return createHmac("sha256", SESSION_SECRET).update(input).digest("hex");
@@ -20,11 +21,12 @@ function safeEqualText(a: string, b: string) {
   return timingSafeEqual(first, second);
 }
 
-export function validateAdminCredentials(email: string, password: string) {
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return false;
+export async function validateAdminCredentials(email: string, password: string) {
+  const currentPassword = await getAdminPassword();
+  if (!ADMIN_EMAIL || !currentPassword) return false;
 
   const emailOk = safeEqualText(email.trim().toLowerCase(), ADMIN_EMAIL.trim().toLowerCase());
-  const passwordOk = safeEqualText(sha256(password), sha256(ADMIN_PASSWORD));
+  const passwordOk = safeEqualText(sha256(password), sha256(currentPassword));
   return emailOk && passwordOk;
 }
 
