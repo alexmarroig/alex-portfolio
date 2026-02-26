@@ -1,22 +1,20 @@
 import { NextResponse } from "next/server";
 import { saveDraft, type ThemeConfig } from "@/lib/siteContentStore";
 import type { SiteContent } from "@/src/data/content";
-
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 
 type SaveDraftBody = {
-  key?: string;
   content?: SiteContent;
   theme?: ThemeConfig;
   updatedBy?: string;
 };
 
 export async function PUT(request: Request) {
-  const body = (await request.json()) as SaveDraftBody;
-
-  if (!ADMIN_KEY || body.key !== ADMIN_KEY) {
+  if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
+
+  const body = (await request.json()) as SaveDraftBody;
 
   if (!body.content || !body.theme) {
     return NextResponse.json({ ok: false, message: "Payload inválido." }, { status: 400 });

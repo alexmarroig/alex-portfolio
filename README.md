@@ -58,9 +58,9 @@ A área `/admin` exige autenticação no servidor e usa cookie `HttpOnly`.
 Para configurar seu acesso, defina estas variáveis em `.env.local`:
 
 ```bash
-ADMIN_EMAIL=Alex.c.marroig@gmail.com
-ADMIN_PASSWORD=Bianco256
-ADMIN_SESSION_SECRET=troque-por-uma-chave-longa-e-unica
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=REPLACE_WITH_YOUR_PASSWORD
+ADMIN_SESSION_SECRET=REPLACE_WITH_YOUR_SECRET
 ```
 
 Depois acesse:

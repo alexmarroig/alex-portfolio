@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 import { readSiteContentStore } from "@/lib/siteContentStore";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const key = searchParams.get("key") ?? "";
-
-  if (!ADMIN_KEY || key !== ADMIN_KEY) {
+export async function GET() {
+  if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
 

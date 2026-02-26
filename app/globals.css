@@ -35,11 +35,7 @@ body {
   font-family: var(--font-sans);
   line-height: 1.5;
   color: var(--text);
-  background:
-    radial-gradient(circle at 15% -10%, rgba(117, 76, 255, 0.42), transparent 35%),
-    radial-gradient(circle at 85% 0%, rgba(28, 223, 255, 0.22), transparent 34%),
-    radial-gradient(circle at 50% 120%, rgba(244, 62, 180, 0.16), transparent 40%),
-    linear-gradient(160deg, var(--bg), var(--bg2) 70%, #070b16 100%);
+  background-color: var(--bg);
 }
 
 a {
@@ -48,30 +44,82 @@ a {
 
 /* ================================
    Background overlays (grid + vignette)
-   Apply on a wrapper with className="siteBody"
 ================================ */
 
-.siteBody::before,
-.siteBody::after {
+.siteBackground,
+.siteCrtOverlay {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
 }
 
-.siteBody::before {
+.siteBackground {
+  z-index: -1;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 15% -10%, rgba(117, 76, 255, 0.35), transparent 35%),
+    radial-gradient(circle at 85% 0%, rgba(28, 223, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 50% 120%, rgba(244, 62, 180, 0.12), transparent 40%),
+    linear-gradient(160deg, var(--bg), var(--bg2) 70%, #070b16 100%);
+}
+
+.siteBackground::before,
+.siteBackground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.siteBackground::before {
   opacity: 0.22;
   background: radial-gradient(120% 90% at 50% 40%, transparent 50%, rgba(1, 2, 8, 0.68) 100%);
 }
 
-.siteBody::after {
+.siteBackground::after {
   opacity: 0.15;
   background-image:
     linear-gradient(rgba(120, 150, 255, 0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(120, 150, 255, 0.12) 1px, transparent 1px);
   background-size: 46px 46px;
   mask-image: radial-gradient(circle at 50% 35%, black 15%, transparent 70%);
+}
+
+.siteCrtOverlay {
+  z-index: 9999;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background-size: 100% 4px, 4px 100%;
+  opacity: 0.15;
+}
+
+body {
+  /* Extremely subtle and slow flicker to avoid health hazards while maintaining aesthetic */
+  animation: flicker 4s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.998; }
+  50% { opacity: 1; }
+  100% { opacity: 0.998; }
+}
+
+.neuralScanLine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, transparent, rgba(73, 241, 255, 0.1), transparent);
+  box-shadow: 0 0 15px rgba(73, 241, 255, 0.2);
+  z-index: 9998;
+  pointer-events: none;
+  animation: scanMove 12s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes scanMove {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
 }
 
 .sr-only {
@@ -187,10 +235,39 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
 }
 
+.navBrandGroup {
+  display: flex;
+  flex-direction: column;
+}
+
 .navBrand {
   text-decoration: none;
   font-weight: 750;
   letter-spacing: -0.02em;
+}
+
+.systemStatusIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: statusPulse 2s infinite;
+}
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #22c55e;
+  opacity: 0.8;
 }
 
 .navGroup {
@@ -563,6 +640,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .focusCardPrimary {
   min-height: 100%;
+  position: relative;
+  border-color: rgba(73, 241, 255, 0.4);
+  box-shadow: 0 0 30px rgba(73, 241, 255, 0.1);
+}
+
+.focusCardPrimary::after {
+  content: "ACTIVE MISSION";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
 }
 
 .focusCardHead {
@@ -851,6 +945,19 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 0.75rem;
+}
+
+.asciiDiagram {
+  margin: 12px 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(73, 241, 255, 0.2);
+  border-radius: 6px;
+  color: #49f1ff;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  line-height: 1.2;
+  overflow-x: auto;
 }
 
 .caseStudyBlocks {

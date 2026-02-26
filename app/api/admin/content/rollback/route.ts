@@ -1,19 +1,17 @@
 import { NextResponse } from "next/server";
 import { rollbackLastPublished } from "@/lib/siteContentStore";
-
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 
 type RollbackBody = {
-  key?: string;
   updatedBy?: string;
 };
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as RollbackBody;
-
-  if (!ADMIN_KEY || body.key !== ADMIN_KEY) {
+  if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
+
+  const body = (await request.json()) as RollbackBody;
 
   const store = await rollbackLastPublished({ updatedBy: body.updatedBy });
 

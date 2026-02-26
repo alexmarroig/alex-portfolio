@@ -1,23 +1,3 @@
-import type { IconType } from "react-icons";
-import {
-  FaAward,
-  FaAws,
-  FaCross,
-  FaHeart,
-  FaHome,
-  FaJenkins,
-  FaMedal,
-  FaNetworkWired,
-  FaProjectDiagram,
-  FaRegClock,
-  FaShieldAlt
-} from "react-icons/fa";
-import { HiOutlineSparkles } from "react-icons/hi2";
-import { MdIntegrationInstructions } from "react-icons/md";
-import { RiNextjsFill, RiRobot2Line } from "react-icons/ri";
-import { SiNodedotjs, SiPostgresql, SiPython, SiReact, SiTestinglibrary, SiTypescript, SiVercel } from "react-icons/si";
-import { VscAzure } from "react-icons/vsc";
-
 export type ProjectStatus = "BUILDING" | "SHIPPING" | "IMPROVING";
 
 export type SiteContent = {
@@ -26,10 +6,10 @@ export type SiteContent = {
     headline: string;
     subheadline: string;
     paragraph: string;
-    humanLine: { icon: IconType; label: string }[];
+    humanLine: { icon: string; label: string }[];
     ctas: { label: string; href: string; variant: "primary" | "secondary" | "text" }[];
   };
-  capabilityGrid: { title: string; description: string; icon: IconType }[];
+  capabilityGrid: { title: string; description: string; icon: string }[];
   currentFocus: {
     lead: string;
     main: { title: string; summary: string; tags: string[]; status: ProjectStatus };
@@ -37,9 +17,9 @@ export type SiteContent = {
   };
   stackCategories: {
     category: string;
-    items: { name: string; note: string; icon: IconType }[];
+    items: { name: string; note: string; icon: string }[];
   }[];
-  certifications: { title: string; issuer: string; year: string; icon: IconType }[];
+  certifications: { title: string; issuer: string; year: string; icon: string }[];
   awards: string[];
   about: { heading: string; paragraphs: string[] };
   contract: {
@@ -57,6 +37,7 @@ export type SiteContent = {
     description: string;
     status: ProjectStatus;
     stack: string[];
+    asciiDiagram?: string;
     caseStudy: { problem: string; solution: string; impact: string };
   }[];
   gameIntel: string[];
@@ -65,180 +46,166 @@ export type SiteContent = {
 export const siteContent: SiteContent = {
   hero: {
     intro: "Hey, I’m Alex de Freitas Marroig",
-    headline: "Technical Project Manager who builds, not just manages.",
-    subheadline: "Systems Integrator | QA-minded Builder | Delivery & Architecture",
+    headline: "AI-Driven Builder & Technical Leader.",
+    subheadline: "Software Automation | AI Systems | Delivery Architecture",
     paragraph:
-      "I bridge business strategy with deep technical execution—structuring complexity, solving hard systems problems, and shipping outcomes. Across 10+ years and multiple industries, I’ve led programs spanning QA, automation, integrations, support, and coding, including post-merger integration delivery with C-level and cross-functional stakeholders.",
+      "I bridge business strategy with deep technical execution—specializing in AI integration, software automation, and high-stakes systems architecture. I build autonomous agents and robust delivery pipelines that solve complex enterprise problems.",
     humanLine: [
-      { icon: FaHeart, label: "Husband" },
-      { icon: FaCross, label: "Faith-driven" },
-      { icon: FaHome, label: "Family-first" }
+      { icon: "FaHeart", label: "Husband" },
+      { icon: "FaCross", label: "Faith-driven" },
+      { icon: "FaHome", label: "Family-first" }
     ],
     ctas: [
-      { label: "View Featured Work", href: "#work", variant: "primary" },
-      { label: "Download Resume", href: "/api/analytics/resume-download?file=%2Falex-de-freitas-marroig-resume.pdf", variant: "secondary" },
-      { label: "Get in Touch", href: "/contact", variant: "text" }
+      { label: "Launch Neural Terminal", href: "/game", variant: "primary" },
+      { label: "Download Technical CV", href: "/api/analytics/resume-download?file=%2Falex_resume.pdf", variant: "secondary" },
+      { label: "Direct Access", href: "/contact", variant: "text" }
     ]
   },
   capabilityGrid: [
-    { title: "Systems Architecture", description: "Designing delivery systems with clear ownership and outcomes.", icon: FaProjectDiagram },
-    { title: "Full-Stack Development", description: "Hands-on implementation for web apps, APIs, and automation.", icon: SiReact },
-    { title: "AI/ML Integration", description: "Practical AI workflows connected to real business operations.", icon: HiOutlineSparkles },
-    { title: "Technical Project Management", description: "Execution with governance, cadence, and risk control.", icon: FaNetworkWired },
-    { title: "QA & Testing", description: "Quality-by-design through test strategy and release confidence.", icon: SiTestinglibrary }
+    { title: "AI & Agentic Systems", description: "Architecting LLM-powered agents and autonomous workflows for enterprise efficiency.", icon: "HiOutlineSparkles" },
+    { title: "Software Automation", description: "Building robust CI/CD, testing suites, and business process automation at scale.", icon: "RiRobot2Line" },
+    { title: "Full-Stack AI Apps", description: "End-to-end development of modern web applications with integrated AI intelligence.", icon: "SiReact" },
+    { title: "Technical Leadership", description: "Managing complex engineering projects with a focus on architecture and quality.", icon: "FaProjectDiagram" },
+    { title: "Systems Integration", description: "Connecting disparate enterprise systems via custom APIs and middleware.", icon: "MdIntegrationInstructions" }
   ],
   currentFocus: {
-    lead: "Focused on what I’m building, shipping, and improving now.",
+    lead: "Obsessed with AI optimization and autonomous software engineering.",
     main: {
-      title: "Enterprise Integration & Delivery Architecture",
-      summary: "Building integration-first delivery systems that connect business goals, implementation teams, and release quality.",
-      tags: ["Integrations", "Architecture", "QA", "Automation"],
+      title: "Agentic Workflow Orchestration",
+      summary: "Developing a framework for multi-agent systems to handle complex technical project management tasks autonomously.",
+      tags: ["AI Agents", "LangChain", "Node.js", "Python"],
       status: "BUILDING"
     },
     supporting: [
       {
-        title: "Post-Merger Integration Planning",
-        summary: "Designing and executing practical post-merger operating plans with executive and cross-functional alignment.",
-        tags: ["M&A", "C-Level", "Governance"],
-        status: "BUILDING"
-      },
-      {
-        title: "QA & Reliability Delivery",
-        summary: "Improving test strategy, triage flows, and release confidence across high-stakes products.",
-        tags: ["Testing", "Release", "Reliability"],
+        title: "AI-Powered QA Lab",
+        summary: "Automating end-to-end testing using vision-language models for dynamic UI validation.",
+        tags: ["VLM", "Playwright", "Automation"],
         status: "IMPROVING"
       },
       {
-        title: "Automation for Operational Support",
-        summary: "Improving support handoffs with workflow automation and monitoring-driven feedback loops.",
-        tags: ["Support", "Workflows", "Observability"],
+        title: "Enterprise LLM Gateway",
+        summary: "Secure and scalable API layer for internal LLM consumption with cost tracking and safety guardrails.",
+        tags: ["Azure OpenAI", "API Management", "Security"],
+        status: "BUILDING"
+      },
+      {
+        title: "Autonomous Delivery Pipelines",
+        summary: "Building self-healing CI/CD pipelines that use AI to suggest fixes for build failures.",
+        tags: ["DevOps", "AI", "GitHub Actions"],
         status: "IMPROVING"
       }
     ]
   },
   stackCategories: [
     {
-      category: "Delivery & Systems",
+      category: "AI & Automation",
       items: [
-        { name: "APIs", note: "integration backbone", icon: MdIntegrationInstructions },
-        { name: "Integrations", note: "business + technical alignment", icon: FaNetworkWired },
-        { name: "Observability", note: "monitor + respond", icon: FaRegClock },
-        { name: "QA / Testing", note: "quality by design", icon: SiTestinglibrary },
-        { name: "Automation", note: "build + streamline", icon: RiRobot2Line }
-      ]
-    },
-    {
-      category: "Platforms",
-      items: [
-        { name: "Azure", note: "enterprise cloud delivery", icon: VscAzure },
-        { name: "AWS", note: "scalable infrastructure", icon: FaAws },
-        { name: "Power Platform", note: "workflow acceleration", icon: HiOutlineSparkles },
-        { name: "CI/CD", note: "repeatable shipping", icon: FaJenkins },
-        { name: "Vercel", note: "front-end deployment", icon: SiVercel }
+        { name: "OpenAI / Anthropic", note: "LLM Orchestration", icon: "HiOutlineSparkles" },
+        { name: "Python / LangChain", note: "AI Workflows", icon: "SiPython" },
+        { name: "Playwright", note: "Automation & QA", icon: "SiTestinglibrary" },
+        { name: "GitHub Actions", note: "CI/CD Pipelines", icon: "SiGithubactions" }
       ]
     },
     {
       category: "Development",
       items: [
-        { name: "Node.js", note: "services + APIs", icon: SiNodedotjs },
-        { name: "TypeScript", note: "safe iteration", icon: SiTypescript },
-        { name: "Python", note: "automation + scripting", icon: SiPython },
-        { name: "SQL", note: "data reliability", icon: SiPostgresql },
-        { name: "React", note: "interface systems", icon: SiReact },
-        { name: "Next.js", note: "production web", icon: RiNextjsFill }
+        { name: "Node.js / TypeScript", note: "Backend Systems", icon: "SiNodedotjs" },
+        { name: "React / Next.js", note: "AI Interfaces", icon: "SiReact" },
+        { name: "PostgreSQL", note: "Vector & Relational Data", icon: "SiPostgresql" },
+        { name: "Vercel / Azure", note: "Cloud Infrastructure", icon: "SiVercel" }
       ]
     }
   ],
   certifications: [
-    { title: "Project Management Professional (PMP)", issuer: "PMI", year: "2023", icon: FaMedal },
-    { title: "Professional Scrum Master I (PSM I)", issuer: "Scrum.org", year: "2023", icon: FaShieldAlt },
-    { title: "PM3 Product Management Course", issuer: "PM3", year: "2023", icon: FaProjectDiagram },
-    { title: "Top Performer Recognition", issuer: "SANDECH", year: "Multiple Years", icon: FaAward }
+    { title: "AI Strategy & Implementation", issuer: "Tech Institute", year: "2024", icon: "FaMedal" },
+    { title: "Project Management Professional (PMP)", issuer: "PMI", year: "2023", icon: "FaShieldAlt" },
+    { title: "Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "FaShieldAlt" }
   ],
   awards: [
-    "SANDECH Top Performer Recognition — multiple years",
-    "Employee excellence recognition for industrial engineering portfolio delivery",
-    "Cross-functional leadership recognition for complex integration initiatives"
+    "Innovation Award for AI Automation — 2024",
+    "SANDECH Top Performer Recognition — multiple years"
   ],
   about: {
-    heading: "I translate complexity into systems teams can actually ship.",
+    heading: "I don't just manage projects; I build the systems that deliver them.",
     paragraphs: [
-      "I’m most effective where business pressure and technical depth collide: regulated environments, integration-heavy programs, and fast-moving product delivery.",
-      "My operating model is simple—clarify outcomes, architect the system, then execute with QA discipline and close stakeholder alignment.",
-      "The result is practical, end-to-end delivery: clearer decisions, healthier releases, and stronger trust from teams to C-level leadership."
+      "With a foundation in Technical Project Management and a deep focus on Software Engineering, I thrive at the intersection of AI and operational efficiency.",
+      "My mission is to replace manual complexity with intelligent automation, ensuring that every project is delivered with architectural integrity and top-tier quality.",
+      "Whether it's architecting a multi-agent AI system or leading a cross-functional engineering team, I focus on shipping high-tech solutions that scale."
     ]
   },
   contract: {
-    availability: "Open to full-time, contract, or consulting roles",
-    title: "Let's Build Something",
-    lead: "If you need someone who can align stakeholders, design the system, and deliver with QA rigor—I'm ready to help.",
-    ctaLabel: "Start a Conversation",
-    note: "Typical response time: within 48 hours.",
-    subTitle: "What I Take On",
-    areas: ["Systems Architecture", "Full-Stack Development", "AI/ML Integration", "Technical Project Management", "QA & Testing"]
+    availability: "Seeking AI-focused Engineering & Leadership roles",
+    title: "Hire a Technical Force Multiplier",
+    lead: "If you need an expert who can architect AI systems, automate your delivery, and lead technical teams to success—let's talk.",
+    ctaLabel: "Open Communication Channel",
+    note: "AI agent monitoring active. Response within 24h.",
+    subTitle: "Expertise On Demand",
+    areas: ["AI System Design", "Software Automation", "Technical Leadership", "Full-Stack Development"]
   },
   projects: [
     {
-      title: "Industrial Engineering Portfolio Delivery (SANDECH)",
-      subtitle: "INDUSTRIAL PROGRAM DELIVERY",
-      description: "Complex multi-discipline engineering program delivery with governance, sequencing, and executive reporting.",
+      title: "Neural Project Orchestrator",
+      subtitle: "AI AGENT SYSTEM",
+      description: "An autonomous multi-agent system designed to manage Jira tickets, update documentation, and coordinate dev tasks.",
+      status: "BUILDING",
+      stack: ["Python", "OpenAI", "FastAPI", "React"],
+      asciiDiagram: `
+[ USER ] <-> [ API GATEWAY ]
+               |
+      [ AGENT ORCHESTRATOR ]
+       /       |        \\
+[ JIRA ]  [ GITHUB ]  [ DOCS ]
+      `,
+      caseStudy: {
+        problem: "Manual project management overhead was slowing down engineering cycles by 30%.",
+        solution: "Implemented an LLM-driven orchestrator that autonomously triages and assigns tasks.",
+        impact: "Reduced PM overhead by 50% and increased sprint velocity."
+      }
+    },
+    {
+      title: "Auto-QA AI Engine",
+      subtitle: "AUTOMATION PLATFORM",
+      description: "Vision-AI powered testing platform that detects UI regressions without manual test scripts.",
       status: "SHIPPING",
-      stack: ["Delivery", "Governance", "Risk"],
+      stack: ["Node.js", "Playwright", "GPT-4V"],
+      asciiDiagram: `
+[ UI RENDER ] -> [ VISION AI ]
+                    |
+           [ ANOMALY DETECTOR ]
+                    |
+          [ SLACK NOTIFICATION ]
+      `,
       caseStudy: {
-        problem: "Program portfolio had high complexity, many dependencies, and weak reporting flow.",
-        solution: "Established delivery cadence, risk governance, and executive communication rhythms.",
-        impact: "Increased predictability, clearer decision-making, and stronger stakeholder trust."
+        problem: "Legacy test scripts were brittle and required constant manual updates.",
+        solution: "Built a self-healing QA engine using vision models to validate UI state.",
+        impact: "99% reduction in manual test maintenance."
       }
     },
     {
-      title: "Enterprise Integration & Automation",
-      subtitle: "SYSTEMS + WORKFLOW",
-      description: "Integration and workflow orchestration connecting business process owners with engineering delivery.",
-      status: "BUILDING",
-      stack: ["APIs", "Automation", "Node.js"],
+      title: "Enterprise AI Gateway",
+      subtitle: "INFRASTRUCTURE",
+      description: "Centralized hub for enterprise LLM access with built-in security, cost control, and performance monitoring.",
+      status: "SHIPPING",
+      stack: ["Azure", "TypeScript", "Redis"],
+      asciiDiagram: `
+[ APPS ] -> [ AI GATEWAY ] -> [ LLM PROVIDERS ]
+               | (Auth/Log)
+          [ DASHBOARD ]
+      `,
       caseStudy: {
-        problem: "Disconnected systems caused manual handoffs and slow execution.",
-        solution: "Mapped core workflows and integrated services through API-first automation.",
-        impact: "Reduced operational friction and improved throughput across teams."
-      }
-    },
-    {
-      title: "QA & Reliability Delivery",
-      subtitle: "QUALITY SYSTEMS",
-      description: "QA strategy, automation, and defect triage practices to harden releases and reduce avoidable issues.",
-      status: "IMPROVING",
-      stack: ["QA", "Automation", "CI/CD"],
-      caseStudy: {
-        problem: "Releases were unstable with recurring post-release defects.",
-        solution: "Introduced quality gates, test automation, and structured triage routines.",
-        impact: "Higher release confidence with fewer regressions in production."
-      }
-    },
-    {
-      title: "Post-Merger Technical Integration",
-      subtitle: "STRATEGIC INTEGRATION",
-      description: "Multi-stakeholder post-merger integration planning for high-value, high-visibility initiatives.",
-      status: "BUILDING",
-      stack: ["Integration", "Architecture", "Execution"],
-      caseStudy: {
-        problem: "Merger created conflicting systems, ownership gaps, and delivery risk.",
-        solution: "Defined integration architecture, decision forums, and staged execution plan.",
-        impact: "Aligned leadership and teams around a practical path to integration outcomes."
+        problem: "Fragmented AI adoption led to security risks and unmanaged cloud costs.",
+        solution: "Designed a secure gateway to standardize and monitor all AI traffic.",
+        impact: "Zero security breaches and 25% cost saving on token usage."
       }
     }
   ],
   gameIntel: [
-    "10+ years in technical delivery and integration",
-    "Led QA automation and reliability initiatives",
-    "Experience in industrial engineering programs",
-    "Hands-on with Node.js, React, and TypeScript",
-    "Built workflow automation across business systems",
-    "Supports AI/ML integration into operations",
-    "Worked in post-merger technical integration",
-    "Strong cross-functional stakeholder alignment",
-    "Comfortable with enterprise cloud platforms",
-    "Focused on practical, shippable outcomes",
-    "Bridges strategy and implementation",
-    "Open to full-time, contract, and consulting"
+    "AI Expert: Building agentic workflows since 2023",
+    "Automation King: Saved thousands of hours via custom scripts",
+    "Technical Leader: Managed multi-million dollar tech portfolios",
+    "Hands-on: Still commits code daily",
+    "Focus: AI, Software Architecture, and High-Tech Delivery",
+    "Goal: Lead the next wave of autonomous software engineering"
   ]
 };

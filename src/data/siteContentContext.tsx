@@ -44,7 +44,6 @@ const DEFAULT_THEME: ThemeConfig = {
 
 const STORAGE_CONTENT_KEY = "alex-portfolio-content-overrides";
 const STORAGE_THEME_KEY = "alex-portfolio-theme-overrides";
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "Bianco256";
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 
@@ -144,7 +143,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       const timeoutId = window.setTimeout(() => controller.abort(), 2200);
 
       try {
-        const response = await fetch(`/api/admin/content?key=${encodeURIComponent(ADMIN_SECRET)}`, {
+        const response = await fetch(`/api/admin/content`, {
           signal: controller.signal,
           cache: "no-store"
         });
