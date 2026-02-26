@@ -84,7 +84,8 @@ const websiteSchema = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="siteBody">
+      <body>
+        <div className="siteBackground" />
         <div className="siteCrtOverlay" />
         <div className="neuralScanLine" />
         <SiteContentProvider>
