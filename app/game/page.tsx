@@ -156,119 +156,394 @@ export default function NeuralTerminal() {
 
   return (
     <section className="section simplePage terminalPage">
-      <div className="terminalWindow glassPanel">
-        <div className="terminalHeader">
-          <div className="terminalDots">
-            <span className="dot" />
-            <span className="dot" />
-            <span className="dot" />
-          </div>
-          <div className="terminalTitle">NEURAL TERMINAL - EVALUATION_MODE</div>
-        </div>
-
-        <div className="terminalBody">
-          <div className="terminalOutput">
-            {messages.map((m, i) => (
-              <div key={i} className={`terminalLine type-${m.type}`}>
-                {m.text}
+      <div className="terminalLayout">
+        {/* Left Sidebar - Agent Library */}
+        <aside className="terminalSidePanel left">
+          <div className="panelHeader">NEURAL_LIBRARY</div>
+          <div className="agentList">
+            <div className="agentItem active">
+              <div className="agentDot" />
+              <div className="agentInfo">
+                <span className="agentName">AlexProfileAgent</span>
+                <span className="agentStatus">READY</span>
               </div>
-            ))}
-            <div ref={terminalEndRef} />
+            </div>
+            <div className="agentItem">
+              <div className="agentDot busy" />
+              <div className="agentInfo">
+                <span className="agentName">AutomationEngine</span>
+                <span className="agentStatus">OPTIMIZING</span>
+              </div>
+            </div>
+            <div className="agentItem">
+              <div className="agentDot" />
+              <div className="agentInfo">
+                <span className="agentName">ArchitectAgent</span>
+                <span className="agentStatus">IDLE</span>
+              </div>
+            </div>
+          </div>
+          <div className="panelFooter">CORE_VERSION: 1.0.4</div>
+        </aside>
+
+        {/* Main Terminal */}
+        <div className="terminalWindow glassPanel">
+          <div className="terminalHeader">
+            <div className="terminalStatus">
+              <span className="terminalDot online" />
+              <span className="statusText">SYSTEM: OPTIMIZED</span>
+            </div>
+            <div className="terminalTitle">NEURAL TERMINAL v4.0.2 // EVALUATION_MODE</div>
+            <div className="terminalMeta">
+              <span className="metaLabel">SEC_LVL:</span>
+              <span className="metaValue">RECRUITER_ACCESS</span>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="terminalInputLine">
-            <span className="terminalPrompt">evaluator@alex-ai:~$</span>
-            <input
-              type="text"
-              className="terminalInput"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              autoFocus
-              spellCheck={false}
-              autoComplete="off"
-            />
-          </form>
+          <div className="terminalBody">
+            <div className="terminalScanline" />
+            <div className="terminalOutput">
+              {messages.map((m, i) => (
+                <div key={i} className={`terminalLine type-${m.type}`}>
+                  <span className="linePrefix">{m.type === 'user' ? '>' : '[SYS]'}</span>
+                  {m.text}
+                </div>
+              ))}
+              <div ref={terminalEndRef} />
+            </div>
+
+            <form onSubmit={handleSubmit} className="terminalInputLine">
+              <span className="terminalPrompt">evaluator@alex-ai:~$</span>
+              <input
+                type="text"
+                className="terminalInput"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                autoFocus
+                spellCheck={false}
+                autoComplete="off"
+              />
+            </form>
+          </div>
+
+          <div className="terminalFooter">
+            <div className="footerItem">LATENCY: 14ms</div>
+            <div className="footerItem">LOAD: 22%</div>
+            <div className="footerItem">ENCRYPTION: VERIFIED</div>
+          </div>
         </div>
+
+        {/* Right Sidebar - Node Params */}
+        <aside className="terminalSidePanel right">
+          <div className="panelHeader">NODE_PARAMS</div>
+          <div className="paramsList">
+            <div className="paramGroup">
+              <label>DESIGNATION</label>
+              <div className="paramBox">RecruiterAssessmentNode</div>
+            </div>
+            <div className="paramGroup">
+              <label>PRIMARY_MODEL</label>
+              <div className="paramBox">gpt-4o-technical-v2</div>
+            </div>
+            <div className="paramGroup">
+              <label>DIRECTIVE_PROMPT</label>
+              <div className="paramBox small">
+                Evaluate candidate Alex for Technical Leadership and AI Automation roles.
+              </div>
+            </div>
+          </div>
+          <div className="panelFooter">VERIFIED: TRUE</div>
+        </aside>
       </div>
 
       <style jsx>{`
         .terminalPage {
-          max-width: 900px;
+          max-width: 1400px;
           margin: 40px auto;
+          padding: 0 20px;
+          position: relative;
         }
-        .terminalWindow {
-          background: rgba(4, 6, 15, 0.95);
+        .terminalLayout {
+          display: grid;
+          grid-template-columns: 240px 1fr 240px;
+          gap: 20px;
+          align-items: start;
+        }
+        .terminalSidePanel {
+          background: rgba(4, 6, 15, 0.85);
           border: 1px solid rgba(73, 241, 255, 0.2);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(73, 241, 255, 0.05);
-        }
-        .terminalHeader {
-          background: rgba(255, 255, 255, 0.05);
-          padding: 10px 16px;
+          border-radius: 8px;
           display: flex;
-          align-items: center;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .terminalDots {
-          display: flex;
-          gap: 6px;
-        }
-        .dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.2);
-        }
-        .terminalTitle {
-          flex: 1;
-          text-align: center;
+          flex-direction: column;
           font-family: var(--font-mono);
+          height: 650px;
+        }
+        .panelHeader {
+          padding: 12px;
           font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.5);
+          font-weight: 700;
+          color: #49f1ff;
+          border-bottom: 1px solid rgba(73, 241, 255, 0.2);
           letter-spacing: 0.1em;
         }
-        .terminalBody {
-          padding: 20px;
-          font-family: var(--font-mono);
-          height: 500px;
+        .panelFooter {
+          margin-top: auto;
+          padding: 10px;
+          font-size: 0.6rem;
+          color: rgba(73, 241, 255, 0.4);
+          border-top: 1px solid rgba(73, 241, 255, 0.1);
+        }
+
+        /* Left Side */
+        .agentList {
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .agentItem {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px;
+          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid transparent;
+          transition: all 0.2s ease;
+        }
+        .agentItem.active {
+          background: rgba(73, 241, 255, 0.08);
+          border-color: rgba(73, 241, 255, 0.3);
+        }
+        .agentDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #22c55e;
+          box-shadow: 0 0 8px #22c55e;
+        }
+        .agentDot.busy {
+          background: #f59e0b;
+          box-shadow: 0 0 8px #f59e0b;
+        }
+        .agentInfo {
           display: flex;
           flex-direction: column;
         }
+        .agentName {
+          font-size: 0.75rem;
+          color: #eef2ff;
+        }
+        .agentStatus {
+          font-size: 0.6rem;
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Right Side */
+        .paramsList {
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+        .paramGroup label {
+          display: block;
+          font-size: 0.65rem;
+          color: rgba(73, 241, 255, 0.6);
+          margin-bottom: 6px;
+        }
+        .paramBox {
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(73, 241, 255, 0.1);
+          padding: 8px;
+          border-radius: 4px;
+          font-size: 0.75rem;
+          color: #ff3ea6;
+        }
+        .paramBox.small {
+          font-size: 0.65rem;
+          line-height: 1.4;
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        .terminalWindow {
+          background: rgba(4, 6, 15, 0.96);
+          border: 1px solid rgba(73, 241, 255, 0.4);
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow:
+            0 25px 60px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(73, 241, 255, 0.1),
+            inset 0 0 20px rgba(73, 241, 255, 0.05);
+          display: flex;
+          flex-direction: column;
+          height: 650px;
+        }
+        .terminalHeader {
+          background: rgba(10, 15, 30, 0.9);
+          padding: 12px 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid rgba(73, 241, 255, 0.2);
+          font-family: var(--font-mono);
+        }
+        .terminalStatus {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .terminalDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+        }
+        .terminalDot.online {
+          background: #22c55e;
+          box-shadow: 0 0 10px #22c55e;
+          animation: terminalPulse 2s infinite;
+        }
+        .statusText {
+          font-size: 0.65rem;
+          color: #22c55e;
+          letter-spacing: 0.1em;
+        }
+        .terminalTitle {
+          font-size: 0.7rem;
+          color: rgba(73, 241, 255, 0.8);
+          letter-spacing: 0.15em;
+          font-weight: 700;
+        }
+        .terminalMeta {
+          display: flex;
+          gap: 6px;
+          font-size: 0.65rem;
+        }
+        .metaLabel { color: rgba(255, 255, 255, 0.4); }
+        .metaValue { color: #ff3ea6; }
+
+        .terminalBody {
+          padding: 24px;
+          font-family: var(--font-mono);
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          background-image:
+            radial-gradient(circle at center, rgba(73, 241, 255, 0.03) 0%, transparent 70%);
+        }
+        .terminalScanline {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.1) 50%
+          ), linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.01),
+            rgba(0, 255, 0, 0.005),
+            rgba(0, 0, 255, 0.01)
+          );
+          background-size: 100% 4px, 3px 100%;
+          pointer-events: none;
+          z-index: 10;
+          opacity: 0.4;
+        }
+
         .terminalOutput {
           flex: 1;
           overflow-y: auto;
-          margin-bottom: 10px;
+          margin-bottom: 16px;
+          padding-right: 10px;
         }
+        .terminalOutput::-webkit-scrollbar {
+          width: 4px;
+        }
+        .terminalOutput::-webkit-scrollbar-thumb {
+          background: rgba(73, 241, 255, 0.2);
+          border-radius: 2px;
+        }
+
         .terminalLine {
-          margin-bottom: 6px;
-          line-height: 1.4;
+          margin-bottom: 8px;
+          line-height: 1.5;
           white-space: pre-wrap;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
+          display: flex;
+          gap: 12px;
         }
-        .type-system { color: #88c0d0; }
-        .type-user { color: #81a1c1; font-weight: bold; }
-        .type-error { color: #bf616a; }
-        .type-success { color: #a3be8c; }
-        .type-ai { color: #d8dee9; border-left: 2px solid #5e81ac; padding-left: 10px; margin-left: 5px; }
+        .linePrefix {
+          color: rgba(255, 255, 255, 0.2);
+          user-select: none;
+          font-size: 0.7rem;
+          padding-top: 2px;
+        }
+
+        .type-system { color: #49f1ff; }
+        .type-user { color: #ff3ea6; font-weight: bold; }
+        .type-error { color: #ef4444; }
+        .type-success { color: #22c55e; }
+        .type-ai {
+          color: #eef2ff;
+          border-left: 2px solid #49f1ff;
+          padding-left: 14px;
+          margin-left: 4px;
+          background: rgba(73, 241, 255, 0.05);
+          padding-top: 4px;
+          padding-bottom: 4px;
+        }
 
         .terminalInputLine {
           display: flex;
-          gap: 10px;
+          gap: 12px;
           align-items: center;
+          border-top: 1px solid rgba(73, 241, 255, 0.1);
+          padding-top: 16px;
         }
         .terminalPrompt {
           color: #49f1ff;
           white-space: nowrap;
+          font-size: 0.85rem;
+          text-shadow: 0 0 8px rgba(73, 241, 255, 0.4);
         }
         .terminalInput {
           flex: 1;
           background: transparent;
           border: none;
-          color: #eef2ff;
+          color: #fff;
           font-family: inherit;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           outline: none;
+        }
+
+        .terminalFooter {
+          background: rgba(10, 15, 30, 0.95);
+          padding: 8px 18px;
+          display: flex;
+          gap: 20px;
+          border-top: 1px solid rgba(73, 241, 255, 0.2);
+          font-family: var(--font-mono);
+          font-size: 0.6rem;
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes terminalPulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        @media (max-width: 1100px) {
+          .terminalLayout {
+            grid-template-columns: 1fr;
+          }
+          .terminalSidePanel {
+            display: none;
+          }
+        }
+        @media (max-width: 768px) {
+          .terminalBody {
+            height: 400px;
+          }
         }
       `}</style>
     </section>

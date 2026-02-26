@@ -31,7 +31,7 @@ type AnalyticsSummary = {
   topCountries: AnalyticsEntry[];
   topKeywords: AnalyticsEntry[];
   llmAgents: AnalyticsEntry[];
-  loginLogs: { date: string; country: string; userAgent: string; visitorId: string }[];
+  loginLogs: { date: string; ip: string; country: string; userAgent: string; visitorId: string }[];
   timeline: { date: string; pageviews: number; resumeDownloads: number; visitors: number }[];
 };
 
