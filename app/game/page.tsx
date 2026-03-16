@@ -94,6 +94,40 @@ export default function NeuralTerminal() {
           </div>
         );
 
+      case "credentials":
+        return (
+          <div className="cardContent">
+            <h2 className="cardTitle">CREDENTIALS & EXPERTISE</h2>
+
+            <div className="credentialSection">
+              <h3 className="sectionSubtitle">CERTIFICATIONS</h3>
+              <div className="credentialsList">
+                {content.certifications.map((cert, idx) => (
+                  <div key={idx} className="credentialItem certified">
+                    <div className="credBadge">✓</div>
+                    <div className="credDetails">
+                      <div className="credTitle">{cert.title}</div>
+                      <div className="credMeta">{cert.issuer} — {cert.year}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="credentialSection">
+              <h3 className="sectionSubtitle">RECOGNITION & AWARDS</h3>
+              <div className="awardsList">
+                {content.awards.map((award, idx) => (
+                  <div key={idx} className="awardItem">
+                    <div className="awardBadge">★</div>
+                    <div className="awardText">{award}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
       case "optimize":
         return <PipelineOptimizerGame />;
     }
@@ -119,6 +153,13 @@ export default function NeuralTerminal() {
             >
               <div className="navDot" />
               <span className="navName">SKILLS_ENGINE</span>
+            </button>
+            <button
+              className={`navItem ${activeTab === 'credentials' ? 'active' : ''}`}
+              onClick={() => setActiveTab('credentials')}
+            >
+              <div className="navDot" />
+              <span className="navName">CREDENTIALS</span>
             </button>
             <button
               className={`navItem ${activeTab === 'projects' ? 'active' : ''}`}
@@ -574,6 +615,76 @@ export default function NeuralTerminal() {
           border-top: 1px solid rgba(73, 241, 255, 0.2);
           font-size: 0.6rem;
           color: rgba(255, 255, 255, 0.4);
+        }
+
+        .credentialSection {
+          margin-bottom: 30px;
+        }
+        .sectionSubtitle {
+          font-size: 0.75rem;
+          color: #ff3ea6;
+          margin-bottom: 15px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .credentialsList {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .credentialItem {
+          display: flex;
+          gap: 15px;
+          padding: 12px;
+          border-radius: 4px;
+          border-left: 3px solid transparent;
+        }
+        .credentialItem.certified {
+          background: rgba(34, 197, 94, 0.05);
+          border-left-color: #22c55e;
+        }
+        .credBadge {
+          font-size: 1.2rem;
+          line-height: 1.3;
+          min-width: 30px;
+          color: #22c55e;
+        }
+        .credDetails {
+          flex: 1;
+        }
+        .credTitle {
+          color: #fff;
+          font-weight: bold;
+          font-size: 0.9rem;
+          margin-bottom: 4px;
+        }
+        .credMeta {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.75rem;
+        }
+        .awardsList {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .awardItem {
+          display: flex;
+          gap: 15px;
+          padding: 12px;
+          border-radius: 4px;
+          background: rgba(255, 62, 166, 0.05);
+          border-left: 3px solid #ff3ea6;
+        }
+        .awardBadge {
+          font-size: 1.2rem;
+          line-height: 1.3;
+          min-width: 30px;
+          color: #ff3ea6;
+        }
+        .awardText {
+          flex: 1;
+          color: #fff;
+          font-size: 0.9rem;
         }
 
         @media (max-width: 1100px) {
