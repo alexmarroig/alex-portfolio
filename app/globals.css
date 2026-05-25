@@ -794,8 +794,14 @@ h1, h2, h3, h4, h5, h6 {
 .projectCardRoot {
   cursor: pointer;
   outline: none;
-  height: 400px;
+  height: 540px;
   perspective: 1000px;
+}
+
+@media (max-width: 768px) {
+  .projectCardRoot {
+    height: 580px;
+  }
 }
 
 .projectCardRoot:focus-visible {
@@ -1630,7 +1636,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .projectCardRoot {
-  height: 430px;
+  height: 540px;
 }
 
 .projectCardInner {
@@ -1837,8 +1843,8 @@ h1, h2, h3, h4, h5, h6 {
 .awardsPanel { margin-top:14px; padding:18px; }
 .awardLine { display:flex; align-items:center; gap:8px; color:var(--muted); }
 
-.projectCardRoot { position:relative; min-height: 420px; }
-.projectCardInner { position:relative; height:100%; min-height:420px; transform-style:preserve-3d; transition: transform .7s ease; }
+.projectCardRoot { position:relative; min-height: 540px; }
+.projectCardInner { position:relative; height:100%; min-height:540px; transform-style:preserve-3d; transition: transform .7s ease; }
 .projectCardFace { position:absolute; inset:0; }
 .projectBack { overflow-y:auto; }
 .projectFlipCta { margin-top:auto; color:#a6ccff; font-size:.85rem; }
@@ -2572,6 +2578,22 @@ h4, h5, h6 {
 .projectFront .projectDescription {
   margin-top: 4px;
   margin-bottom: 14px;
+  /* clamp long descriptions to keep the card balanced */
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.projectFront .projectPills {
+  margin-top: auto;
+  max-height: 100px;
+  overflow: hidden;
+}
+
+.projectFront .projectFlipCta {
+  margin-top: 12px;
+  flex-shrink: 0;
 }
 
 /* Category header: extra breathing under divider */
