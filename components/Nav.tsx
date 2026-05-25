@@ -2,9 +2,10 @@ import Link from "next/link";
 
 const links = [
   { href: "/#work", label: "Work" },
+  { href: "/#core-stack", label: "Stack" },
   { href: "/#about", label: "About" },
-  { href: "/#current-focus", label: "Mission Control" },
-  { href: "/game", label: "Neural Terminal" },
+  { href: "/game", label: "Live CLI" },
+  { href: "/Alex-Marroig-Resume-2026.pdf", label: "Resume", external: true },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -22,6 +23,20 @@ export default function Nav() {
 
         <nav className="navGroup" aria-label="Primary">
           {links.map((link) => {
+            if (link.external) {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="navLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                >
+                  {link.label}
+                </a>
+              );
+            }
             return (
               <Link key={link.href} href={link.href} className="navLink">
                 {link.label}

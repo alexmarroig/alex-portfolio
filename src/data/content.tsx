@@ -59,9 +59,9 @@ export const siteContent: SiteContent = {
       { icon: "FaHome", label: "Family-first" }
     ],
     ctas: [
-      { label: "Launch Neural Terminal", href: "/game", variant: "primary" },
-      { label: "Download Technical CV", href: "/api/analytics/resume-download?file=%2Falex_resume.pdf", variant: "secondary" },
-      { label: "Direct Access", href: "/contact", variant: "text" }
+      { label: "Launch Live CLI", href: "/game", variant: "primary" },
+      { label: "Download Resume", href: "/Alex-Marroig-Resume-2026.pdf", variant: "secondary" },
+      { label: "Get in Touch", href: "/contact", variant: "text" }
     ]
   },
   capabilityGrid: [
@@ -147,20 +147,27 @@ export const siteContent: SiteContent = {
     }
   ],
   certifications: [
-    { title: "AI Strategy & Implementation", issuer: "Tech Institute", year: "2024", icon: "FaMedal" },
     { title: "Project Management Professional (PMP)", issuer: "PMI", year: "2023", icon: "FaShieldAlt" },
-    { title: "Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "FaShieldAlt" }
+    { title: "Professional Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "FaMedal" },
+    { title: "Six Sigma Green Belt", issuer: "Master Método", year: "2023", icon: "FaMedal" },
+    { title: "Product Management", issuer: "PM3", year: "2023", icon: "FaShieldAlt" },
+    { title: "MBA — Project Management", issuer: "Fundação Getúlio Vargas (FGV)", year: "2020", icon: "FaShieldAlt" },
+    { title: "B.Sc. Mechanical Engineering", issuer: "UFF · Brunel University London", year: "2016", icon: "FaShieldAlt" }
   ],
   awards: [
-    "Innovation Award for AI Automation — 2024",
-    "SANDECH Top Performer Recognition — multiple years"
+    "Promoted within 6 months at Hypera Pharma — Top Performance Recognition",
+    "100% target achievement — Hypera Pharma greenfield integration (2022)",
+    "Professional Excellence Award — Sandech Consultoria (2019, 2018)",
+    "Petrobras SMS Audit — 2nd Place, 535 accident-free days (2018)",
+    "Science Without Borders Scholar — Brunel University London (2015-2016)"
   ],
   about: {
-    heading: "I don't just manage projects; I build the systems that deliver them.",
+    heading: "I don't just manage projects — I build the systems that deliver them.",
     paragraphs: [
-      "With a foundation in Technical Project Management and a deep focus on Software Engineering, I thrive at the intersection of AI and operational efficiency.",
-      "My mission is to replace manual complexity with intelligent automation, ensuring that every project is delivered with architectural integrity and top-tier quality.",
-      "Whether it's architecting a multi-agent AI system or leading a cross-functional engineering team, I focus on shipping high-tech solutions that scale."
+      "PMP-certified Technical Product Manager with 9+ years scaling B2B SaaS, AI-driven platforms, and data-rich products across technology, healthcare, pharmaceuticals, and enterprise environments.",
+      "Currently leading AI-powered conversational and semantic search products at Inbenta, owning discovery → MVP → delivery in a fully remote, async-first setup. Previously delivered post-M&A integrations at Hypera Pharma (Takeda, Sanofi, Boehringer), HR-tech rollouts at Smurfit WestRock, and IT governance at Notredame Hapvida.",
+      "I combine deep technical fluency (TypeScript, Python, FastAPI, React, LLMs) with the discipline of a PMP, PSM I, and Six Sigma Green Belt — turning ambiguous problems into shipped products through hypothesis-driven experimentation and customer validation.",
+      "I lead from the front: writing the code, owning the roadmap, and partnering cross-functionally with engineering, data, design, and business stakeholders to ship AI-enabled products that move the business."
     ]
   },
   contract: {
