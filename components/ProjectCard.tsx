@@ -3,46 +3,44 @@
 import FlipCard from "@/components/ui/FlipCard";
 import StatusPill from "@/components/ui/StatusPill";
 import type { SiteContent } from "@/src/data/content";
-import { FaProjectDiagram, FaShieldAlt } from "react-icons/fa";
-import { MdIntegrationInstructions, MdOutlinePrecisionManufacturing, MdOutlinePublishedWithChanges } from "react-icons/md";
-import { RiRobot2Line } from "react-icons/ri";
-import { SiNodedotjs, SiTestinglibrary } from "react-icons/si";
+import { projectHeroIcons, techStackIcons } from "@/src/data/projectIcons";
+import { FaProjectDiagram } from "react-icons/fa";
 
 type ProjectCardProps = SiteContent["projects"][number];
 
 const sections = [
   { key: "problem", label: "Problem" },
   { key: "solution", label: "Solution" },
-  { key: "impact", label: "Impact" }
+  { key: "impact", label: "Impact" },
 ] as const;
 
-const iconMap = {
-  Delivery: MdOutlinePrecisionManufacturing,
-  Governance: FaProjectDiagram,
-  Risk: FaShieldAlt,
-  APIs: MdIntegrationInstructions,
-  Automation: RiRobot2Line,
-  "Node.js": SiNodedotjs,
-  QA: SiTestinglibrary,
-  "CI/CD": MdOutlinePublishedWithChanges,
-  Integration: MdIntegrationInstructions,
-  Architecture: FaShieldAlt,
-  Execution: MdOutlinePublishedWithChanges
-} as const;
+export default function ProjectCard({
+  title,
+  subtitle,
+  description,
+  status,
+  icon,
+  stack,
+  caseStudy,
+  asciiDiagram,
+}: ProjectCardProps) {
+  const HeroIcon = projectHeroIcons[icon] ?? FaProjectDiagram;
 
-export default function ProjectCard({ title, subtitle, description, status, stack, caseStudy, asciiDiagram }: ProjectCardProps) {
   return (
     <FlipCard
       label={`Flip card for ${title} case study`}
       front={
         <>
+          <div className="projectHeroIcon">
+            <HeroIcon aria-hidden="true" />
+          </div>
           <p className="projectCaseType">{subtitle}</p>
           <h3 className="projectTitle">{title}</h3>
           <StatusPill status={status} />
           <p className="projectDescription">{description}</p>
           <div className="projectPills">
             {stack.map((name) => {
-              const Icon = iconMap[name as keyof typeof iconMap] ?? FaProjectDiagram;
+              const Icon = techStackIcons[name] ?? FaProjectDiagram;
               return (
                 <span className="projectPill" key={name}>
                   <Icon aria-hidden="true" /> {name}
@@ -55,6 +53,9 @@ export default function ProjectCard({ title, subtitle, description, status, stac
       }
       back={
         <>
+          <div className="projectHeroIcon projectHeroIconSmall">
+            <HeroIcon aria-hidden="true" />
+          </div>
           <h3 className="projectTitle">{title}</h3>
           {asciiDiagram && (
             <pre className="asciiDiagram">

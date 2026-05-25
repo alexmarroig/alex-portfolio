@@ -23,7 +23,7 @@ type SupportingFocusInput = {
   status: unknown;
 };
 
-const validProjectStatuses: ProjectStatus[] = ["BUILDING", "SHIPPING", "IMPROVING"];
+const validProjectStatuses: ProjectStatus[] = ["BUILDING", "SHIPPING", "MVP", "CONCEPT"];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -303,7 +303,7 @@ export function validateSupportingFocus(value: unknown): ValidationResult<SiteCo
 
     const status = typedEntry.status;
     if (typeof status !== "string" || !validProjectStatuses.includes(status as ProjectStatus)) {
-      errors.push(`currentFocus.supporting[${index}].status deve ser BUILDING, SHIPPING ou IMPROVING.`);
+      errors.push(`currentFocus.supporting[${index}].status deve ser BUILDING, SHIPPING, MVP ou CONCEPT.`);
     }
 
     if (title && summary && tags.length > 0 && typeof status === "string" && validProjectStatuses.includes(status as ProjectStatus)) {

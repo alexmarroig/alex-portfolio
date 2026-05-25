@@ -1,4 +1,5 @@
-export type ProjectStatus = "BUILDING" | "SHIPPING" | "IMPROVING";
+export type ProjectStatus = "BUILDING" | "SHIPPING" | "MVP" | "CONCEPT";
+export type ProjectCategory = "health" | "astrology" | "ai" | "products" | "personal";
 
 export type SiteContent = {
   hero: {
@@ -36,6 +37,8 @@ export type SiteContent = {
     subtitle: string;
     description: string;
     status: ProjectStatus;
+    category: ProjectCategory;
+    icon: string;
     stack: string[];
     asciiDiagram?: string;
     caseStudy: { problem: string; solution: string; impact: string };
@@ -69,31 +72,31 @@ export const siteContent: SiteContent = {
     { title: "Systems Integration", description: "Connecting disparate enterprise systems via custom APIs and middleware.", icon: "MdIntegrationInstructions" }
   ],
   currentFocus: {
-    lead: "Obsessed with AI optimization and autonomous software engineering.",
+    lead: "Building privacy-first AI systems and full-stack products that ship.",
     main: {
-      title: "Agentic Workflow Orchestration",
-      summary: "Developing a framework for multi-agent systems to handle complex technical project management tasks autonomously.",
-      tags: ["AI Agents", "LangChain", "Node.js", "Python"],
+      title: "Ethos — Offline-First Clinical AI",
+      summary: "Building a privacy-absolute clinical platform with local Whisper transcription, encrypted storage, and AI-assisted records for psychologists.",
+      tags: ["Whisper AI", "Electron", "SQLCipher", "React Native"],
       status: "BUILDING"
     },
     supporting: [
       {
-        title: "AI-Powered QA Lab",
-        summary: "Automating end-to-end testing using vision-language models for dynamic UI validation.",
-        tags: ["VLM", "Playwright", "Automation"],
-        status: "IMPROVING"
-      },
-      {
-        title: "Enterprise LLM Gateway",
-        summary: "Secure and scalable API layer for internal LLM consumption with cost tracking and safety guardrails.",
-        tags: ["Azure OpenAI", "API Management", "Security"],
+        title: "Inner Sky — Cross-Platform Astro Engine",
+        summary: "Personal astrology app with real ephemeris calculations, editorial database, and native iOS/Android compilation via Capacitor.",
+        tags: ["FastAPI", "Capacitor", "React", "Supabase"],
         status: "BUILDING"
       },
       {
-        title: "Autonomous Delivery Pipelines",
-        summary: "Building self-healing CI/CD pipelines that use AI to suggest fixes for build failures.",
-        tags: ["DevOps", "AI", "GitHub Actions"],
-        status: "IMPROVING"
+        title: "Alfred CRM — AI Sales Intelligence",
+        summary: "Multi-tenant CRM with AI-driven lead scoring, webhook ingestion, and automation hub via Activepieces.",
+        tags: ["FastAPI", "PostgreSQL", "AI Scoring", "Docker"],
+        status: "BUILDING"
+      },
+      {
+        title: "VideoEdit Studio — AI Editing Pipeline",
+        summary: "Automatic video editing controlled by AI: transcription, silence detection, subtitle generation, and smart rendering.",
+        tags: ["Python", "Whisper AI", "FFmpeg", "Gradio"],
+        status: "BUILDING"
       }
     ]
   },
@@ -145,58 +148,225 @@ export const siteContent: SiteContent = {
   },
   projects: [
     {
-      title: "Neural Project Orchestrator",
-      subtitle: "AI AGENT SYSTEM",
-      description: "An autonomous multi-agent system designed to manage Jira tickets, update documentation, and coordinate dev tasks.",
+      title: "Ethos",
+      subtitle: "OFFLINE-FIRST CLINICAL PLATFORM",
+      description: "Privacy-focused clinical workspace for psychologists. Local session transcription via Whisper, AI-assisted record generation with mandatory human validation, encrypted local storage, and integrated financial management.",
       status: "BUILDING",
-      stack: ["Python", "OpenAI", "FastAPI", "React"],
+      category: "health",
+      icon: "ethos",
+      stack: ["Electron", "React Native (Expo)", "Node.js", "Python", "Whisper AI", "SQLCipher", "Turborepo"],
       asciiDiagram: `
-[ USER ] <-> [ API GATEWAY ]
+[ DESKTOP ] <-> [ MOBILE APP ]
+       \\         /
+    [ MONOREPO CORE ]
+         |
+  [ WHISPER LOCAL ]
+         |
+  [ SQLCipher DB ]`,
+      caseStudy: {
+        problem: "Psychologists handle extremely sensitive patient data but lack tools that guarantee absolute privacy without cloud dependency.",
+        solution: "Built an offline-first platform with local Whisper transcription, AES-256-GCM encrypted SQLite, and human-validated AI record generation.",
+        impact: "Zero data leaves the device. Full clinical workflow — transcription, records, finances — in one encrypted environment."
+      }
+    },
+    {
+      title: "Psicosite",
+      subtitle: "INSTITUTIONAL WEBSITE",
+      description: "Professional website for a clinical psychologist with Jungian approach. Includes a no-code editable local CMS, editorial blog, FAQ section, and WhatsApp scheduling integration.",
+      status: "SHIPPING",
+      category: "health",
+      icon: "psicosite",
+      stack: ["TanStack Start", "Keystatic CMS", "TypeScript", "Tailwind CSS", "Vercel"],
+      caseStudy: {
+        problem: "The client needed a professional online presence but had no technical knowledge to maintain a website or blog.",
+        solution: "Deployed a headless CMS (Keystatic) enabling content editing without code, automatic Git-based deploys, and structured SEO.",
+        impact: "Client autonomously publishes blog posts and edits content. SEO-optimized with Google Business integration driving new patient leads."
+      }
+    },
+    {
+      title: "Therapy Bio Hub",
+      subtitle: "BIO-LINK PLATFORM",
+      description: "Specialized bio-link and lead capture platform for mental health professionals. Visual drag-and-drop editor, behavioral analytics, and integrated contact CRM.",
+      status: "BUILDING",
+      category: "health",
+      icon: "therapyBioHub",
+      stack: ["Next.js 15", "React 19", "Supabase", "PostHog", "TypeScript", "Tailwind CSS"],
+      caseStudy: {
+        problem: "Generic link-in-bio tools lack features tailored to therapists — no lead forms, no clinical tone, no analytics that matter for private practice.",
+        solution: "Purpose-built platform with visual block editor, interest forms with CRM, and behavioral analytics (scroll depth, CTA clicks).",
+        impact: "Therapists get a conversion-optimized presence with custom domains and actionable insights on prospective patients."
+      }
+    },
+    {
+      title: "Inner Sky",
+      subtitle: "PERSONAL ASTROLOGY APP",
+      description: "Cross-platform astrology app (web + Android + iOS) with interactive birth chart, real-time transits, daily alignment, and relationship analysis (synastry). Custom backend with editorial interpretation database.",
+      status: "BUILDING",
+      category: "astrology",
+      icon: "innerSky",
+      stack: ["React + Vite", "Capacitor (iOS/Android)", "FastAPI (AstroAPI)", "Supabase", "shadcn/ui", "TypeScript"],
+      asciiDiagram: `
+[ WEB + MOBILE ]
+      |
+[ ASTRO API ]
+      |
+[ EDITORIAL DB ]`,
+      caseStudy: {
+        problem: "Existing astrology apps are superficial — no real ephemeris calculations, no editorial depth, no synastry engine.",
+        solution: "Built a full-stack app with real astronomical calculations (Swiss Ephemeris), curated editorial interpretations, and native mobile compilation.",
+        impact: "Professional-grade astrology tool with birth chart, transits, solar return, and relationship analysis — all in one app."
+      }
+    },
+    {
+      title: "Astrologydatabase",
+      subtitle: "EDITORIAL CONTENT MICROSERVICE",
+      description: "Microservice with a database of astrological rules, texts, and interpretations. Serves as the centralized editorial source (SSOT) consumed internally by Inner Sky via protected API.",
+      status: "BUILDING",
+      category: "astrology",
+      icon: "astrologyDatabase",
+      stack: ["FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "Python"],
+      caseStudy: {
+        problem: "Astrological interpretations were scattered across files with no structured access or versioning.",
+        solution: "Created an isolated microservice with migrations, seed data, and internal API endpoints for editorial content retrieval.",
+        impact: "Single source of truth for all interpretive text. Clean separation of concerns — frontend never touches editorial data directly."
+      }
+    },
+    {
+      title: "Destiny Code",
+      subtitle: "AI-POWERED PREDICTIONS SAAS",
+      description: "SaaS platform generating personalized predictions by combining real astrological calculation (pyswisseph), numerology, and LLM-driven narrative via OpenRouter. Containerized infrastructure with Redis caching.",
+      status: "MVP",
+      category: "astrology",
+      icon: "destinyCode",
+      stack: ["FastAPI", "pyswisseph", "OpenRouter (LLM)", "PostgreSQL", "Redis", "Next.js", "Docker"],
+      asciiDiagram: `
+[ USER ] -> [ NEXT.JS ]
                |
-      [ AGENT ORCHESTRATOR ]
-       /       |        \\
-[ JIRA ]  [ GITHUB ]  [ DOCS ]
-      `,
+         [ FASTAPI ]
+          /       \\
+[ SWISSEPH ]  [ LLM ]
+          \\       /
+         [ REDIS ]`,
       caseStudy: {
-        problem: "Manual project management overhead was slowing down engineering cycles by 30%.",
-        solution: "Implemented an LLM-driven orchestrator that autonomously triages and assigns tasks.",
-        impact: "Reduced PM overhead by 50% and increased sprint velocity."
+        problem: "Astrological prediction platforms either use fake calculations or lack narrative quality and personalization.",
+        solution: "Combined real Swiss Ephemeris calculations with numerology engine and LLM narrative generation, cached via Redis for performance.",
+        impact: "Scientifically-grounded charts with AI-generated personalized narratives. Fast response times via intelligent caching layer."
       }
     },
     {
-      title: "Auto-QA AI Engine",
-      subtitle: "AUTOMATION PLATFORM",
-      description: "Vision-AI powered testing platform that detects UI regressions without manual test scripts.",
-      status: "SHIPPING",
-      stack: ["Node.js", "Playwright", "GPT-4V"],
+      title: "DreamDiary",
+      subtitle: "AI DREAM JOURNAL",
+      description: "Dream journaling app with human-in-the-loop symbolic analysis. The LLM proposes symbolic interpretations and the user confirms or refutes each one — only validated insights become permanent data.",
+      status: "MVP",
+      category: "ai",
+      icon: "dreamDiary",
+      stack: ["React + Vite", "Node.js + Express", "OpenAI API", "MongoDB", "JWT", "TypeScript"],
       asciiDiagram: `
-[ UI RENDER ] -> [ VISION AI ]
-                    |
-           [ ANOMALY DETECTOR ]
-                    |
-          [ SLACK NOTIFICATION ]
-      `,
+[ JOURNAL ENTRY ]
+       |
+[ SUMMARIZER ]
+       |
+[ LLM ANALYSIS ]
+       |
+[ USER VALIDATES ]
+       |
+[ PERMANENT DATA ]`,
       caseStudy: {
-        problem: "Legacy test scripts were brittle and required constant manual updates.",
-        solution: "Built a self-healing QA engine using vision models to validate UI state.",
-        impact: "99% reduction in manual test maintenance."
+        problem: "AI dream analysis tools blindly assign meanings without user consent, creating unreliable psychological data.",
+        solution: "Implemented a validation loop where every AI-proposed symbol must be confirmed/refuted by the user before persisting.",
+        impact: "Reliable dream analysis database built on user-validated interpretations. Gamification (streaks, achievements) drives daily engagement."
       }
     },
     {
-      title: "Enterprise AI Gateway",
-      subtitle: "INFRASTRUCTURE",
-      description: "Centralized hub for enterprise LLM access with built-in security, cost control, and performance monitoring.",
-      status: "SHIPPING",
-      stack: ["Azure", "TypeScript", "Redis"],
-      asciiDiagram: `
-[ APPS ] -> [ AI GATEWAY ] -> [ LLM PROVIDERS ]
-               | (Auth/Log)
-          [ DASHBOARD ]
-      `,
+      title: "VideoEdit Studio",
+      subtitle: "AI VIDEO EDITING PIPELINE",
+      description: "Automatic video editing studio controlled via chat or web interface (Gradio). Full pipeline: Whisper transcription, cut detection, rendering, subtitles, color filters, and animations.",
+      status: "BUILDING",
+      category: "ai",
+      icon: "videoEditStudio",
+      stack: ["Python", "Whisper AI", "Gradio", "FFmpeg", "CapCut API"],
       caseStudy: {
-        problem: "Fragmented AI adoption led to security risks and unmanaged cloud costs.",
-        solution: "Designed a secure gateway to standardize and monitor all AI traffic.",
-        impact: "Zero security breaches and 25% cost saving on token usage."
+        problem: "Content creators spend hours on repetitive editing tasks — silence removal, subtitle generation, color grading.",
+        solution: "Built an AI pipeline that transcribes, detects silences/stumbles, generates Hormozi-style subtitles, and renders final video automatically.",
+        impact: "Hours of editing reduced to minutes. Multiple modes (single video, split screen, clips mix) with a learning feedback system."
+      }
+    },
+    {
+      title: "Life Discovery Engine",
+      subtitle: "AI EXPERIENCE RECOMMENDER",
+      description: "Monorepo platform with multiple AI engines for personalized experience, activity, and date recommendations. Includes AI concierge, adaptive user profiling, and continuous learning engine.",
+      status: "CONCEPT",
+      category: "ai",
+      icon: "lifeDiscoveryEngine",
+      stack: ["Python (multiple services)", "Turborepo", "React Native (mobile)", "Docker", "TypeScript"],
+      caseStudy: {
+        problem: "People struggle to discover meaningful experiences tailored to their evolving interests and context.",
+        solution: "Designing a multi-engine AI platform with conversational concierge, adaptive user profiles, and a recommendation system that learns continuously.",
+        impact: "Personalized discovery of activities and experiences through an AI that understands preferences and adapts over time."
+      }
+    },
+    {
+      title: "Alfred CRM",
+      subtitle: "AI-POWERED SALES CRM",
+      description: "Production-grade backend for a sales CRM with embedded AI. Multi-tenant support, AI-driven lead scoring, webhook ingestion (email, Slack), automated jobs, and automation hub via Activepieces.",
+      status: "BUILDING",
+      category: "products",
+      icon: "alfredCRM",
+      stack: ["FastAPI", "PostgreSQL", "APScheduler", "SQLAlchemy 2.0", "Pydantic v2", "Docker", "Alembic"],
+      asciiDiagram: `
+[ WEBHOOKS ] -> [ INGESTION ]
+                     |
+              [ AI SCORING ]
+                     |
+            [ NOTIFICATIONS ]
+                     |
+           [ ACTIVEPIECES HUB ]`,
+      caseStudy: {
+        problem: "SMB sales teams need AI-powered lead management but enterprise CRMs are too expensive and complex.",
+        solution: "Built a multi-tenant CRM backend with pluggable AI provider, webhook ingestion, automated overdue notifications, and signed automation callbacks.",
+        impact: "AI lead classification, automated follow-ups, and full tenant isolation — enterprise features at startup speed."
+      }
+    },
+    {
+      title: "Couple Closet",
+      subtitle: "COUPLES LIFESTYLE APP",
+      description: "Complete backend for a couples lifestyle app. Compatibility quizzes, personalized date recommendations, shared wishlist, and integrated Shopify store with synced catalog.",
+      status: "MVP",
+      category: "products",
+      icon: "coupleCloset",
+      stack: ["Node.js + TypeScript", "Express", "Prisma + PostgreSQL", "Shopify API", "JWT", "Zod", "Swagger"],
+      caseStudy: {
+        problem: "Couples apps are either too simple (shared lists) or too complex (therapy tools) — nothing bridges fun and commerce.",
+        solution: "Built a feature-rich backend combining quizzes, AI date recommendations, shared wishlists, and a fully synced Shopify storefront.",
+        impact: "Couples get personalized experiences plus a curated store. Full Swagger docs enable rapid frontend development."
+      }
+    },
+    {
+      title: "PetTech Review",
+      subtitle: "AFFILIATE EDITORIAL PLATFORM",
+      description: "Curated editorial site for pet tech and wellness product reviews with an affiliate business model. Maximum performance with Astro (static HTML), product comparisons, and trend radar.",
+      status: "SHIPPING",
+      category: "products",
+      icon: "petTechReview",
+      stack: ["Astro 4", "Tailwind CSS", "lucide-astro", "Static HTML"],
+      caseStudy: {
+        problem: "Pet owners lack trustworthy, performance-focused review sites that prioritize editorial quality over ad density.",
+        solution: "Built a static Astro site with product battle comparisons, proper affiliate disclosure, trend radar, and newsletter capture.",
+        impact: "Perfect Lighthouse scores with static HTML. Affiliate revenue through honest, editorial-quality pet tech curation."
+      }
+    },
+    {
+      title: "Interactive Portfolio",
+      subtitle: "PERSONAL PORTFOLIO",
+      description: "Personal portfolio site with dark high-contrast visual system, Framer Motion animations, flip cards with detailed case studies (problem/solution/impact), and visual tech stack section.",
+      status: "SHIPPING",
+      category: "personal",
+      icon: "portfolio",
+      stack: ["Next.js (App Router)", "Framer Motion", "TypeScript", "Tailwind CSS", "Vercel"],
+      caseStudy: {
+        problem: "Generic portfolio templates fail to showcase technical depth and project storytelling effectively.",
+        solution: "Custom-built portfolio with 3D flip cards, parallax hero, interactive tilt effects, and structured case study narratives.",
+        impact: "A portfolio that demonstrates engineering craft through its own implementation — the medium is the message."
       }
     }
   ],

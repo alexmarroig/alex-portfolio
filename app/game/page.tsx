@@ -1,718 +1,642 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/src/data/siteContentContext";
-import { motion, AnimatePresence } from "framer-motion";
-import PipelineOptimizerGame from "@/components/PipelineOptimizerGame";
 
-type Tab = "home" | "profile" | "skills" | "credentials" | "projects" | "optimize";
+type TerminalLine = {
+  id: number;
+  type: "input" | "output" | "system" | "error" | "accent";
+  text: string;
+};
 
-export default function NeuralTerminal() {
+const COMMANDS: Record<string, string> = {
+  help: "Show available commands",
+  projects: "List all active projects",
+  "project <name>": "Deep dive into a specific project",
+  skills: "Technical stack overview",
+  focus: "What I'm building right now",
+  experience: "Career highlights",
+  contact: "How to reach me",
+  hire: "Why you should hire me",
+  "download cv": "Download my resume",
+  clear: "Clear terminal",
+};
+
+const EASTER_EGGS = ["sudo hire alex", "hack", "matrix", "whoami", "ping"];
+
+export default function TerminalGame() {
   const router = useRouter();
   const { content } = useSiteContent();
-  const [activeTab, setActiveTab] = useState<Tab>("home");
+  const [lines, setLines] = useState<TerminalLine[]>(() => {
+    const welcome: Omit<TerminalLine, "id">[] = [
+      { type: "system", text: "╔══════════════════════════════════════════════════════════╗" },
+      { type: "system", text: "║  NEURAL TERMINAL v6.0 — Alex Marroig's Portfolio CLI    ║" },
+      { type: "system", text: "╚══════════════════════════════════════════════════════════╝" },
+      { type: "output", text: "" },
+      { type: "accent", text: "  Welcome, visitor. Type 'help' to see available commands." },
+      { type: "output", text: "  Explore my projects, skills, and experience interactively." },
+      { type: "output", text: "" },
+      { type: "system", text: "  Quick start: projects | skills | hire | focus" },
+      { type: "output", text: "" },
+    ];
+    return welcome.map((l, i) => ({ ...l, id: i + 1 }));
+  });
+  const [input, setInput] = useState("");
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const idRef = useRef(10);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "home":
-        return (
-          <div className="cardContent">
-            <h2 className="cardTitle">SYSTEM STATUS: OPTIMIZED</h2>
-            <p className="cardText">
-              Welcome to the Neural Interface. Access the candidate&apos;s core modules via the sidebar.
-            </p>
-            <div className="statusGrid">
-              <div className="statusItem">
-                <span className="statusLabel">IDENTITY</span>
-                <span className="statusValue">ALEX DE FREITAS MARROIG</span>
-              </div>
-              <div className="statusItem">
-                <span className="statusLabel">SECURITY LEVEL</span>
-                <span className="statusValue highlight">RECRUITER_ACCESS</span>
-              </div>
-              <div className="statusItem">
-                <span className="statusLabel">LAST SYNC</span>
-                <span className="statusValue">JUST NOW</span>
-              </div>
-            </div>
-            <button className="actionButton" onClick={() => setActiveTab("profile")}>
-              INITIALIZE NEURAL PROBE
-            </button>
-          </div>
-        );
+  const nextId = () => ++idRef.current;
 
-      case "profile":
-        return (
-          <div className="cardContent">
-            <h2 className="cardTitle">NEURAL PROFILE: {content.hero.headline}</h2>
-            <div className="profileBox">
-              <p className="cardText">{content.hero.paragraph}</p>
-            </div>
-            <div className="metaInfo">
-              <div className="tag">TECHNICAL LEADERSHIP</div>
-              <div className="tag">AI AUTOMATION</div>
-              <div className="tag">AGENTIC SYSTEMS</div>
-            </div>
-          </div>
-        );
+  const addLines = useCallback((newLines: Omit<TerminalLine, "id">[]) => {
+    setLines((prev) => [...prev, ...newLines.map((l) => ({ ...l, id: nextId() }))]);
+  }, []);
 
-      case "skills":
-        return (
-          <div className="cardContent">
-            <h2 className="cardTitle">TECHNICAL STACK DEPLOYED</h2>
-            <div className="skillsGrid">
-              {content.stackCategories.map((cat, idx) => (
-                <div key={idx} className="skillCategory">
-                  <h3>{cat.category}</h3>
-                  <div className="skillTags">
-                    {cat.items.map((item, i) => (
-                      <span key={i} className="skillTag">{item.name}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
+  const typeOutput = useCallback(
+    (outputLines: Omit<TerminalLine, "id">[]) => {
+      setLines((prev) => [
+        ...prev,
+        ...outputLines.map((l) => ({ ...l, id: nextId() })),
+      ]);
+    },
+    []
+  );
 
-      case "projects":
-        return (
-          <div className="cardContent">
-            <h2 className="cardTitle">PROJECT ARCHIVE</h2>
-            <div className="projectsList">
-              {content.projects.map((p, idx) => (
-                <div key={idx} className="projectCardItem">
-                  <div className="projectHeader">
-                    <span className="projectTitle">{p.title}</span>
-                    <span className="projectStatus">{p.status}</span>
-                  </div>
-                  <p className="projectDesc">{p.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
 
-      case "credentials":
-        return (
-          <div className="cardContent">
-            <h2 className="cardTitle">CREDENTIALS & EXPERTISE</h2>
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [lines]);
 
-            <div className="credentialSection">
-              <h3 className="sectionSubtitle">CERTIFICATIONS</h3>
-              <div className="credentialsList">
-                {content.certifications.map((cert, idx) => (
-                  <div key={idx} className="credentialItem certified">
-                    <div className="credBadge">✓</div>
-                    <div className="credDetails">
-                      <div className="credTitle">{cert.title}</div>
-                      <div className="credMeta">{cert.issuer} — {cert.year}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+  const getProjectByName = (name: string) => {
+    const lower = name.toLowerCase();
+    return content.projects.find(
+      (p) =>
+        p.title.toLowerCase() === lower ||
+        p.title.toLowerCase().includes(lower) ||
+        p.icon.toLowerCase() === lower
+    );
+  };
 
-            <div className="credentialSection">
-              <h3 className="sectionSubtitle">RECOGNITION & AWARDS</h3>
-              <div className="awardsList">
-                {content.awards.map((award, idx) => (
-                  <div key={idx} className="awardItem">
-                    <div className="awardBadge">★</div>
-                    <div className="awardText">{award}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
+  const processCommand = (cmd: string) => {
+    const trimmed = cmd.trim().toLowerCase();
 
-      case "optimize":
-        return <PipelineOptimizerGame />;
+    addLines([{ type: "input", text: `> ${cmd}` }]);
+    setHistory((prev) => [...prev, cmd]);
+    setHistoryIndex(-1);
+
+    if (!trimmed) return;
+
+    if (trimmed === "help") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ AVAILABLE COMMANDS ─────────────────────────────" },
+        { type: "output", text: "│" },
+      ];
+      Object.entries(COMMANDS).forEach(([cmd, desc]) => {
+        out.push({ type: "output", text: `│  ${cmd.padEnd(18)} ${desc}` });
+      });
+      out.push({ type: "output", text: "│" });
+      out.push({ type: "system", text: `│  Easter eggs: ${EASTER_EGGS.join(", ")}` });
+      out.push({ type: "output", text: "└──────────────────────────────────────────────────" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "projects") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: `┌─ PROJECT ARCHIVE (${content.projects.length} projects) ──────────────` },
+        { type: "output", text: "│" },
+      ];
+      content.projects.forEach((p) => {
+        const statusColor = p.status === "SHIPPING" ? "●" : p.status === "BUILDING" ? "◐" : p.status === "MVP" ? "◑" : "○";
+        out.push({
+          type: "output",
+          text: `│  ${statusColor} ${p.title.padEnd(24)} [${p.status}]  ${p.subtitle}`,
+        });
+      });
+      out.push({ type: "output", text: "│" });
+      out.push({ type: "system", text: "│  Use 'project <name>' for details. e.g: project ethos" });
+      out.push({ type: "output", text: "└──────────────────────────────────────────────────" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed.startsWith("project ")) {
+      const name = cmd.trim().slice(8);
+      const project = getProjectByName(name);
+      if (!project) {
+        addLines([{ type: "error", text: `  ERROR: Project "${name}" not found. Try 'projects' to see all.` }]);
+        return;
+      }
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: `┌─ ${project.title.toUpperCase()} ─────────────────────────────` },
+        { type: "output", text: `│  Type:    ${project.subtitle}` },
+        { type: "output", text: `│  Status:  ${project.status}` },
+        { type: "output", text: "│" },
+        { type: "output", text: `│  ${project.description}` },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  TECH STACK:" },
+        { type: "output", text: `│  ${project.stack.join(" · ")}` },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  CASE STUDY:" },
+        { type: "output", text: `│  Problem:  ${project.caseStudy.problem}` },
+        { type: "output", text: `│  Solution: ${project.caseStudy.solution}` },
+        { type: "accent", text: `│  Impact:   ${project.caseStudy.impact}` },
+        { type: "output", text: "└──────────────────────────────────────────────────" },
+      ];
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "skills") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ TECHNICAL STACK ────────────────────────────────" },
+        { type: "output", text: "│" },
+      ];
+      content.stackCategories.forEach((cat) => {
+        out.push({ type: "system", text: `│  ▸ ${cat.category.toUpperCase()}` });
+        cat.items.forEach((item) => {
+          out.push({ type: "output", text: `│    ${item.name.padEnd(22)} ${item.note}` });
+        });
+        out.push({ type: "output", text: "│" });
+      });
+      out.push({ type: "output", text: "└──────────────────────────────────────────────────" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "focus") {
+      const { main, supporting } = content.currentFocus;
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ CURRENT FOCUS ──────────────────────────────────" },
+        { type: "output", text: `│  ${content.currentFocus.lead}` },
+        { type: "output", text: "│" },
+        { type: "system", text: `│  ★ PRIMARY: ${main.title}` },
+        { type: "output", text: `│    ${main.summary}` },
+        { type: "output", text: `│    Tags: ${main.tags.join(", ")}` },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  ALSO BUILDING:" },
+      ];
+      supporting.forEach((s) => {
+        out.push({ type: "output", text: `│    ◐ ${s.title}` });
+        out.push({ type: "output", text: `│      ${s.summary}` });
+      });
+      out.push({ type: "output", text: "└──────────────────────────────────────────────────" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "experience") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ CAREER HIGHLIGHTS ──────────────────────────────" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  ▸ 9+ years in complex project management" },
+        { type: "output", text: "│    Led 80+ projects: post-M&A, digital transformation, AI" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  ▸ AI Product & Technical Operations" },
+        { type: "output", text: "│    Building LLM-powered products, RAG pipelines," },
+        { type: "output", text: "│    autonomous agents, and full-stack AI applications" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  ▸ Full-Stack Engineering" },
+        { type: "output", text: "│    TypeScript, Python, React, Next.js, FastAPI," },
+        { type: "output", text: "│    PostgreSQL, Docker, Supabase, Vercel" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  ▸ Certifications" },
+      ];
+      content.certifications.forEach((cert) => {
+        out.push({ type: "output", text: `│    ✓ ${cert.title} (${cert.issuer}, ${cert.year})` });
+      });
+      out.push({ type: "output", text: "│" });
+      out.push({ type: "system", text: "│  ▸ Awards" });
+      content.awards.forEach((award) => {
+        out.push({ type: "output", text: `│    ★ ${award}` });
+      });
+      out.push({ type: "output", text: "└──────────────────────────────────────────────────" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "contact") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ CONTACT ────────────────────────────────────────" },
+        { type: "output", text: "│" },
+        { type: "output", text: "│  Email:    alex.c.marroig@gmail.com" },
+        { type: "output", text: "│  LinkedIn: linkedin.com/in/alexmarroig" },
+        { type: "output", text: "│  GitHub:   github.com/alexmarroig" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  Status: Available for high-impact work" },
+        { type: "output", text: "└──────────────────────────────────────────────────" },
+      ];
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "hire") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "accent", text: "┌─ WHY HIRE ALEX ──────────────────────────────────" },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  I don't just manage projects — I build the systems" },
+        { type: "system", text: "│  that deliver them." },
+        { type: "output", text: "│" },
+        { type: "output", text: "│  ✦ 9+ years leading complex technical projects" },
+        { type: "output", text: "│  ✦ 13 active products spanning AI, SaaS, and mobile" },
+        { type: "output", text: "│  ✦ Full-stack builder: Python, TypeScript, React, FastAPI" },
+        { type: "output", text: "│  ✦ AI-native: Whisper, LLMs, RAG, autonomous agents" },
+        { type: "output", text: "│  ✦ Ships fast: from concept to production independently" },
+        { type: "output", text: "│" },
+        { type: "accent", text: "│  I bridge business strategy with deep technical execution." },
+        { type: "accent", text: "│  Give me a complex problem and I'll architect the solution," },
+        { type: "accent", text: "│  build the prototype, and lead the team to ship it." },
+        { type: "output", text: "│" },
+        { type: "system", text: "│  → Type 'contact' to start a conversation" },
+        { type: "system", text: "│  → Type 'download cv' for the full resume" },
+        { type: "output", text: "└──────────────────────────────────────────────────" },
+      ];
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "download cv") {
+      addLines([{ type: "system", text: "  Downloading resume..." }]);
+      window.open("/alex_resume.pdf", "_blank");
+      return;
+    }
+
+    if (trimmed === "clear") {
+      setLines([]);
+      return;
+    }
+
+    if (trimmed === "sudo hire alex") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "system", text: "  [sudo] password for recruiter: ********" },
+        { type: "accent", text: "  ✓ HIRING PROCESS INITIATED" },
+        { type: "accent", text: "  ✓ CANDIDATE APPROVED: Alex Marroig" },
+        { type: "accent", text: "  ✓ DEPLOYING EXCELLENCE TO YOUR TEAM..." },
+        { type: "output", text: "" },
+        { type: "system", text: "  Just kidding. But seriously — let's talk: alex.c.marroig@gmail.com" },
+      ];
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "hack") {
+      const out: Omit<TerminalLine, "id">[] = [
+        { type: "system", text: "  Accessing mainframe..." },
+        { type: "system", text: "  Bypassing firewall [████████████████] 100%" },
+        { type: "system", text: "  Decrypting talent database..." },
+        { type: "accent", text: "  ACCESS GRANTED." },
+        { type: "output", text: "" },
+        { type: "accent", text: "  FOUND: 1 exceptional candidate matching all criteria." },
+        { type: "output", text: "  Name: Alex Marroig | Threat Level: High Value" },
+        { type: "output", text: "" },
+        { type: "system", text: "  Recommendation: HIRE IMMEDIATELY" },
+      ];
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "matrix") {
+      const chars = "01アイウエオカキクケコ";
+      const out: Omit<TerminalLine, "id">[] = [];
+      for (let i = 0; i < 8; i++) {
+        let line = "  ";
+        for (let j = 0; j < 50; j++) {
+          line += chars[Math.floor(Math.random() * chars.length)];
+        }
+        out.push({ type: "system", text: line });
+      }
+      out.push({ type: "output", text: "" });
+      out.push({ type: "accent", text: "  Wake up, recruiter... The Matrix has you." });
+      out.push({ type: "output", text: "  Follow the white rabbit → type 'hire'" });
+      typeOutput(out);
+      return;
+    }
+
+    if (trimmed === "whoami") {
+      addLines([
+        { type: "output", text: "  You are: RECRUITER (guest access)" },
+        { type: "system", text: "  Permissions: READ_ALL | HIRE_CANDIDATE | DOWNLOAD_CV" },
+      ]);
+      return;
+    }
+
+    if (trimmed === "ping") {
+      addLines([
+        { type: "system", text: "  PING alex-marroig.dev (127.0.0.1) 56 bytes" },
+        { type: "output", text: "  64 bytes: time=0.042ms — CANDIDATE IS RESPONSIVE" },
+        { type: "accent", text: "  Status: Online and ready for opportunities" },
+      ]);
+      return;
+    }
+
+    if (trimmed === "exit" || trimmed === "quit") {
+      addLines([{ type: "system", text: "  Returning to portfolio..." }]);
+      setTimeout(() => router.push("/"), 800);
+      return;
+    }
+
+    addLines([
+      { type: "error", text: `  Command not found: '${cmd.trim()}'` },
+      { type: "output", text: "  Type 'help' for available commands." },
+    ]);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    processCommand(input);
+    setInput("");
+    setSuggestions([]);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (history.length === 0) return;
+      const newIndex = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+      setHistoryIndex(newIndex);
+      setInput(history[newIndex]);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex === -1) return;
+      const newIndex = historyIndex + 1;
+      if (newIndex >= history.length) {
+        setHistoryIndex(-1);
+        setInput("");
+      } else {
+        setHistoryIndex(newIndex);
+        setInput(history[newIndex]);
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const allCmds = [...Object.keys(COMMANDS).map((c) => c.split(" ")[0]), ...EASTER_EGGS];
+      const matches = allCmds.filter((c) => c.startsWith(input.toLowerCase()));
+      if (matches.length === 1) {
+        setInput(matches[0]);
+        setSuggestions([]);
+      } else if (matches.length > 1) {
+        setSuggestions(matches.slice(0, 5));
+      }
+    } else {
+      setSuggestions([]);
     }
   };
 
+  const handleContainerClick = () => {
+    inputRef.current?.focus();
+  };
+
   return (
-    <section className="section simplePage terminalPage">
-      <div className="terminalLayout">
-        {/* Left Sidebar - Navigation */}
-        <aside className="terminalSidePanel left">
-          <div className="panelHeader">NEURAL_NAVIGATION</div>
-          <div className="navList">
-            <button
-              className={`navItem ${activeTab === 'profile' ? 'active' : ''}`}
-              onClick={() => setActiveTab('profile')}
-            >
-              <div className="navDot" />
-              <span className="navName">PROFILE_AGENT</span>
-            </button>
-            <button
-              className={`navItem ${activeTab === 'skills' ? 'active' : ''}`}
-              onClick={() => setActiveTab('skills')}
-            >
-              <div className="navDot" />
-              <span className="navName">SKILLS_ENGINE</span>
-            </button>
-            <button
-              className={`navItem ${activeTab === 'credentials' ? 'active' : ''}`}
-              onClick={() => setActiveTab('credentials')}
-            >
-              <div className="navDot" />
-              <span className="navName">CREDENTIALS</span>
-            </button>
-            <button
-              className={`navItem ${activeTab === 'projects' ? 'active' : ''}`}
-              onClick={() => setActiveTab('projects')}
-            >
-              <div className="navDot" />
-              <span className="navName">PROJECT_ARCHIVE</span>
-            </button>
-            <button
-              className={`navItem ${activeTab === 'optimize' ? 'active' : ''}`}
-              onClick={() => setActiveTab('optimize')}
-            >
-              <div className="navDot" />
-              <span className="navName">OPTIMIZATION_LAB</span>
-            </button>
-            <div className="navSeparator" />
-            <button
-              className="navItem"
-              onClick={() => window.open("/alex_resume.pdf", "_blank")}
-            >
-              <div className="navDot download" />
-              <span className="navName">DOWNLOAD_CV</span>
-            </button>
-            <button
-              className="navItem exit"
-              onClick={() => router.push("/")}
-            >
-              <div className="navDot busy" />
-              <span className="navName">EXIT_INTERFACE</span>
-            </button>
+    <section className="section simplePage terminalPage" onClick={handleContainerClick}>
+      <div className="terminalShell">
+        <div className="terminalChromeBar">
+          <div className="chromeDots">
+            <span className="chromeDot red" />
+            <span className="chromeDot yellow" />
+            <span className="chromeDot green" />
           </div>
-          <div className="panelFooter">CORE_VERSION: 2.0.0</div>
-        </aside>
-
-        {/* Main Interface Area */}
-        <div className="terminalWindow glassPanel">
-          <div className="terminalHeader">
-            <div className="terminalStatus">
-              <span className="terminalDot online" />
-              <span className="statusText">SYSTEM: {activeTab.toUpperCase()}</span>
-            </div>
-            <div className="terminalTitle">NEURAL TERMINAL v5.0.0 // {activeTab.toUpperCase()}</div>
-            <div className="terminalMeta">
-              <span className="metaLabel">SEC:</span>
-              <span className="metaValue">VERIFIED</span>
-            </div>
-          </div>
-
-          <div className="terminalBody">
-            <div className="terminalScanline" />
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
-                className="mainContentScroll"
-              >
-                {renderContent()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="terminalFooter">
-            <div className="footerItem">LATENCY: 12ms</div>
-            <div className="footerItem">NODE: MARROIG-AI-01</div>
-            <div className="footerItem">ENCRYPTION: AES-256</div>
-          </div>
+          <div className="chromeTitle">alex@portfolio:~</div>
+          <button className="chromeExit" onClick={() => router.push("/")}>
+            EXIT
+          </button>
         </div>
 
-        {/* Right Sidebar - Node Params */}
-        <aside className="terminalSidePanel right">
-          <div className="panelHeader">NODE_DATA</div>
-          <div className="paramsList">
-            <div className="paramGroup">
-              <label>ACTIVE_MODULE</label>
-              <div className="paramBox">{activeTab.toUpperCase()}_MOD</div>
+        <div className="terminalOutput" ref={scrollRef}>
+          {lines.map((line) => (
+            <div key={line.id} className={`termLine termLine-${line.type}`}>
+              {line.text || " "}
             </div>
-            <div className="paramGroup">
-              <label>PRIMARY_MODEL</label>
-              <div className="paramBox">gpt-4o-pro</div>
+          ))}
+
+          {suggestions.length > 0 && (
+            <div className="termSuggestions">
+              {suggestions.map((s) => (
+                <span key={s} className="termSuggestion">{s}</span>
+              ))}
             </div>
-            <div className="paramGroup">
-              <label>DIRECTIVE</label>
-              <div className="paramBox small">
-                Interactive assessment of candidate Alex de Freitas Marroig.
-              </div>
-            </div>
-            <div className="paramGroup">
-              <label>UPTIME</label>
-              <div className="paramBox">99.999%</div>
-            </div>
-          </div>
-          <div className="panelFooter">VERIFIED: TRUE</div>
-        </aside>
+          )}
+
+          <form onSubmit={handleSubmit} className="termInputRow">
+            <span className="termPrompt">{">"}</span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="termInput"
+              autoFocus
+              spellCheck={false}
+              autoComplete="off"
+              placeholder="type a command..."
+            />
+          </form>
+        </div>
+
+        <div className="terminalStatusBar">
+          <span>SESSION: ACTIVE</span>
+          <span>COMMANDS: {history.length}</span>
+          <span>NODE: MARROIG-AI</span>
+          <span className="termStatusOnline">● ONLINE</span>
+        </div>
       </div>
 
       <style jsx>{`
         .terminalPage {
-          max-width: 1400px;
+          max-width: 960px;
           margin: 40px auto;
           padding: 0 20px;
-          position: relative;
-        }
-        .terminalLayout {
-          display: grid;
-          grid-template-columns: 240px 1fr 240px;
-          gap: 20px;
-          align-items: start;
-        }
-        .terminalSidePanel {
-          background: rgba(4, 6, 15, 0.85);
-          border: 1px solid rgba(73, 241, 255, 0.2);
-          border-radius: 8px;
-          display: flex;
-          flex-direction: column;
-          font-family: var(--font-mono);
-          height: 650px;
-        }
-        .panelHeader {
-          padding: 12px;
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: #49f1ff;
-          border-bottom: 1px solid rgba(73, 241, 255, 0.2);
-          letter-spacing: 0.1em;
-        }
-        .panelFooter {
-          margin-top: auto;
-          padding: 10px;
-          font-size: 0.6rem;
-          color: rgba(73, 241, 255, 0.4);
-          border-top: 1px solid rgba(73, 241, 255, 0.1);
-        }
-
-        /* Navigation List */
-        .navList {
-          padding: 10px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-        .navItem {
+          min-height: calc(100vh - 80px);
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 12px;
-          border-radius: 4px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid transparent;
-          transition: all 0.2s ease;
+          justify-content: center;
+        }
+
+        .terminalShell {
           width: 100%;
-          text-align: left;
-          cursor: pointer;
-          color: #eef2ff;
-          font-family: inherit;
-        }
-        .navItem:hover {
-          background: rgba(73, 241, 255, 0.05);
-          border-color: rgba(73, 241, 255, 0.1);
-        }
-        .navItem.active {
-          background: rgba(73, 241, 255, 0.1);
-          border-color: rgba(73, 241, 255, 0.4);
-          box-shadow: inset 0 0 10px rgba(73, 241, 255, 0.1);
-        }
-        .navDot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #49f1ff;
-          box-shadow: 0 0 8px #49f1ff;
-        }
-        .navDot.busy { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        .navDot.download { background: #ff3ea6; box-shadow: 0 0 8px #ff3ea6; }
-
-        .navName {
-          font-size: 0.7rem;
-          letter-spacing: 0.05em;
-        }
-        .navSeparator {
-          height: 1px;
-          background: rgba(73, 241, 255, 0.1);
-          margin: 10px 0;
-        }
-
-        /* Right Side Params */
-        .paramsList {
-          padding: 15px;
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-        .paramGroup label {
-          display: block;
-          font-size: 0.65rem;
-          color: rgba(73, 241, 255, 0.6);
-          margin-bottom: 6px;
-        }
-        .paramBox {
-          background: rgba(0, 0, 0, 0.3);
-          border: 1px solid rgba(73, 241, 255, 0.1);
-          padding: 8px;
-          border-radius: 4px;
-          font-size: 0.75rem;
-          color: #ff3ea6;
-        }
-        .paramBox.small {
-          font-size: 0.65rem;
-          line-height: 1.4;
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Main Window */
-        .terminalWindow {
-          background: rgba(4, 6, 15, 0.96);
-          border: 1px solid rgba(73, 241, 255, 0.4);
-          border-radius: 8px;
+          background: rgba(2, 4, 10, 0.98);
+          border: 1px solid rgba(73, 241, 255, 0.3);
+          border-radius: 12px;
           overflow: hidden;
           box-shadow:
-            0 25px 60px rgba(0, 0, 0, 0.8),
-            0 0 40px rgba(73, 241, 255, 0.1);
+            0 30px 80px rgba(0, 0, 0, 0.9),
+            0 0 60px rgba(73, 241, 255, 0.08),
+            inset 0 1px 0 rgba(73, 241, 255, 0.1);
           display: flex;
           flex-direction: column;
-          height: 650px;
+          height: min(700px, 80vh);
         }
-        .terminalHeader {
-          background: rgba(10, 15, 30, 0.9);
-          padding: 12px 18px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid rgba(73, 241, 255, 0.2);
-        }
-        .terminalStatus {
+
+        .terminalChromeBar {
           display: flex;
           align-items: center;
-          gap: 8px;
+          padding: 12px 16px;
+          background: rgba(8, 12, 24, 0.95);
+          border-bottom: 1px solid rgba(73, 241, 255, 0.15);
+          gap: 14px;
         }
-        .terminalDot {
-          width: 8px;
-          height: 8px;
+        .chromeDots {
+          display: flex;
+          gap: 7px;
+        }
+        .chromeDot {
+          width: 11px;
+          height: 11px;
           border-radius: 50%;
         }
-        .terminalDot.online {
-          background: #22c55e;
-          box-shadow: 0 0 10px #22c55e;
-          animation: terminalPulse 2s infinite;
-        }
-        .statusText {
-          font-size: 0.65rem;
-          color: #22c55e;
-          letter-spacing: 0.1em;
-        }
-        .terminalTitle {
-          font-size: 0.7rem;
-          color: rgba(73, 241, 255, 0.8);
-          letter-spacing: 0.15em;
-          font-weight: 700;
-        }
-        .terminalMeta {
-          display: flex;
-          gap: 6px;
-          font-size: 0.65rem;
-        }
-        .metaLabel { color: rgba(255, 255, 255, 0.4); }
-        .metaValue { color: #ff3ea6; }
-
-        .terminalBody {
-          padding: 30px;
-          font-family: var(--font-mono);
+        .chromeDot.red { background: #ff5f57; }
+        .chromeDot.yellow { background: #ffbd2e; }
+        .chromeDot.green { background: #28c840; }
+        .chromeTitle {
           flex: 1;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          background-image:
-            radial-gradient(circle at center, rgba(73, 241, 255, 0.03) 0%, transparent 70%);
-          overflow: hidden;
+          text-align: center;
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+          color: rgba(73, 241, 255, 0.7);
+          letter-spacing: 0.05em;
         }
-        .mainContentScroll {
+        .chromeExit {
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          padding: 4px 12px;
+          background: rgba(255, 62, 166, 0.1);
+          border: 1px solid rgba(255, 62, 166, 0.3);
+          border-radius: 4px;
+          color: #ff3ea6;
+          cursor: pointer;
+          letter-spacing: 0.1em;
+          transition: all 0.2s;
+        }
+        .chromeExit:hover {
+          background: rgba(255, 62, 166, 0.2);
+          border-color: #ff3ea6;
+        }
+
+        .terminalOutput {
           flex: 1;
           overflow-y: auto;
-          z-index: 20;
+          padding: 24px 20px 12px;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          line-height: 1.7;
+          scroll-behavior: smooth;
         }
-        .mainContentScroll::-webkit-scrollbar {
-          width: 4px;
+        .terminalOutput::-webkit-scrollbar {
+          width: 5px;
         }
-        .mainContentScroll::-webkit-scrollbar-thumb {
+        .terminalOutput::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .terminalOutput::-webkit-scrollbar-thumb {
           background: rgba(73, 241, 255, 0.2);
-          border-radius: 2px;
+          border-radius: 3px;
         }
 
-        .terminalScanline {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            rgba(18, 16, 16, 0) 50%,
-            rgba(0, 0, 0, 0.1) 50%
-          ), linear-gradient(
-            90deg,
-            rgba(255, 0, 0, 0.01),
-            rgba(0, 255, 0, 0.005),
-            rgba(0, 0, 255, 0.01)
-          );
-          background-size: 100% 4px, 3px 100%;
-          pointer-events: none;
-          z-index: 10;
-          opacity: 0.4;
+        .termLine {
+          white-space: pre-wrap;
+          word-break: break-word;
         }
-
-        /* Card Elements */
-        .cardTitle {
-          color: #49f1ff;
-          font-size: 1.2rem;
-          margin-bottom: 20px;
-          border-left: 3px solid #ff3ea6;
-          padding-left: 15px;
-          letter-spacing: 0.05em;
-        }
-        .cardText {
-          color: rgba(255, 255, 255, 0.8);
-          line-height: 1.6;
-          margin-bottom: 20px;
-          font-size: 0.95rem;
-        }
-        .profileBox {
-          background: rgba(255, 255, 255, 0.05);
-          padding: 20px;
-          border-radius: 4px;
-          border: 1px solid rgba(73, 241, 255, 0.1);
-        }
-        .statusGrid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 15px;
-          margin: 25px 0;
-        }
-        .statusItem {
-          background: rgba(0, 0, 0, 0.3);
-          padding: 15px;
-          border: 1px solid rgba(73, 241, 255, 0.1);
-          border-radius: 4px;
-        }
-        .statusLabel {
-          display: block;
-          font-size: 0.6rem;
-          color: rgba(73, 241, 255, 0.6);
-          margin-bottom: 5px;
-        }
-        .statusValue {
-          font-size: 0.85rem;
+        .termLine-input {
           color: #fff;
+          font-weight: 600;
+          margin-top: 8px;
         }
-        .statusValue.highlight { color: #ff3ea6; }
-
-        .actionButton {
-          background: #49f1ff;
-          color: #000;
-          border: none;
-          padding: 12px 24px;
-          font-family: inherit;
-          font-weight: bold;
-          font-size: 0.8rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          border-radius: 4px;
-          box-shadow: 0 0 15px rgba(73, 241, 255, 0.3);
+        .termLine-output {
+          color: rgba(238, 242, 255, 0.75);
         }
-        .actionButton:hover {
-          background: #fff;
-          transform: translateY(-2px);
-          box-shadow: 0 0 25px rgba(73, 241, 255, 0.5);
+        .termLine-system {
+          color: #49f1ff;
+        }
+        .termLine-error {
+          color: #ef4444;
+        }
+        .termLine-accent {
+          color: #ff3ea6;
+          font-weight: 500;
         }
 
-        .metaInfo {
+        .termSuggestions {
           display: flex;
           gap: 10px;
-          margin-top: 20px;
-        }
-        .tag {
-          font-size: 0.65rem;
-          padding: 4px 10px;
-          background: rgba(73, 241, 255, 0.1);
-          border: 1px solid rgba(73, 241, 255, 0.3);
-          color: #49f1ff;
-          border-radius: 100px;
-        }
-
-        .skillsGrid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-        }
-        .skillCategory h3 {
-          font-size: 0.8rem;
-          color: #ff3ea6;
-          margin-bottom: 12px;
-          text-transform: uppercase;
-        }
-        .skillTags {
-          display: flex;
+          margin: 6px 0;
           flex-wrap: wrap;
-          gap: 8px;
         }
-        .skillTag {
-          font-size: 0.75rem;
-          padding: 5px 12px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 4px;
-        }
-
-        .projectsList {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-        .projectCardItem {
-          background: rgba(255, 255, 255, 0.03);
-          padding: 15px;
-          border-radius: 4px;
-          border: 1px solid rgba(73, 241, 255, 0.05);
-        }
-        .projectHeader {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 10px;
-        }
-        .projectTitle {
-          color: #49f1ff;
-          font-weight: bold;
-          font-size: 0.9rem;
-        }
-        .projectStatus {
-          font-size: 0.65rem;
-          color: #22c55e;
-          background: rgba(34, 197, 94, 0.1);
+        .termSuggestion {
+          font-size: 0.72rem;
           padding: 2px 8px;
-          border-radius: 4px;
-        }
-        .projectDesc {
-          font-size: 0.8rem;
-          color: rgba(255, 255, 255, 0.6);
-          line-height: 1.5;
+          background: rgba(73, 241, 255, 0.08);
+          border: 1px solid rgba(73, 241, 255, 0.2);
+          border-radius: 3px;
+          color: #49f1ff;
         }
 
-        .terminalFooter {
-          background: rgba(10, 15, 30, 0.95);
-          padding: 8px 18px;
+        .termInputRow {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 8px;
+          padding-top: 8px;
+        }
+        .termPrompt {
+          color: #49f1ff;
+          font-weight: 700;
+          font-size: 1rem;
+          text-shadow: 0 0 8px rgba(73, 241, 255, 0.5);
+        }
+        .termInput {
+          flex: 1;
+          background: transparent;
+          border: none;
+          outline: none;
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: #fff;
+          caret-color: #49f1ff;
+        }
+        .termInput::placeholder {
+          color: rgba(73, 241, 255, 0.3);
+        }
+        .termInput:disabled {
+          opacity: 0.5;
+        }
+
+        .terminalStatusBar {
           display: flex;
           gap: 20px;
-          border-top: 1px solid rgba(73, 241, 255, 0.2);
+          padding: 8px 16px;
+          background: rgba(8, 12, 24, 0.95);
+          border-top: 1px solid rgba(73, 241, 255, 0.12);
+          font-family: var(--font-mono);
           font-size: 0.6rem;
-          color: rgba(255, 255, 255, 0.4);
-        }
-
-        .credentialSection {
-          margin-bottom: 30px;
-        }
-        .sectionSubtitle {
-          font-size: 0.75rem;
-          color: #ff3ea6;
-          margin-bottom: 15px;
-          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.35);
           letter-spacing: 0.05em;
         }
-        .credentialsList {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .credentialItem {
-          display: flex;
-          gap: 15px;
-          padding: 12px;
-          border-radius: 4px;
-          border-left: 3px solid transparent;
-        }
-        .credentialItem.certified {
-          background: rgba(34, 197, 94, 0.05);
-          border-left-color: #22c55e;
-        }
-        .credBadge {
-          font-size: 1.2rem;
-          line-height: 1.3;
-          min-width: 30px;
+        .termStatusOnline {
+          margin-left: auto;
           color: #22c55e;
         }
-        .credDetails {
-          flex: 1;
-        }
-        .credTitle {
-          color: #fff;
-          font-weight: bold;
-          font-size: 0.9rem;
-          margin-bottom: 4px;
-        }
-        .credMeta {
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 0.75rem;
-        }
-        .awardsList {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .awardItem {
-          display: flex;
-          gap: 15px;
-          padding: 12px;
-          border-radius: 4px;
-          background: rgba(255, 62, 166, 0.05);
-          border-left: 3px solid #ff3ea6;
-        }
-        .awardBadge {
-          font-size: 1.2rem;
-          line-height: 1.3;
-          min-width: 30px;
-          color: #ff3ea6;
-        }
-        .awardText {
-          flex: 1;
-          color: #fff;
-          font-size: 0.9rem;
-        }
 
-        @media (max-width: 1100px) {
-          .terminalLayout {
-            grid-template-columns: 1fr;
-          }
-          .terminalSidePanel.right {
-            display: none;
-          }
-          .terminalSidePanel.left {
-            height: auto;
-          }
-          .navList {
-            flex-direction: row;
-            flex-wrap: wrap;
-          }
-          .navItem {
-            width: auto;
-            flex: 1;
-            min-width: 150px;
-          }
-        }
         @media (max-width: 768px) {
-          .terminalBody {
-            padding: 20px;
+          .terminalPage {
+            padding: 10px;
+            margin: 20px auto;
           }
-          .skillsGrid {
-            grid-template-columns: 1fr;
+          .terminalShell {
+            height: min(600px, 85vh);
+            border-radius: 8px;
+          }
+          .terminalOutput {
+            padding: 16px 12px 8px;
+            font-size: 0.72rem;
+          }
+          .termLine {
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
           }
         }
       `}</style>
