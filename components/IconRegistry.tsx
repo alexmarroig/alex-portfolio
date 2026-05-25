@@ -9,13 +9,43 @@ import {
   FaHome,
   FaAws,
   FaJenkins,
-  FaRegClock
+  FaRegClock,
+  FaChartLine,
+  FaTasks,
+  FaRocket,
+  FaUsers
 } from "react-icons/fa";
-import { SiReact, SiTestinglibrary, SiVercel, SiNodedotjs, SiTypescript, SiPython, SiPostgresql, SiGithubactions } from "react-icons/si";
+import {
+  SiReact,
+  SiTestinglibrary,
+  SiVercel,
+  SiNodedotjs,
+  SiTypescript,
+  SiPython,
+  SiPostgresql,
+  SiGithubactions,
+  SiDocker,
+  SiSupabase,
+  SiMongodb,
+  SiRedis,
+  SiTailwindcss,
+  SiFastapi,
+  SiOpenai,
+  SiAnthropic,
+  SiLangchain,
+  SiJira,
+  SiAsana,
+  SiClickup,
+  SiNotion,
+  SiTableau,
+  SiSap,
+  SiScrumalliance,
+  SiExpo
+} from "react-icons/si";
 import { HiOutlineSparkles } from "react-icons/hi";
-import { MdIntegrationInstructions } from "react-icons/md";
+import { MdIntegrationInstructions, MdAutoAwesome } from "react-icons/md";
 import { VscAzure } from "react-icons/vsc";
-import { RiNextjsFill, RiRobot2Line } from "react-icons/ri";
+import { RiNextjsFill, RiRobot2Line, RiFlowChart } from "react-icons/ri";
 import { IconType } from "react-icons";
 
 export const IconRegistry: Record<string, IconType> = {
@@ -30,6 +60,10 @@ export const IconRegistry: Record<string, IconType> = {
   FaAws,
   FaJenkins,
   FaRegClock,
+  FaChartLine,
+  FaTasks,
+  FaRocket,
+  FaUsers,
   SiReact,
   SiTestinglibrary,
   SiVercel,
@@ -37,11 +71,30 @@ export const IconRegistry: Record<string, IconType> = {
   SiTypescript,
   SiPython,
   SiPostgresql,
+  SiDocker,
+  SiSupabase,
+  SiMongodb,
+  SiRedis,
+  SiTailwindcss,
+  SiFastapi,
+  SiOpenai,
+  SiAnthropic,
+  SiLangchain,
+  SiJira,
+  SiAsana,
+  SiClickup,
+  SiNotion,
+  SiTableau,
+  SiSap,
+  SiScrumalliance,
+  SiExpo,
   HiOutlineSparkles,
   MdIntegrationInstructions,
+  MdAutoAwesome,
   VscAzure,
   RiNextjsFill,
   RiRobot2Line,
+  RiFlowChart,
   SiGithubactions
 };
 

@@ -104,19 +104,45 @@ export const siteContent: SiteContent = {
     {
       category: "AI & Automation",
       items: [
-        { name: "OpenAI / Anthropic", note: "LLM Orchestration", icon: "HiOutlineSparkles" },
-        { name: "Python / LangChain", note: "AI Workflows", icon: "SiPython" },
-        { name: "Playwright", note: "Automation & QA", icon: "SiTestinglibrary" },
+        { name: "OpenAI / Anthropic", note: "LLM Orchestration", icon: "SiOpenai" },
+        { name: "Python / LangChain", note: "AI Workflows & RAG", icon: "SiLangchain" },
+        { name: "Whisper AI", note: "Speech-to-Text Pipelines", icon: "MdAutoAwesome" },
+        { name: "NLP & Semantic Search", note: "Inbenta-grade Conversational AI", icon: "RiRobot2Line" },
+        { name: "Playwright", note: "Test Automation & QA", icon: "SiTestinglibrary" },
+        { name: "Power Automate", note: "Enterprise RPA", icon: "RiFlowChart" }
+      ]
+    },
+    {
+      category: "Full-Stack Development",
+      items: [
+        { name: "TypeScript / Node.js", note: "Backend Systems", icon: "SiTypescript" },
+        { name: "React / Next.js", note: "Modern Web UI", icon: "RiNextjsFill" },
+        { name: "FastAPI / Python", note: "High-Performance APIs", icon: "SiFastapi" },
+        { name: "React Native / Expo", note: "Cross-Platform Mobile", icon: "SiExpo" },
+        { name: "Tailwind CSS", note: "Design Systems", icon: "SiTailwindcss" },
         { name: "GitHub Actions", note: "CI/CD Pipelines", icon: "SiGithubactions" }
       ]
     },
     {
-      category: "Development",
+      category: "Data & Infrastructure",
       items: [
-        { name: "Node.js / TypeScript", note: "Backend Systems", icon: "SiNodedotjs" },
-        { name: "React / Next.js", note: "AI Interfaces", icon: "SiReact" },
-        { name: "PostgreSQL", note: "Vector & Relational Data", icon: "SiPostgresql" },
-        { name: "Vercel / Azure", note: "Cloud Infrastructure", icon: "SiVercel" }
+        { name: "PostgreSQL", note: "Relational & Vector Data", icon: "SiPostgresql" },
+        { name: "MongoDB / Redis", note: "NoSQL & Caching", icon: "SiMongodb" },
+        { name: "Supabase", note: "Auth, Storage & Realtime", icon: "SiSupabase" },
+        { name: "Docker", note: "Containerization", icon: "SiDocker" },
+        { name: "Vercel / Azure", note: "Cloud Deployment", icon: "SiVercel" },
+        { name: "Power BI / Tableau", note: "Analytics & BI", icon: "SiTableau" }
+      ]
+    },
+    {
+      category: "Product & Delivery",
+      items: [
+        { name: "Jira / Asana / ClickUp", note: "Project Tracking", icon: "SiJira" },
+        { name: "Scrum / Agile (PSM I)", note: "Methodology", icon: "SiScrumalliance" },
+        { name: "PMP / Six Sigma", note: "Quality & Delivery", icon: "FaMedal" },
+        { name: "Product Discovery", note: "MVP & Customer Validation", icon: "FaRocket" },
+        { name: "SAP / ServiceNow", note: "Enterprise Systems", icon: "SiSap" },
+        { name: "Async / Remote-First", note: "Distributed Team Leadership", icon: "FaUsers" }
       ]
     }
   ],
