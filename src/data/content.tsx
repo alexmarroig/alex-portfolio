@@ -16,7 +16,7 @@ export type SiteContent = {
     humanLine: { icon: string; label: string }[];
     ctas: { label: string; href: string; variant: "primary" | "secondary" | "text" }[];
   };
-  capabilityGrid: { title: string; description: string; icon: string }[];
+  capabilityGrid: { title: string; description: string; icon: string; metric?: string; metricLabel?: string; accent?: string }[];
   currentFocus: {
     lead: string;
     employer?: {
@@ -80,11 +80,70 @@ export const siteContent: SiteContent = {
     ]
   },
   capabilityGrid: [
-    { title: "AI & Agentic Systems", description: "Architecting LLM-powered agents and autonomous workflows for enterprise efficiency.", icon: "HiOutlineSparkles" },
-    { title: "Software Automation", description: "Building robust CI/CD, testing suites, and business process automation at scale.", icon: "RiRobot2Line" },
-    { title: "Full-Stack AI Apps", description: "End-to-end development of modern web applications with integrated AI intelligence.", icon: "SiReact" },
-    { title: "Technical Leadership", description: "Managing complex engineering projects with a focus on architecture and quality.", icon: "FaProjectDiagram" },
-    { title: "Systems Integration", description: "Connecting disparate enterprise systems via custom APIs and middleware.", icon: "MdIntegrationInstructions" }
+    {
+      title: "AI & Agentic Systems",
+      description: "Architecting LLM-powered agents, RAG pipelines, and autonomous workflows for enterprise efficiency.",
+      icon: "HiOutlineSparkles",
+      metric: "12+",
+      metricLabel: "AI products shipped",
+      accent: "#49f1ff"
+    },
+    {
+      title: "Technical Leadership",
+      description: "9+ years leading complex projects across pharma, energy, banking, and SaaS. PMP · PSM I · Six Sigma.",
+      icon: "FaProjectDiagram",
+      metric: "80+",
+      metricLabel: "projects delivered",
+      accent: "#ff3ea6"
+    },
+    {
+      title: "Full-Stack AI Apps",
+      description: "End-to-end products: TypeScript, React/Next.js, FastAPI, Python, Postgres, Docker, Vercel.",
+      icon: "SiReact",
+      metric: "13",
+      metricLabel: "live products in portfolio",
+      accent: "#c084fc"
+    },
+    {
+      title: "Software Automation",
+      description: "CI/CD pipelines, Playwright suites, Power Automate, VBA, custom scripts. Saved 1000s of manual hours.",
+      icon: "RiRobot2Line",
+      metric: "1000+",
+      metricLabel: "hours saved via automation",
+      accent: "#22c55e"
+    },
+    {
+      title: "Systems Integration",
+      description: "M&A integrations, SAP rollouts, ServiceNow, ITIL governance, LGPD compliance for enterprise.",
+      icon: "MdIntegrationInstructions",
+      metric: "30+",
+      metricLabel: "system integrations",
+      accent: "#facc15"
+    },
+    {
+      title: "Async Remote Leadership",
+      description: "Built distributed teams across timezones at Inbenta and Hypera. Async-first, doc-driven, outcome-focused.",
+      icon: "FaUsers",
+      metric: "100%",
+      metricLabel: "remote since 2022",
+      accent: "#fb923c"
+    },
+    {
+      title: "AI Product Discovery",
+      description: "Hypothesis-driven MVPs, customer validation cycles, and rapid prototyping for B2B SaaS at Inbenta.",
+      icon: "FaRocket",
+      metric: "Inbenta",
+      metricLabel: "current enterprise AI work",
+      accent: "#06b6d4"
+    },
+    {
+      title: "Enterprise Delivery",
+      description: "Post-M&A integration, greenfield ERP rollouts, vendor management at Petrobras, Shell, Raízen, BMW.",
+      icon: "FaIndustry",
+      metric: "Fortune 500",
+      metricLabel: "client portfolio",
+      accent: "#a78bfa"
+    }
   ],
   currentFocus: {
     lead: "Currently leading AI delivery at Inbenta — while shipping privacy-first AI systems and full-stack products on the side.",
