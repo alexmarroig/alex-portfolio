@@ -1,5 +1,11 @@
 export type ProjectStatus = "BUILDING" | "SHIPPING" | "MVP" | "CONCEPT";
-export type ProjectCategory = "health" | "astrology" | "ai" | "products" | "personal";
+export type ProjectCategory = "health" | "astrology" | "ai" | "products";
+
+export type CompanyGroup = {
+  label: string;
+  description: string;
+  companies: { name: string; sector?: string }[];
+};
 
 export type SiteContent = {
   hero: {
@@ -44,6 +50,7 @@ export type SiteContent = {
     caseStudy: { problem: string; solution: string; impact: string };
   }[];
   gameIntel: string[];
+  companies: CompanyGroup[];
 };
 
 export const siteContent: SiteContent = {
@@ -388,20 +395,6 @@ export const siteContent: SiteContent = {
         impact: "Perfect Lighthouse scores with static HTML. Affiliate revenue through honest, editorial-quality pet tech curation."
       }
     },
-    {
-      title: "Interactive Portfolio",
-      subtitle: "PERSONAL PORTFOLIO",
-      description: "Personal portfolio site with dark high-contrast visual system, Framer Motion animations, flip cards with detailed case studies (problem/solution/impact), and visual tech stack section.",
-      status: "SHIPPING",
-      category: "personal",
-      icon: "portfolio",
-      stack: ["Next.js (App Router)", "Framer Motion", "TypeScript", "Tailwind CSS", "Vercel"],
-      caseStudy: {
-        problem: "Generic portfolio templates fail to showcase technical depth and project storytelling effectively.",
-        solution: "Custom-built portfolio with 3D flip cards, parallax hero, interactive tilt effects, and structured case study narratives.",
-        impact: "A portfolio that demonstrates engineering craft through its own implementation — the medium is the message."
-      }
-    }
   ],
   gameIntel: [
     "AI Expert: Building agentic workflows since 2023",
@@ -410,5 +403,48 @@ export const siteContent: SiteContent = {
     "Hands-on: Still commits code daily",
     "Focus: AI, Software Architecture, and High-Tech Delivery",
     "Goal: Lead the next wave of autonomous software engineering"
+  ],
+  companies: [
+    {
+      label: "Employers",
+      description: "Companies where I've worked full-time",
+      companies: [
+        { name: "Inbenta", sector: "AI / SaaS" },
+        { name: "Smurfit WestRock", sector: "Industrial" },
+        { name: "Notredame Hapvida", sector: "Healthcare" },
+        { name: "Hypera Pharma", sector: "Pharma" },
+        { name: "Sandech", sector: "Consulting" }
+      ]
+    },
+    {
+      label: "Clients & Partners",
+      description: "Enterprises I've delivered projects for",
+      companies: [
+        { name: "Petrobras", sector: "Energy" },
+        { name: "Shell", sector: "Energy" },
+        { name: "Raízen", sector: "Energy" },
+        { name: "Ipiranga", sector: "Energy" },
+        { name: "Vibra Energia", sector: "Energy" },
+        { name: "TotalEnergies", sector: "Energy" },
+        { name: "Neoenergia", sector: "Utilities" },
+        { name: "PRIO", sector: "Oil & Gas" },
+        { name: "Modec", sector: "Offshore" },
+        { name: "BW Offshore", sector: "Offshore" },
+        { name: "Ultracargo", sector: "Logistics" },
+        { name: "BMW", sector: "Automotive" },
+        { name: "VWFS", sector: "Auto Finance" },
+        { name: "Nestlé", sector: "Consumer Goods" },
+        { name: "Mondelez", sector: "Consumer Goods" },
+        { name: "Citizens Bank", sector: "Banking" },
+        { name: "CIBC", sector: "Banking" },
+        { name: "RBC", sector: "Banking" },
+        { name: "Getnet", sector: "Fintech" },
+        { name: "DocuSign", sector: "SaaS" },
+        { name: "PwC", sector: "Consulting" },
+        { name: "Suhai Seguradora", sector: "Insurance" },
+        { name: "Capemisa", sector: "Insurance" },
+        { name: "Alterra", sector: "Insurance" }
+      ]
+    }
   ]
 };

@@ -1,4 +1,5 @@
 import AboutSection from "@/components/sections/AboutSection";
+import CompaniesMarqueeSection from "@/components/sections/CompaniesMarqueeSection";
 import ContractSection from "@/components/sections/ContractSection";
 import CoreStackSection from "@/components/sections/CoreStackSection";
 import CurrentFocusSection from "@/components/sections/CurrentFocusSection";
@@ -11,6 +12,7 @@ export default function Home() {
     <>
       <HeroSection />
       <CurrentFocusSection />
+      <CompaniesMarqueeSection />
       <CoreStackSection />
       <CredentialsSection />
       <SelectedWorkSection />

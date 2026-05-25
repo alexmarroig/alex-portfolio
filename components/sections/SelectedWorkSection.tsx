@@ -6,7 +6,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import type { ProjectCategory } from "@/src/data/content";
 import { useSiteContent } from "@/src/data/siteContentContext";
 import type { IconType } from "react-icons";
-import { FaBriefcase, FaCode, FaHeartbeat, FaRocket } from "react-icons/fa";
+import { FaBriefcase, FaHeartbeat, FaRocket } from "react-icons/fa";
 import { GiCrystalBall } from "react-icons/gi";
 
 type CategoryMeta = {
@@ -21,7 +21,6 @@ const CATEGORIES: CategoryMeta[] = [
   { key: "astrology", label: "Astrology & Esoteric", icon: GiCrystalBall, color: "#c084fc" },
   { key: "ai", label: "AI & Automation", icon: FaRocket, color: "#49f1ff" },
   { key: "products", label: "Products & Business", icon: FaBriefcase, color: "#ff3ea6" },
-  { key: "personal", label: "Personal & Identity", icon: FaCode, color: "#facc15" },
 ];
 
 export default function SelectedWorkSection() {
