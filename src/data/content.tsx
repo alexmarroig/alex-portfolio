@@ -145,7 +145,7 @@ export const siteContent: SiteContent = {
       category: "Product & Delivery",
       items: [
         { name: "Jira / Asana / ClickUp", note: "Project Tracking", icon: "SiJira" },
-        { name: "Scrum / Agile (PSM I)", note: "Methodology", icon: "SiScrumalliance" },
+        { name: "Scrum / Agile (PSM I)", note: "Methodology", icon: "SiScrumalliance" },
         { name: "PMP / Six Sigma", note: "Quality & Delivery", icon: "FaMedal" },
         { name: "Product Discovery", note: "MVP & Customer Validation", icon: "FaRocket" },
         { name: "SAP / ServiceNow", note: "Enterprise Systems", icon: "SiSap" },
@@ -155,7 +155,7 @@ export const siteContent: SiteContent = {
   ],
   certifications: [
     { title: "Project Management Professional (PMP)", issuer: "Project Management Institute", year: "2023", icon: "FaProjectDiagram" },
-    { title: "Professional Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "SiScrumalliance" },
+    { title: "Professional Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "SiScrumalliance" },
     { title: "Six Sigma Green Belt", issuer: "Master Método", year: "2023", icon: "FaCogs" },
     { title: "Product Management", issuer: "PM3", year: "2023", icon: "FaRocket" },
     { title: "MBA — Project Management", issuer: "Fundação Getúlio Vargas (FGV)", year: "2020", icon: "FaUserGraduate" },
