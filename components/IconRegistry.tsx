@@ -48,10 +48,13 @@ import {
   SiTableau,
   SiSap,
   SiScrumalliance,
-  SiExpo
+  SiExpo,
+  SiAutocad,
+  SiAnsys,
+  SiSiemens
 } from "react-icons/si";
 import { HiOutlineSparkles } from "react-icons/hi";
-import { MdIntegrationInstructions, MdAutoAwesome } from "react-icons/md";
+import { MdIntegrationInstructions, MdAutoAwesome, MdEngineering, MdArchitecture } from "react-icons/md";
 import { VscAzure } from "react-icons/vsc";
 import { RiNextjsFill, RiRobot2Line, RiFlowChart } from "react-icons/ri";
 import { IconType } from "react-icons";
@@ -104,9 +107,14 @@ export const IconRegistry: Record<string, IconType> = {
   SiSap,
   SiScrumalliance,
   SiExpo,
+  SiAutocad,
+  SiAnsys,
+  SiSiemens,
   HiOutlineSparkles,
   MdIntegrationInstructions,
   MdAutoAwesome,
+  MdEngineering,
+  MdArchitecture,
   VscAzure,
   RiNextjsFill,
   RiRobot2Line,

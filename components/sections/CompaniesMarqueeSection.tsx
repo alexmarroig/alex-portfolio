@@ -11,7 +11,7 @@ export default function CompaniesMarqueeSection() {
     <RevealSection className="section companiesSection" id="companies">
       <SectionTitle
         title="Trusted by Industry Leaders"
-        lead="Companies I've built products for, delivered projects to, and led transformations across — spanning energy, banking, healthcare, pharma, automotive, and SaaS."
+        lead="Some of the largest companies in the world and in Brazil — Fortune 500 enterprises and major Brazilian groups I've delivered products and engineering projects for, across energy, banking, healthcare, pharma, automotive, and SaaS."
       />
 
       {content.companies.map((group, groupIdx) => {

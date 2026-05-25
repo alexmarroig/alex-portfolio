@@ -116,7 +116,7 @@ export const siteContent: SiteContent = {
         { name: "Whisper AI", note: "Speech-to-Text Pipelines", icon: "MdAutoAwesome" },
         { name: "NLP & Semantic Search", note: "Inbenta-grade Conversational AI", icon: "RiRobot2Line" },
         { name: "Playwright", note: "Test Automation & QA", icon: "SiTestinglibrary" },
-        { name: "Power Automate", note: "Enterprise RPA", icon: "RiFlowChart" }
+        { name: "RAG Pipelines", note: "Retrieval Augmented Generation", icon: "MdAutoAwesome" }
       ]
     },
     {
@@ -142,14 +142,36 @@ export const siteContent: SiteContent = {
       ]
     },
     {
-      category: "Product & Delivery",
+      category: "Project Management",
       items: [
+        { name: "PMP Certified", note: "PMI Project Management", icon: "FaProjectDiagram" },
+        { name: "Scrum / Agile (PSM I)", note: "Iterative Delivery", icon: "SiScrumalliance" },
         { name: "Jira / Asana / ClickUp", note: "Project Tracking", icon: "SiJira" },
-        { name: "Scrum / Agile (PSM I)", note: "Methodology", icon: "SiScrumalliance" },
-        { name: "PMP / Six Sigma", note: "Quality & Delivery", icon: "FaMedal" },
+        { name: "Primavera P6 / MS Project", note: "Critical Path Planning", icon: "FaChartLine" },
         { name: "Product Discovery", note: "MVP & Customer Validation", icon: "FaRocket" },
-        { name: "SAP / ServiceNow", note: "Enterprise Systems", icon: "SiSap" },
         { name: "Async / Remote-First", note: "Distributed Team Leadership", icon: "FaUsers" }
+      ]
+    },
+    {
+      category: "Engineering & Industrial",
+      items: [
+        { name: "AutoCAD", note: "2D Drafting & Documentation", icon: "SiAutocad" },
+        { name: "ANSYS", note: "Simulation & FEA Analysis", icon: "SiAnsys" },
+        { name: "Mechanical Engineering", note: "B.Sc. UFF · Brunel London", icon: "MdEngineering" },
+        { name: "Six Sigma Green Belt", note: "Lean Process Optimization", icon: "FaCogs" },
+        { name: "HSE / Quality Control", note: "Petrobras-grade Compliance", icon: "FaHardHat" },
+        { name: "Process Automation", note: "VBA · SQL · Power Automate", icon: "RiFlowChart" }
+      ]
+    },
+    {
+      category: "Enterprise Systems",
+      items: [
+        { name: "SAP EC 6.0", note: "ERP Rollout & Integration", icon: "SiSap" },
+        { name: "ServiceNow", note: "Workflow Automation", icon: "MdIntegrationInstructions" },
+        { name: "Power BI / Tableau", note: "Analytics & BI", icon: "SiTableau" },
+        { name: "M&A Integration", note: "Greenfield & Brownfield", icon: "FaNetworkWired" },
+        { name: "ITIL / IT Governance", note: "LGPD · Security Policies", icon: "FaShieldAlt" },
+        { name: "Knowledge Management", note: "Process Standardization", icon: "FaBookOpen" }
       ]
     }
   ],

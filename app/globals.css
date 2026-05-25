@@ -764,6 +764,15 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 1180px) {
   .stackCategoryGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+  }
+  .stackCategoryCard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .stackList {
+    flex: 1;
   }
 }
 
