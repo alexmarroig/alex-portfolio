@@ -19,6 +19,14 @@ export type SiteContent = {
   capabilityGrid: { title: string; description: string; icon: string }[];
   currentFocus: {
     lead: string;
+    employer?: {
+      company: string;
+      role: string;
+      since: string;
+      summary: string;
+      initiatives: string[];
+      tags: string[];
+    };
     main: { title: string; summary: string; tags: string[]; status: ProjectStatus };
     supporting: { title: string; summary: string; tags: string[]; status: ProjectStatus }[];
   };
@@ -79,31 +87,64 @@ export const siteContent: SiteContent = {
     { title: "Systems Integration", description: "Connecting disparate enterprise systems via custom APIs and middleware.", icon: "MdIntegrationInstructions" }
   ],
   currentFocus: {
-    lead: "Building privacy-first AI systems and full-stack products that ship.",
+    lead: "Currently leading AI delivery at Inbenta — while shipping privacy-first AI systems and full-stack products on the side.",
+    employer: {
+      company: "Inbenta",
+      role: "Onboarding Tech Manager · Delivery Manager",
+      since: "Dec 2024 — Present",
+      summary:
+        "Owning end-to-end discovery, technical implementation, and delivery of Inbenta's Symbolic AI platform for Fortune-500 enterprise customers — conversational chatbots, semantic search, knowledge management, and ticketing automation across global B2B accounts.",
+      initiatives: [
+        "Lead technical onboarding for AI-based conversational platforms and semantic search rollouts",
+        "Identify new product opportunities by analyzing customer behavior + operational data across AI platforms",
+        "Design and validate AI-driven features through hypothesis-driven MVPs with rapid customer feedback",
+        "Define roadmap priorities and act as primary product interface with enterprise customers",
+        "Drive cross-functional alignment across engineering, data, design, and business stakeholders"
+      ],
+      tags: ["Symbolic AI", "NLP", "Semantic Search", "Conversational AI", "B2B SaaS", "Async-First"]
+    },
     main: {
       title: "Ethos — Offline-First Clinical AI",
-      summary: "Building a privacy-absolute clinical platform with local Whisper transcription, encrypted storage, and AI-assisted records for psychologists.",
+      summary:
+        "Building a privacy-absolute clinical platform with local Whisper transcription, AES-256 encrypted storage, and AI-assisted records for psychologists. Zero data leaves the device.",
       tags: ["Whisper AI", "Electron", "SQLCipher", "React Native"],
       status: "BUILDING"
     },
     supporting: [
       {
         title: "Inner Sky — Cross-Platform Astro Engine",
-        summary: "Personal astrology app with real ephemeris calculations, editorial database, and native iOS/Android compilation via Capacitor.",
+        summary:
+          "Personal astrology app with real ephemeris calculations (pyswisseph), editorial database, and native iOS/Android compilation via Capacitor.",
         tags: ["FastAPI", "Capacitor", "React", "Supabase"],
         status: "BUILDING"
       },
       {
         title: "Alfred CRM — AI Sales Intelligence",
-        summary: "Multi-tenant CRM with AI-driven lead scoring, webhook ingestion, and automation hub via Activepieces.",
+        summary:
+          "Multi-tenant CRM with AI-driven lead scoring, webhook ingestion, and automation hub via Activepieces. Built for scale.",
         tags: ["FastAPI", "PostgreSQL", "AI Scoring", "Docker"],
         status: "BUILDING"
       },
       {
         title: "VideoEdit Studio — AI Editing Pipeline",
-        summary: "Automatic video editing controlled by AI: transcription, silence detection, subtitle generation, and smart rendering.",
+        summary:
+          "Automatic video editing controlled by AI: transcription, silence detection, subtitle generation, and smart rendering.",
         tags: ["Python", "Whisper AI", "FFmpeg", "Gradio"],
         status: "BUILDING"
+      },
+      {
+        title: "Therapy Bio Hub — Bio-Link for Therapists",
+        summary:
+          "Visual drag-and-drop bio-link and lead capture platform with behavioral analytics and integrated contact CRM for mental health pros.",
+        tags: ["Next.js 15", "Supabase", "PostHog", "TypeScript"],
+        status: "BUILDING"
+      },
+      {
+        title: "Destiny Code — AI Predictions SaaS",
+        summary:
+          "Personalized predictions combining real astrological calculation, numerology, and LLM-driven narrative via OpenRouter with Redis caching.",
+        tags: ["FastAPI", "OpenRouter", "Redis", "Docker"],
+        status: "MVP"
       }
     ]
   },
@@ -157,7 +198,7 @@ export const siteContent: SiteContent = {
       items: [
         { name: "AutoCAD", note: "2D Drafting & Documentation", icon: "SiAutocad" },
         { name: "ANSYS", note: "Simulation & FEA Analysis", icon: "SiAnsys" },
-        { name: "Mechanical Engineering", note: "B.Sc. UFF · Brunel London", icon: "MdEngineering" },
+        { name: "Process Engineering", note: "Refineries · Pharma · Manufacturing", icon: "FaIndustry" },
         { name: "Six Sigma Green Belt", note: "Lean Process Optimization", icon: "FaCogs" },
         { name: "HSE / Quality Control", note: "Petrobras-grade Compliance", icon: "FaHardHat" },
         { name: "Process Automation", note: "VBA · SQL · Power Automate", icon: "RiFlowChart" }

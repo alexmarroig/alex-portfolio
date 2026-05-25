@@ -6,16 +6,73 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import StatusPill from "@/components/ui/StatusPill";
 import Tag from "@/components/ui/Tag";
 import { useSiteContent } from "@/src/data/siteContentContext";
+import { FaBriefcase, FaCheckCircle } from "react-icons/fa";
 
 export default function CurrentFocusSection() {
   const { content } = useSiteContent();
   const { currentFocus } = content;
+  const { employer } = currentFocus;
 
   return (
-    <RevealSection className="section" id="current-focus">
+    <RevealSection className="section currentFocusSectionV2" id="current-focus">
       <SectionTitle title="Current Focus" lead={currentFocus.lead} />
 
-      <div className="focusLayout">
+      {employer && (
+        <article className="employerSpotlight" aria-label={`Currently working at ${employer.company}`}>
+          <div className="employerSpotlightTop">
+            <div className="employerLogoBlock">
+              <div className="employerLogoMark" aria-hidden="true">
+                <span className="employerLogoLetter">i</span>
+              </div>
+              <div className="employerLiveBadge" aria-hidden="true">
+                <span className="liveDot" />
+                <span>LIVE</span>
+              </div>
+            </div>
+
+            <div className="employerHeadBlock">
+              <div className="employerCompanyRow">
+                <span className="employerNowTag">
+                  <FaBriefcase aria-hidden="true" />
+                  Currently at
+                </span>
+                <h3 className="employerCompany">{employer.company}</h3>
+                <span className="employerSince">{employer.since}</span>
+              </div>
+              <p className="employerRole">{employer.role}</p>
+              <p className="employerSummary">{employer.summary}</p>
+            </div>
+          </div>
+
+          <div className="employerInitiatives">
+            <p className="employerInitiativesLabel">Key Initiatives</p>
+            <ul className="employerInitiativesList">
+              {employer.initiatives.map((init) => (
+                <li key={init} className="employerInitiativeItem">
+                  <FaCheckCircle aria-hidden="true" className="employerInitiativeIcon" />
+                  <span>{init}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="employerTags">
+            {employer.tags.map((tag) => (
+              <span key={tag} className="employerTag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </article>
+      )}
+
+      <div className="focusDivider">
+        <span className="focusDividerLine" />
+        <span className="focusDividerText">Building on the Side</span>
+        <span className="focusDividerLine" />
+      </div>
+
+      <div className="focusLayoutV2">
         <Card className="focusCard focusCardPrimary">
           <div className="focusCardHead">
             <h3>{currentFocus.main.title}</h3>
@@ -29,9 +86,9 @@ export default function CurrentFocusSection() {
           </div>
         </Card>
 
-        <div className="focusGridClean">
+        <div className="focusGridV2">
           {currentFocus.supporting.map((item) => (
-            <Card className="focusCard" key={item.title}>
+            <Card className="focusCard focusCardSupport" key={item.title}>
               <div className="focusCardHead">
                 <h3>{item.title}</h3>
                 <StatusPill status={item.status} />

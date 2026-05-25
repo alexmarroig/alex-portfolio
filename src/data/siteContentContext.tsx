@@ -42,7 +42,7 @@ const DEFAULT_THEME: ThemeConfig = {
   border: "rgba(166, 180, 255, 0.22)"
 };
 
-const STORAGE_CONTENT_KEY = "alex-portfolio-content-v8";
+const STORAGE_CONTENT_KEY = "alex-portfolio-content-v9";
 const STORAGE_THEME_KEY = "alex-portfolio-theme-overrides";
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_KEY ?? "";
 
