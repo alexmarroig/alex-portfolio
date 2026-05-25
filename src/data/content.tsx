@@ -154,12 +154,12 @@ export const siteContent: SiteContent = {
     }
   ],
   certifications: [
-    { title: "Project Management Professional (PMP)", issuer: "PMI", year: "2023", icon: "FaShieldAlt" },
-    { title: "Professional Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "FaMedal" },
-    { title: "Six Sigma Green Belt", issuer: "Master Método", year: "2023", icon: "FaMedal" },
-    { title: "Product Management", issuer: "PM3", year: "2023", icon: "FaShieldAlt" },
-    { title: "MBA — Project Management", issuer: "Fundação Getúlio Vargas (FGV)", year: "2020", icon: "FaShieldAlt" },
-    { title: "B.Sc. Mechanical Engineering", issuer: "UFF · Brunel University London", year: "2016", icon: "FaShieldAlt" }
+    { title: "Project Management Professional (PMP)", issuer: "Project Management Institute", year: "2023", icon: "FaProjectDiagram" },
+    { title: "Professional Scrum Master (PSM I)", issuer: "Scrum.org", year: "2023", icon: "SiScrumalliance" },
+    { title: "Six Sigma Green Belt", issuer: "Master Método", year: "2023", icon: "FaCogs" },
+    { title: "Product Management", issuer: "PM3", year: "2023", icon: "FaRocket" },
+    { title: "MBA — Project Management", issuer: "Fundação Getúlio Vargas (FGV)", year: "2020", icon: "FaUserGraduate" },
+    { title: "B.Sc. Mechanical Engineering", issuer: "UFF · Brunel University London", year: "2016", icon: "FaUniversity" }
   ],
   awards: [
     "Promoted within 6 months at Hypera Pharma — Top Performance Recognition",

@@ -13,7 +13,15 @@ import {
   FaChartLine,
   FaTasks,
   FaRocket,
-  FaUsers
+  FaUsers,
+  FaCertificate,
+  FaGraduationCap,
+  FaCogs,
+  FaTrophy,
+  FaUniversity,
+  FaIndustry,
+  FaBookOpen,
+  FaUserGraduate
 } from "react-icons/fa";
 import {
   SiReact,
@@ -64,6 +72,14 @@ export const IconRegistry: Record<string, IconType> = {
   FaTasks,
   FaRocket,
   FaUsers,
+  FaCertificate,
+  FaGraduationCap,
+  FaCogs,
+  FaTrophy,
+  FaUniversity,
+  FaIndustry,
+  FaBookOpen,
+  FaUserGraduate,
   SiReact,
   SiTestinglibrary,
   SiVercel,
