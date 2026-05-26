@@ -5,6 +5,7 @@ import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
 import StatusPill from "@/components/ui/StatusPill";
 import Tag from "@/components/ui/Tag";
+import InbentaLogo from "@/components/InbentaLogo";
 import { useSiteContent } from "@/src/data/siteContentContext";
 import { FaBriefcase, FaCheckCircle } from "react-icons/fa";
 
@@ -21,8 +22,8 @@ export default function CurrentFocusSection() {
         <article className="employerSpotlight" aria-label={`Currently working at ${employer.company}`}>
           <div className="employerSpotlightTop">
             <div className="employerLogoBlock">
-              <div className="employerLogoMark" aria-hidden="true">
-                <span className="employerLogoLetter">i</span>
+              <div className="employerLogoWrap">
+                <InbentaLogo variant="mark" className="employerLogoSvg" />
               </div>
               <div className="employerLiveBadge" aria-hidden="true">
                 <span className="liveDot" />
@@ -36,7 +37,13 @@ export default function CurrentFocusSection() {
                   <FaBriefcase aria-hidden="true" />
                   Currently at
                 </span>
-                <h3 className="employerCompany">{employer.company}</h3>
+                <div className="employerCompanyBrand">
+                  <InbentaLogo
+                    variant="full"
+                    wordmarkColor="#1e1be8"
+                    className="employerCompanyWordmark"
+                  />
+                </div>
                 <span className="employerSince">{employer.since}</span>
               </div>
               <p className="employerRole">{employer.role}</p>

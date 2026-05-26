@@ -197,13 +197,6 @@ export const siteContent: SiteContent = {
           "Visual drag-and-drop bio-link and lead capture platform with behavioral analytics and integrated contact CRM for mental health pros.",
         tags: ["Next.js 15", "Supabase", "PostHog", "TypeScript"],
         status: "BUILDING"
-      },
-      {
-        title: "Destiny Code — AI Predictions SaaS",
-        summary:
-          "Personalized predictions combining real astrological calculation, numerology, and LLM-driven narrative via OpenRouter with Redis caching.",
-        tags: ["FastAPI", "OpenRouter", "Redis", "Docker"],
-        status: "MVP"
       }
     ]
   },
