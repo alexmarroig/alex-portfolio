@@ -12,30 +12,22 @@ type Props = {
  * the right peak. The wordmark "inbenta" is lowercase indigo text.
  */
 export default function InbentaLogo({ variant = "full", className, wordmarkColor = "#1e1be8" }: Props) {
-  // Two angular peaks (left + right) — the iconic Inbenta mark
-  // Drawn as outlined triangles with thick strokes for that crisp look
+  // Inbenta mark — a single continuous angular stroke that traces
+  // an "M-like" shape: two adjacent triangular peaks sharing a central
+  // valley, drawn as one rounded-join outline. Orange dot sits in the
+  // negative space near the right peak.
   const Mark = (
     <g>
-      {/* Left peak — outlined triangle */}
       <path
-        d="M 4 50 L 19 8 L 34 50"
+        d="M 5 52 L 21 8 L 32 30 L 43 8 L 59 52"
         stroke="#1e1be8"
-        strokeWidth="6"
-        strokeLinejoin="miter"
-        strokeLinecap="butt"
+        strokeWidth="6.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
         fill="none"
       />
-      {/* Right peak — outlined triangle */}
-      <path
-        d="M 30 50 L 45 8 L 60 50"
-        stroke="#1e1be8"
-        strokeWidth="6"
-        strokeLinejoin="miter"
-        strokeLinecap="butt"
-        fill="none"
-      />
-      {/* Orange accent dot at apex of right peak */}
-      <circle cx="45" cy="8" r="4.2" fill="#ff8a3d" />
+      {/* Orange accent dot positioned in the negative space near right peak */}
+      <circle cx="49" cy="14" r="3.6" fill="#ff8a3d" />
     </g>
   );
 
