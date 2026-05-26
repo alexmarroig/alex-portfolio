@@ -5,66 +5,72 @@ type Props = {
 };
 
 /**
- * Inbenta brand logo — recreated as an SVG so it scales perfectly.
- * The brand is a stylized "M-like" mark in deep indigo/blue with an
- * orange dot accent, followed by the lowercase "inbenta" wordmark.
+ * Inbenta brand logo — recreated as an SVG.
+ *
+ * The real Inbenta mark is two angular triangular peaks side-by-side
+ * in deep indigo/blue, with a small orange accent dot on the apex of
+ * the right peak. The wordmark "inbenta" is lowercase indigo text.
  */
 export default function InbentaLogo({ variant = "full", className, wordmarkColor = "#1e1be8" }: Props) {
+  // Two angular peaks (left + right) — the iconic Inbenta mark
+  // Drawn as outlined triangles with thick strokes for that crisp look
+  const Mark = (
+    <g>
+      {/* Left peak — outlined triangle */}
+      <path
+        d="M 4 50 L 19 8 L 34 50"
+        stroke="#1e1be8"
+        strokeWidth="6"
+        strokeLinejoin="miter"
+        strokeLinecap="butt"
+        fill="none"
+      />
+      {/* Right peak — outlined triangle */}
+      <path
+        d="M 30 50 L 45 8 L 60 50"
+        stroke="#1e1be8"
+        strokeWidth="6"
+        strokeLinejoin="miter"
+        strokeLinecap="butt"
+        fill="none"
+      />
+      {/* Orange accent dot at apex of right peak */}
+      <circle cx="45" cy="8" r="4.2" fill="#ff8a3d" />
+    </g>
+  );
+
   if (variant === "mark") {
     return (
       <svg
-        viewBox="0 0 64 64"
+        viewBox="0 0 64 58"
         xmlns="http://www.w3.org/2000/svg"
         className={className}
         role="img"
         aria-label="Inbenta logo mark"
       >
-        <defs>
-          <linearGradient id="inbentaMarkGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1e1be8" />
-            <stop offset="100%" stopColor="#5b32d6" />
-          </linearGradient>
-        </defs>
-        {/* M-shaped mark: two angular peaks */}
-        <path
-          d="M 6 50 L 18 14 L 32 38 L 46 14 L 58 50 L 50 50 L 44 32 L 32 50 L 20 32 L 14 50 Z"
-          fill="url(#inbentaMarkGrad)"
-        />
-        {/* Orange accent dot */}
-        <circle cx="46" cy="14" r="4" fill="#ff8a3d" />
+        {Mark}
       </svg>
     );
   }
 
   return (
     <svg
-      viewBox="0 0 280 64"
+      viewBox="0 0 280 58"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       role="img"
       aria-label="Inbenta"
     >
-      <defs>
-        <linearGradient id="inbentaFullGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1e1be8" />
-          <stop offset="100%" stopColor="#5b32d6" />
-        </linearGradient>
-      </defs>
-      {/* M-shaped mark */}
-      <path
-        d="M 6 50 L 18 14 L 32 38 L 46 14 L 58 50 L 50 50 L 44 32 L 32 50 L 20 32 L 14 50 Z"
-        fill="url(#inbentaFullGrad)"
-      />
-      <circle cx="46" cy="14" r="4" fill="#ff8a3d" />
+      {Mark}
 
-      {/* Wordmark "inbenta" */}
+      {/* Wordmark "inbenta" — lowercase, sans-serif */}
       <text
-        x="76"
-        y="44"
+        x="74"
+        y="42"
         fontFamily="'Inter', 'Segoe UI', system-ui, sans-serif"
-        fontSize="32"
+        fontSize="34"
         fontWeight="500"
-        letterSpacing="-0.02em"
+        letterSpacing="-0.015em"
         fill={wordmarkColor}
       >
         inbenta

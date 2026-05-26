@@ -81,9 +81,12 @@ export default function CurrentFocusSection() {
 
       <div className="focusLayoutV2">
         <Card className="focusCard focusCardPrimary">
-          <div className="focusCardHead">
+          <div className="focusCardPrimaryBadge">
+            <span className="focusPrimaryDot" />
+            PRIMARY · {currentFocus.main.status}
+          </div>
+          <div className="focusCardHead focusCardHeadPrimary">
             <h3>{currentFocus.main.title}</h3>
-            <StatusPill status={currentFocus.main.status} />
           </div>
           <p>{currentFocus.main.summary}</p>
           <div className="tagRow">

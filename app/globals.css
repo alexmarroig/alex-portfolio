@@ -3455,18 +3455,49 @@ h4, h5, h6 {
 }
 
 .focusCardPrimary::before {
-  content: "PRIMARY";
-  position: absolute;
-  top: 16px;
-  right: 16px;
+  content: none;
+}
+
+/* Combined PRIMARY · BUILDING badge above the title */
+.focusCardPrimaryBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  width: fit-content;
+  margin-bottom: 14px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  padding: 3px 8px;
+  font-size: 0.63rem;
+  letter-spacing: 0.16em;
+  padding: 5px 12px;
   border-radius: 999px;
-  background: rgba(73, 241, 255, 0.12);
+  background: linear-gradient(
+    90deg,
+    rgba(73, 241, 255, 0.16),
+    rgba(73, 241, 255, 0.08)
+  );
   color: #49f1ff;
-  border: 1px solid rgba(73, 241, 255, 0.35);
+  border: 1px solid rgba(73, 241, 255, 0.4);
+  text-transform: uppercase;
+  box-shadow: 0 0 22px rgba(73, 241, 255, 0.18);
+}
+
+.focusPrimaryDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.85);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+.focusCardHeadPrimary {
+  margin: 0;
+}
+
+.focusCardHeadPrimary h3 {
+  font-size: 1.25rem;
+  margin: 0 0 12px;
 }
 
 .focusCardSupport {
