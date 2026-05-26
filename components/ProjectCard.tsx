@@ -39,7 +39,7 @@ export default function ProjectCard({
           <StatusPill status={status} />
           <p className="projectDescription">{description}</p>
           <div className="projectPills">
-            {stack.map((name) => {
+            {stack.slice(0, 4).map((name) => {
               const Icon = techStackIcons[name] ?? FaProjectDiagram;
               return (
                 <span className="projectPill" key={name}>
@@ -47,6 +47,11 @@ export default function ProjectCard({
                 </span>
               );
             })}
+            {stack.length > 4 && (
+              <span className="projectPill projectPillMore">
+                +{stack.length - 4} more
+              </span>
+            )}
           </div>
           <p className="projectFlipCta">Hover or tap to view details</p>
         </>

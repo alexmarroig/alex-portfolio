@@ -771,6 +771,8 @@ h1, h2, h3, h4, h5, h6 {
   .stackCategoryGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: 1fr;
+    row-gap: 56px;
+    column-gap: 28px;
   }
   .stackCategoryCard {
     display: flex;
@@ -2587,8 +2589,17 @@ h4, h5, h6 {
 
 .projectFront .projectPills {
   margin-top: auto;
-  max-height: 100px;
+  max-height: 80px;
   overflow: hidden;
+}
+
+.projectPillMore {
+  background: rgba(73, 241, 255, 0.1);
+  border-color: rgba(73, 241, 255, 0.35);
+  color: #9af6ff;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
 }
 
 .projectFront .projectFlipCta {
