@@ -5,7 +5,7 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3200&pause=900&color=79DBF9&center=true&vCenter=true&width=860&lines=Enterprise+AI+%26+Agentic+Systems;From+complex+delivery+to+working+products;Automation+%E2%80%A2+Full-stack+%E2%80%A2+Product+Engineering" alt="Animated introduction: enterprise AI, product engineering and automation" />
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alexmarroig/)
+[![Email](https://img.shields.io/badge/Email-Get%20in%20touch-22C55E?style=for-the-badge&logo=gmail&logoColor=white)](mailto:alex.c.marroig@gmail.com)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Explore-8B5CF6?style=for-the-badge&logo=vercel&logoColor=white)](https://alex-portfolio-seven-psi.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-alexmarroig-151B2C?style=for-the-badge&logo=github)](https://github.com/alexmarroig)
 
@@ -71,8 +71,10 @@ At **Inbenta**, I work with enterprise conversational AI, integrations, and AI-p
 
 ## 📬 Let's connect
 
+**Email:** [alex.c.marroig@gmail.com](mailto:alex.c.marroig@gmail.com)
+
 I'm interested in technically challenging opportunities involving **AI solutions, agentic systems, technical delivery, and product engineering**.
 
-[LinkedIn](https://www.linkedin.com/in/alexmarroig/) · [Portfolio](https://alex-portfolio-seven-psi.vercel.app/) · [GitHub](https://github.com/alexmarroig)
+[Email](mailto:alex.c.marroig@gmail.com) · [Portfolio](https://alex-portfolio-seven-psi.vercel.app/) · [GitHub](https://github.com/alexmarroig)
 
 <div align="center"><sub>Made with curiosity, engineering discipline, and a lot of coffee ☕</sub></div>
