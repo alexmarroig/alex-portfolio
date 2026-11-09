@@ -1,7 +1,9 @@
 <div align="center">
-<img src="./assets/github-banner.svg" alt="Alex Marroig — AI Solutions Engineer & Product Builder" width="100%" />
+<img src="https://raw.githubusercontent.com/alexmarroig/alex-portfolio/main/assets/github-banner.svg" alt="Alex Marroig — AI Solutions Engineer & Product Builder" width="100%" />
 
 <br/>
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3200&pause=900&color=79DBF9&center=true&vCenter=true&width=860&lines=Enterprise+AI+%26+Agentic+Systems;From+complex+delivery+to+working+products;Automation+%E2%80%A2+Full-stack+%E2%80%A2+Product+Engineering" alt="Animated introduction: enterprise AI, product engineering and automation" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alexmarroig/)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Explore-8B5CF6?style=for-the-badge&logo=vercel&logoColor=white)](https://alex-portfolio-seven-psi.vercel.app/)
@@ -36,6 +38,12 @@ At **Inbenta**, I work with enterprise conversational AI, integrations, and AI-p
 | [🌐 Interactive Portfolio](https://github.com/alexmarroig/alex-portfolio) | Professional website with engineering case studies and interactive components | Next.js · TypeScript |
 
 > Projects have different maturity levels. Public repositories demonstrate technical exploration and implementations; private projects are listed at a high level. A repository is not automatically evidence of a production deployment.
+
+<div align="center">
+
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=alexmarroig&layout=compact&theme=tokyonight&hide_border=true" alt="GitHub language breakdown (public repositories)" width="390" />
+
+</div>
 
 ## 🛠️ Engineering toolkit
 
